@@ -1,57 +1,89 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.thinkgem.jeesite.modules.requirement.dao.RequirementsDao">
-    
+
 	<sql id="requirementsColumns">
 		a.id AS "id",
 		a.requirement_source AS "requirementSource",
 		a.requirement_classify AS "requirementClassify",
-		a.business_system AS "businessSystem",
+		a.business_system AS
+		"businessSystem",
 		a.requirement_emergency AS "requirementEmergency",
 		a.expect_and_intention AS "expectAndIntention",
 		a.sign_no AS "signNo",
 		a.expect_online AS "expectOnline",
-		a.related_business_requirements AS "relatedBusinessRequirements",
+		a.related_business_requirements AS
+		"relatedBusinessRequirements",
 		a.reasons_change AS "reasonsChange",
 		a.current_busi_proc_scenario AS "currentBusiProcScenario",
-		a.submit_to AS "submitTo",
-		a.requiremen_presentation_office AS "requiremenPresentationOffice",
+		a.submit_to
+		AS "submitTo",
+		a.requiremen_presentation_office AS
+		"requiremenPresentationOffice",
 		a.proposer AS "proposer",
-		a.contact AS "contact",
-		a.requirement_cause_description AS "requirementCauseDescription",
-		a.requirement_content AS "requirementContent",
+		a.contact AS
+		"contact",
+		a.requirement_cause_description AS
+		"requirementCauseDescription",
+		a.requirement_content AS
+		"requirementContent",
 		a.annex_list AS "annexList",
 		a.requirement_acceptance_person AS "requirementAcceptancePerson",
 		a.requirement_acceptance_phone AS "requirementAcceptancePhone",
 		a.requirement_status AS "requirementStatus",
-		a.related_business_demand AS "relatedBusinessDemand",
+		a.related_business_demand
+		AS "relatedBusinessDemand",
 		a.comments AS "comments",
-		a.last_update AS "lastUpdate",
+		a.last_update AS
+		"lastUpdate",
 		a.lat_update_time AS "latUpdateTime",
-		a.create_by AS "createBy.id",
+		a.create_by AS
+		"createBy.id",
 		a.create_date AS "createDate",
-		a.update_by AS "updateBy.id",
+		a.update_by AS
+		"updateBy.id",
 		a.update_date AS "updateDate",
 		a.remarks AS "remarks",
 		a.del_flag AS "delFlag"
 	</sql>
-	
+
 	<sql id="requirementsJoins">
 	</sql>
-    
+
 	<select id="get" resultType="Requirements">
-		SELECT 
-			<include refid="requirementsColumns"/>
+		SELECT
+		<include refid="requirementsColumns" />
 		FROM requirements a
-		<include refid="requirementsJoins"/>
+		<include refid="requirementsJoins" />
 		WHERE a.id = #{id}
 	</select>
-	
+
 	<select id="findList" resultType="Requirements">
-		SELECT 
-			<include refid="requirementsColumns"/>
+		SELECT
+		<include refid="requirementsColumns" />
 		FROM requirements a
-		<include refid="requirementsJoins"/>
+		<include refid="requirementsJoins" />
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="signNo != null and signNo != ''">
+				AND a.sign_no = #{signNo}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+
+	<select id="findAllList" resultType="Requirements">
+		SELECT
+		<include refid="requirementsColumns" />
+		FROM requirements a
+		<include refid="requirementsJoins" />
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
 		</where>
@@ -64,129 +96,111 @@
 			</otherwise>
 		</choose>
 	</select>
-	
-	<select id="findAllList" resultType="Requirements">
-		SELECT 
-			<include refid="requirementsColumns"/>
-		FROM requirements a
-		<include refid="requirementsJoins"/>
-		<where>
-			a.del_flag = #{DEL_FLAG_NORMAL}
-		</where>		
-		<choose>
-			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
-				ORDER BY ${page.orderBy}
-			</when>
-			<otherwise>
-				ORDER BY a.update_date DESC
-			</otherwise>
-		</choose>
-	</select>
-	
+
 	<insert id="insert">
 		INSERT INTO requirements(
-			id,
-			requirement_source,
-			requirement_classify,
-			business_system,
-			requirement_emergency,
-			expect_and_intention,
-			sign_no,
-			expect_online,
-			related_business_requirements,
-			reasons_change,
-			current_busi_proc_scenario,
-			submit_to,
-			requiremen_presentation_office,
-			proposer,
-			contact,
-			requirement_cause_description,
-			requirement_content,
-			annex_list,
-			requirement_acceptance_person,
-			requirement_acceptance_phone,
-			requirement_status,
-			related_business_demand,
-			comments,
-			last_update,
-			lat_update_time,
-			create_by,
-			create_date,
-			update_by,
-			update_date,
-			remarks,
-			del_flag
+		id,
+		requirement_source,
+		requirement_classify,
+		business_system,
+		requirement_emergency,
+		expect_and_intention,
+		sign_no,
+		expect_online,
+		related_business_requirements,
+		reasons_change,
+		current_busi_proc_scenario,
+		submit_to,
+		requiremen_presentation_office,
+		proposer,
+		contact,
+		requirement_cause_description,
+		requirement_content,
+		annex_list,
+		requirement_acceptance_person,
+		requirement_acceptance_phone,
+		requirement_status,
+		related_business_demand,
+		comments,
+		last_update,
+		lat_update_time,
+		create_by,
+		create_date,
+		update_by,
+		update_date,
+		remarks,
+		del_flag
 		) VALUES (
-			#{id},
-			#{requirementSource},
-			#{requirementClassify},
-			#{businessSystem},
-			#{requirementEmergency},
-			#{expectAndIntention},
-			#{signNo},
-			#{expectOnline},
-			#{relatedBusinessRequirements},
-			#{reasonsChange},
-			#{currentBusiProcScenario},
-			#{submitTo},
-			#{requiremenPresentationOffice},
-			#{proposer},
-			#{contact},
-			#{requirementCauseDescription},
-			#{requirementContent},
-			#{annexList},
-			#{requirementAcceptancePerson},
-			#{requirementAcceptancePhone},
-			#{requirementStatus},
-			#{relatedBusinessDemand},
-			#{comments},
-			#{lastUpdate},
-			#{latUpdateTime},
-			#{createBy.id},
-			#{createDate},
-			#{updateBy.id},
-			#{updateDate},
-			#{remarks},
-			#{delFlag}
+		#{id},
+		#{requirementSource},
+		#{requirementClassify},
+		#{businessSystem},
+		#{requirementEmergency},
+		#{expectAndIntention},
+		#{signNo},
+		#{expectOnline},
+		#{relatedBusinessRequirements},
+		#{reasonsChange},
+		#{currentBusiProcScenario},
+		#{submitTo},
+		#{requiremenPresentationOffice},
+		#{proposer},
+		#{contact},
+		#{requirementCauseDescription},
+		#{requirementContent},
+		#{annexList},
+		#{requirementAcceptancePerson},
+		#{requirementAcceptancePhone},
+		#{requirementStatus},
+		#{relatedBusinessDemand},
+		#{comments},
+		#{lastUpdate},
+		#{latUpdateTime},
+		#{createBy.id},
+		#{createDate},
+		#{updateBy.id},
+		#{updateDate},
+		#{remarks},
+		#{delFlag}
 		)
 	</insert>
-	
+
 	<update id="update">
-		UPDATE requirements SET 	
-			requirement_source = #{requirementSource},
-			requirement_classify = #{requirementClassify},
-			business_system = #{businessSystem},
-			requirement_emergency = #{requirementEmergency},
-			expect_and_intention = #{expectAndIntention},
-			sign_no = #{signNo},
-			expect_online = #{expectOnline},
-			related_business_requirements = #{relatedBusinessRequirements},
-			reasons_change = #{reasonsChange},
-			current_busi_proc_scenario = #{currentBusiProcScenario},
-			submit_to = #{submitTo},
-			requiremen_presentation_office = #{requiremenPresentationOffice},
-			proposer = #{proposer},
-			contact = #{contact},
-			requirement_cause_description = #{requirementCauseDescription},
-			requirement_content = #{requirementContent},
-			annex_list = #{annexList},
-			requirement_acceptance_person = #{requirementAcceptancePerson},
-			requirement_acceptance_phone = #{requirementAcceptancePhone},
-			requirement_status = #{requirementStatus},
-			related_business_demand = #{relatedBusinessDemand},
-			comments = #{comments},
-			last_update = #{lastUpdate},
-			lat_update_time = #{latUpdateTime},
-			update_by = #{updateBy.id},
-			update_date = #{updateDate},
-			remarks = #{remarks}
+		UPDATE requirements SET
+		requirement_source = #{requirementSource},
+		requirement_classify = #{requirementClassify},
+		business_system = #{businessSystem},
+		requirement_emergency = #{requirementEmergency},
+		expect_and_intention = #{expectAndIntention},
+		sign_no = #{signNo},
+		expect_online = #{expectOnline},
+		related_business_requirements = #{relatedBusinessRequirements},
+		reasons_change = #{reasonsChange},
+		current_busi_proc_scenario = #{currentBusiProcScenario},
+		submit_to = #{submitTo},
+		requiremen_presentation_office = #{requiremenPresentationOffice},
+		proposer = #{proposer},
+		contact = #{contact},
+		requirement_cause_description = #{requirementCauseDescription},
+		requirement_content = #{requirementContent},
+		annex_list = #{annexList},
+		requirement_acceptance_person = #{requirementAcceptancePerson},
+		requirement_acceptance_phone = #{requirementAcceptancePhone},
+		requirement_status = #{requirementStatus},
+		related_business_demand = #{relatedBusinessDemand},
+		comments = #{comments},
+		last_update = #{lastUpdate},
+		lat_update_time = #{latUpdateTime},
+		update_by = #{updateBy.id},
+		update_date = #{updateDate},
+		remarks = #{remarks}
 		WHERE id = #{id}
 	</update>
-	
+
 	<update id="delete">
-		UPDATE requirements SET 
-			del_flag = #{DEL_FLAG_DELETE}
+		UPDATE requirements SET
+		del_flag = #{DEL_FLAG_DELETE}
 		WHERE id = #{id}
 	</update>
-	
+
 </mapper>

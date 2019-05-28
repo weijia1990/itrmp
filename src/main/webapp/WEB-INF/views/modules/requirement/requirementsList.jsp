@@ -25,6 +25,9 @@
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
 		<ul class="ul-form">
+			<li><label>签报号：</label>
+				<form:input path="signNo" htmlEscape="false" maxlength="100" class="input-medium"/>
+			</li>
 			<li class="btns"><input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/></li>
 			<li class="clearfix"></li>
 		</ul>
@@ -33,8 +36,8 @@
 	<table id="contentTable" class="table table-striped table-bordered table-condensed">
 		<thead>
 			<tr>
-				<th>update_date</th>
-				<th>remarks</th>
+				<th>需求来源</th>
+				<th>签报号</th>
 				<shiro:hasPermission name="requirement:requirements:edit"><th>操作</th></shiro:hasPermission>
 			</tr>
 		</thead>
@@ -42,10 +45,10 @@
 		<c:forEach items="${page.list}" var="requirements">
 			<tr>
 				<td><a href="${ctx}/requirement/requirements/form?id=${requirements.id}">
-					<fmt:formatDate value="${requirements.updateDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
+					${fns:getDictLabel(requirements.requirementSource, '', '')}
 				</a></td>
 				<td>
-					${requirements.remarks}
+					${requirements.signNo}
 				</td>
 				<shiro:hasPermission name="requirement:requirements:edit"><td>
     				<a href="${ctx}/requirement/requirements/form?id=${requirements.id}">修改</a>
