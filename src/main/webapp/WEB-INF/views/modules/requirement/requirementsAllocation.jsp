@@ -2,7 +2,7 @@
 <%@ include file="/WEB-INF/views/include/taglib.jsp"%>
 <html>
 <head>
-<title>需求创建管理</title>
+<title>需求分配管理</title>
 <meta name="decorator" content="default" />
 <script type="text/javascript">
 	$(document).ready(function() {});
@@ -16,13 +16,13 @@
 </head>
 <body>
 	<ul class="nav nav-tabs">
-		<li class="active"><a href="${ctx}/requirement/requirements/">需求创建列表</a></li>
+		<li class="active"><a href="${ctx}/requirement/requirements/">需求分配</a></li>
 		<shiro:hasPermission name="requirement:requirements:edit">
 			<li><a href="${ctx}/requirement/requirements/form">需求创建添加</a></li>
 		</shiro:hasPermission>
 	</ul>
 	<form:form id="searchForm" modelAttribute="requirements"
-		action="${ctx}/requirement/requirements/" method="post"
+		action="${ctx}/requirement/requirements/allocations" method="post"
 		class="breadcrumb form-search">
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}" />
 		<input id="pageSize" name="pageSize" type="hidden"
@@ -104,13 +104,9 @@
 					<td>${requirements.proposer}</td>
 					<td><fmt:formatDate value="${requirements.createDate}"
 							pattern="yyyy-MM-dd HH:mm:ss" /></td>
-					<shiro:hasPermission name="requirement:requirements:edit">
-						<td><a
-							href="${ctx}/requirement/requirements/form?id=${requirements.id}">修改</a>
-							<a
-							href="${ctx}/requirement/requirements/delete?id=${requirements.id}"
-							onclick="return confirmx('确认要删除该需求创建吗？', this.href)">删除</a></td>
-					</shiro:hasPermission>
+					<td><a
+						href="${ctx}/requirement/requirements/form?id=${requirements.id}">分配</a>
+					</td>
 				</tr>
 			</c:forEach>
 		</tbody>
