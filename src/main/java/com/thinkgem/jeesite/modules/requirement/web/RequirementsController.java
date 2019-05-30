@@ -53,7 +53,7 @@ public class RequirementsController extends BaseController {
 		model.addAttribute("page", page);
 		return "modules/requirement/requirementsList";
 	}
-	
+
 	@RequestMapping(value = "allocations")
 	public String allocations(Requirements requirements, HttpServletRequest request, HttpServletResponse response,
 			Model model) {
@@ -73,10 +73,29 @@ public class RequirementsController extends BaseController {
 		model.addAttribute("requirements", requirements);
 		return "modules/requirement/requirementsExamine";
 	}
-	
+
+	@RequestMapping(value = "waitAllocation")
+	public String waitAllocation(Requirements requirements, Model model) {
+		model.addAttribute("requirements", requirements);
+		return "modules/requirement/requirementswaitAllocation";
+	}
+
 	@RequestMapping(value = "allocation")
 	public String allocation(Requirements requirements, Model model) {
 		return "modules/requirement/requirementsAllocation";
+	}
+
+	@RequestMapping(value = "examines")
+	public String examines(Requirements requirements, HttpServletRequest request, HttpServletResponse response,
+			Model model) {
+
+		if (requirements.getRequirementSource() != null && (!"".equals(requirements.getRequirementSource())
+				|| !"".equals(requirements.getRequirementClassify()))) {
+			Page<Requirements> page = requirementsService.findPage(new Page<Requirements>(request, response),
+					requirements);
+			model.addAttribute("page", page);
+		}
+		return "modules/requirement/requirementsExamines";
 	}
 
 	@RequestMapping(value = "save")

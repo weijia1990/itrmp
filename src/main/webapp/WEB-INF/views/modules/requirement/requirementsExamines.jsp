@@ -2,7 +2,7 @@
 <%@ include file="/WEB-INF/views/include/taglib.jsp"%>
 <html>
 <head>
-<title>需求分配管理</title>
+<title>需求审核列表</title>
 <meta name="decorator" content="default" />
 <script type="text/javascript">
 	$(document).ready(function() {});
@@ -16,10 +16,11 @@
 </head>
 <body>
 	<ul class="nav nav-tabs">
-		<li class="active"><a href="${ctx}/requirement/requirements/">需求分配查询列表</a></li>
+		<li class="active"><a
+			href="${ctx}/requirement/requirements/examines">需求审核查询列表</a></li>
 	</ul>
 	<form:form id="searchForm" modelAttribute="requirements"
-		action="${ctx}/requirement/requirements/allocations" method="post"
+		action="${ctx}/requirement/requirements/examines" method="post"
 		class="breadcrumb form-search">
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}" />
 		<input id="pageSize" name="pageSize" type="hidden"
@@ -37,31 +38,6 @@
 					<form:options items="${fns:getDictList('requirement_classify')}"
 						itemLabel="label" itemValue="value" htmlEscape="false" />
 				</form:select></li>
-			<li><label>业务系统：</label> <form:select path="businessSystem"
-					class="input-medium">
-					<form:option value="" label="" />
-					<form:options items="${fns:getDictList('business_system')}"
-						itemLabel="label" itemValue="value" htmlEscape="false" />
-				</form:select></li>
-			<li><label>需求紧急程度：</label> <form:select
-					path="requirementEmergency" class="input-medium">
-					<form:option value="" label="" />
-					<form:options items="${fns:getDictList('requirement_emergency')}"
-						itemLabel="label" itemValue="value" htmlEscape="false" />
-				</form:select></li>
-			<li><label>期望上线时间：</label> <input name="expectOnline"
-				type="text" readonly="readonly" maxlength="20"
-				class="input-medium Wdate"
-				value="<fmt:formatDate value="${requirements.expectOnline}" pattern="yyyy-MM-dd HH:mm:ss"/>"
-				onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',isShowClear:false});" />
-			</li>
-			<li><label>申请人：</label> <form:input path="proposer"
-					htmlEscape="false" maxlength="50" class="input-medium" /></li>
-			<li><label>创建时间：</label> <input name="createDate" type="text"
-				readonly="readonly" maxlength="20" class="input-medium Wdate"
-				value="<fmt:formatDate value="${requirements.createDate}" pattern="yyyy-MM-dd HH:mm:ss"/>"
-				onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',isShowClear:false});" />
-			</li>
 			<li class="btns"><input id="btnSubmit" class="btn btn-primary"
 				type="submit" value="查询" /></li>
 			<li class="clearfix"></li>
@@ -87,9 +63,7 @@
 		<tbody>
 			<c:forEach items="${page.list}" var="requirements">
 				<tr>
-					<td><a
-						href="${ctx}/requirement/requirements/form?id=${requirements.id}">
-							${requirements.id} </a></td>
+					<td>${requirements.id}</td>
 					<td>${fns:getDictLabel(requirements.requirementSource, 'requirement', '')}
 					</td>
 					<td>${fns:getDictLabel(requirements.requirementClassify, '', '')}
@@ -100,9 +74,11 @@
 					<td>${requirements.proposer}</td>
 					<td><fmt:formatDate value="${requirements.createDate}"
 							pattern="yyyy-MM-dd HH:mm:ss" /></td>
-					<td><a
-						href="${ctx}/requirement/requirements/waitAllocation?id=${requirements.id}">分配</a>
-					</td>
+					<shiro:hasPermission name="requirement:requirements:edit">
+						<td><a
+							href="${ctx}/requirement/requirements/examine?id=${requirements.id}">审核</a>
+						</td>
+					</shiro:hasPermission>
 				</tr>
 			</c:forEach>
 		</tbody>

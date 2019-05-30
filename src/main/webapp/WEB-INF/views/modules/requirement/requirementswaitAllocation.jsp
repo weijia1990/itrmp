@@ -2,7 +2,7 @@
 <%@ include file="/WEB-INF/views/include/taglib.jsp"%>
 <html>
 <head>
-<title>需求审核管理</title>
+<title>需求任务待分配管理</title>
 <meta name="decorator" content="default" />
 <script type="text/javascript">
 	$(document).ready(function() {
@@ -60,9 +60,9 @@
 </head>
 <body>
 	<ul class="nav nav-tabs">
-		<li><a href="${ctx}/requirement/requirements/examines">需求审核查询列表</a></li>
+		<li><a href="${ctx}/requirement/requirements/examines">需求分配查询列表</a></li>
 		<li class="active"><a
-			href="${ctx}/requirement/requirements/form?id=${requirements.id}">需求审核</a></li>
+			href="${ctx}/requirement/requirements/form?id=${requirements.id}">需求分配</a></li>
 	</ul>
 	<br />
 	<form:form id="inputForm" modelAttribute="requirements"
@@ -309,7 +309,7 @@
 		<div class="form-actions">
 			<shiro:hasPermission name="requirement:requirements:edit">
 				<input id="btnSubmit" class="btn btn-primary" type="submit"
-					value="审 核" />&nbsp;</shiro:hasPermission>
+					value="分 配" />&nbsp;</shiro:hasPermission>
 			<input id="btnCancel" class="btn" type="button" value="返 回"
 				onclick="history.go(-1)" />
 		</div>

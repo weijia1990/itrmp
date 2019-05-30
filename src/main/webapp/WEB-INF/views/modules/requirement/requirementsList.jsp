@@ -2,7 +2,7 @@
 <%@ include file="/WEB-INF/views/include/taglib.jsp"%>
 <html>
 <head>
-<title>需求创建管理</title>
+<title>需求列表管理</title>
 <meta name="decorator" content="default" />
 <script type="text/javascript">
 	$(document).ready(function() {});
@@ -16,9 +16,9 @@
 </head>
 <body>
 	<ul class="nav nav-tabs">
-		<li class="active"><a href="${ctx}/requirement/requirements/">需求创建列表</a></li>
+		<li class="active"><a href="${ctx}/requirement/requirements/">需求列表</a></li>
 		<shiro:hasPermission name="requirement:requirements:edit">
-			<li><a href="${ctx}/requirement/requirements/form">需求创建添加</a></li>
+			<li><a href="${ctx}/requirement/requirements/form">需求创建</a></li>
 		</shiro:hasPermission>
 	</ul>
 	<form:form id="searchForm" modelAttribute="requirements"
@@ -65,7 +65,6 @@
 				value="<fmt:formatDate value="${requirements.createDate}" pattern="yyyy-MM-dd HH:mm:ss"/>"
 				onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',isShowClear:false});" />
 			</li>
-			<div></div>
 			<li class="btns"><input id="btnSubmit" class="btn btn-primary"
 				type="submit" value="查询" /></li>
 			<li class="clearfix"></li>
