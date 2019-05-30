@@ -40,6 +40,7 @@
 				}
 			}
 		});
+		$("#addNew").hide();
 	}
 	function delRow(obj, prefix) {
 		var id = $(prefix + "_id");
@@ -55,6 +56,7 @@
 			$(obj).html("&times;").attr("title", "删除");
 			$(obj).parent().parent().removeClass("error");
 		}
+		$("#addNew").show();
 	}
 </script>
 </head>
@@ -271,15 +273,13 @@
 					</thead>
 					<tbody id="problemList">
 					</tbody>
-					<shiro:hasPermission name="requirement:requirements:edit">
-						<tfoot>
+						<tfoot id = "addNew">
 							<tr>
 								<td colspan="6"><a href="javascript:"
 									onclick="addRow('#problemList', problemRowIdx, problemTpl);problemRowIdx = problemRowIdx + 1;"
 									class="btn">新增</a></td>
 							</tr>
 						</tfoot>
-					</shiro:hasPermission>
 				</table>
 				<script type="text/template" id="problemTpl">//<!--
 						<tr id="problemList{{idx}}">

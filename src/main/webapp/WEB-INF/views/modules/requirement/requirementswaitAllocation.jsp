@@ -66,7 +66,7 @@
 	</ul>
 	<br />
 	<form:form id="inputForm" modelAttribute="requirements"
-		action="${ctx}/requirement/requirements/save" method="post"
+		action="${ctx}/allocation/taskAllocation/save" method="post"
 		class="form-horizontal">
 		<form:hidden path="id" />
 		<sys:message content="${message}" />
@@ -289,13 +289,48 @@
 							<td>
 								<input id="problemList{{idx}}_problemNo" name="problemList[{{idx}}].problemNo" type="text" value="{{row.problemNo}}" maxlength="20" class="input-small "  disabled="true"/>
 							</td>
-							<shiro:hasPermission name="requirement:requirements:edit"><td class="text-center" width="10">
-								{{#delBtn}}<span class="close" onclick="delRow(this, '#problemList{{idx}}')" title="删除">&times;</span>{{/delBtn}}
-							</td></shiro:hasPermission>
+						</tr>//-->
+					</script>
+			</div>
+		</div>
+
+		<div class="control-group">
+			<label class="control-label"><b>任务分配信息：</b></label>
+			<div class="controls">
+				<table id="contentTable"
+					class="table table-striped table-bordered table-condensed">
+					<thead>
+						<tr>
+							<th class="hide"></th>
+							<th>需求负责人</th>
+							<th>预计完成时间</th>
+							<shiro:hasPermission name="requirement:requirements:edit">
+								<th width="10">&nbsp;</th>
+							</shiro:hasPermission>
+						</tr>
+					</thead>
+					<tbody id="allocationList">
+					</tbody>
+				</table>
+				<script type="text/template" id="allocationTpl">//<!--
+						<tr id="allocationList{{idx}}">
+							<td class="hide">
+								<input id="allocationList{{idx}}_id" name="allocationList.id" type="hidden" value="{{row.id}}"/>
+								<input id="allocationList{{idx}}_delFlag" name="allocationList.delFlag" type="hidden" value="0"/>
+							</td>
+							<td>
+								<input id="allocationList{{idx}}_requirementResponsePerson" name="allocationList.requirementResponsePerson" type="text" value="{{row.requirementResponsePerson}}" maxlength="1000" class="input-small required"  />
+								<span class="help-inline"><font color="red">*</font> </span>
+							</td>
+							<td>
+								<input id="allocationList{{idx}}_expectFinsh" name="allocationList.expectFinsh" type="text" value="<fmt:formatDate value="${row.expectFinsh}" pattern="yyyy-MM-dd HH:mm:ss"/>"
+					onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',isShowClear:false});"  maxlength="20" class="input-small required"/>	<span class="help-inline"><font color="red">*</font> </span></td>
 						</tr>//-->
 					</script>
 				<script type="text/javascript">
 						var problemRowIdx = 0, problemTpl = $("#problemTpl").html().replace(/(\/\/\<!\-\-)|(\/\/\-\->)/g,"");
+						var allocationRowIdx = 0, allocationTpl = $("#allocationTpl").html().replace(/(\/\/\<!\-\-)|(\/\/\-\->)/g,"");
+						addRow('#allocationList', allocationRowIdx, allocationTpl);allocationRowIdx = allocationRowIdx + 1;
 						$(document).ready(function() {
 							var data = ${fns:toJson(requirements.problemList)};
 							for (var i=0; i<data.length; i++){
@@ -307,11 +342,9 @@
 			</div>
 		</div>
 		<div class="form-actions">
-			<shiro:hasPermission name="requirement:requirements:edit">
-				<input id="btnSubmit" class="btn btn-primary" type="submit"
-					value="分 配" />&nbsp;</shiro:hasPermission>
-			<input id="btnCancel" class="btn" type="button" value="返 回"
-				onclick="history.go(-1)" />
+			<input id="btnSubmit" class="btn btn-primary" type="submit"
+				value="保 存" />&nbsp; <input id="btnCancel" class="btn"
+				type="button" value="返 回" onclick="history.go(-1)" />
 		</div>
 	</form:form>
 </body>
