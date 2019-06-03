@@ -1,9 +1,7 @@
 /**
  * Copyright &copy; 2012-2016 <a href="https://github.com/thinkgem/jeesite">JeeSite</a> All rights reserved.
  */
-package com.thinkgem.jeesite.modules.requirementchild.web;
-
-import java.util.List;
+package com.thinkgem.jeesite.modules.requirementchildpro.web;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -20,28 +18,22 @@ import com.thinkgem.jeesite.common.config.Global;
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.common.web.BaseController;
-import com.thinkgem.jeesite.modules.allocation.service.TaskAllocationService;
 import com.thinkgem.jeesite.modules.requirement.entity.Requirements;
-import com.thinkgem.jeesite.modules.requirement.service.RequirementsService;
 import com.thinkgem.jeesite.modules.requirementchild.entity.RequirementChild;
-import com.thinkgem.jeesite.modules.requirementchild.service.RequirementChildService;
+import com.thinkgem.jeesite.modules.requirementchildpro.service.RequirementChildProService;
 
 /**
- * 子需求管理Controller
+ * 子需求进度管理Controller
  * 
  * @author weijia
- * @version 2019-06-02
+ * @version 2019-06-03
  */
 @Controller
-@RequestMapping(value = "${adminPath}/requirementchild/requirementChild")
-public class RequirementChildController extends BaseController {
+@RequestMapping(value = "${adminPath}/requirementchildpro/requirementChild")
+public class RequirementChildProController extends BaseController {
 
 	@Autowired
-	private RequirementChildService requirementChildService;
-	@Autowired
-	private TaskAllocationService taskAllocationService;
-	@Autowired
-	private RequirementsService requirementsService;
+	private RequirementChildProService requirementChildService;
 
 	@ModelAttribute
 	public RequirementChild get(@RequestParam(required = false) String id) {
@@ -60,46 +52,31 @@ public class RequirementChildController extends BaseController {
 			Model model) {
 		Page<RequirementChild> page = requirementChildService.findPage(new Page<RequirementChild>(request, response),
 				requirementChild);
-		model.addAttribute("page", page);
-		return "modules/requirementchild/requirementChildList";
+		model.addAttribute("requirements", new Requirements());
+		return "modules/requirementchildpro/requirementChildProList";
 	}
 
 	@RequestMapping(value = "form")
-	public String form(RequirementChild requirementChild, HttpServletRequest request, Model model) {
-		String requirementId = request.getParameter("requirementId");
-		requirementChild.setRequirements(requirementId);
+	public String form(RequirementChild requirementChild, Model model) {
 		model.addAttribute("requirementChild", requirementChild);
-		return "modules/requirementchild/requirementChildForm";
-	}
-
-	@RequestMapping(value = "main")
-	public String main(RequirementChild requirementChild, HttpServletRequest request, Model model) {
-		String requirementId = request.getParameter("requirementId");
-		Requirements requirements = requirementsService.get(requirementId);
-		List<RequirementChild> requirementChilds = requirementChildService.getAllByRequirementId(requirementId);
-		requirements.setRequirementChildList(requirementChilds);
-		model.addAttribute("requirements", requirements);
-		return "modules/requirementchild/requirementMain";
+		return "modules/requirementchildpro/requirementChildProForm";
 	}
 
 	@RequestMapping(value = "save")
 	public String save(RequirementChild requirementChild, Model model, RedirectAttributes redirectAttributes) {
 		if (!beanValidator(model, requirementChild)) {
-			return form(requirementChild, null, model);
+			return form(requirementChild, model);
 		}
-		Requirements requirements = taskAllocationService.changeAllocationStatus(requirementChild.getRequirements(),
-				"2");
-		requirementsService.update(requirements);
 		requirementChildService.save(requirementChild);
-		addMessage(redirectAttributes, "保存子需求管理成功");
-		return "redirect:" + Global.getAdminPath() + "/requirement/requirements/requirementChild";
+		addMessage(redirectAttributes, "保存子需求进度管理成功");
+		return "redirect:" + Global.getAdminPath() + "/requirementchildpro/requirementChild/?repage";
 	}
 
 	@RequestMapping(value = "delete")
 	public String delete(RequirementChild requirementChild, RedirectAttributes redirectAttributes) {
 		requirementChildService.delete(requirementChild);
-		addMessage(redirectAttributes, "删除子需求管理成功");
-		return "redirect:" + Global.getAdminPath() + "/requirementchild/requirementChild/?repage";
+		addMessage(redirectAttributes, "删除子需求进度管理成功");
+		return "redirect:" + Global.getAdminPath() + "/requirementchildpro/requirementChild/?repage";
 	}
 
 }

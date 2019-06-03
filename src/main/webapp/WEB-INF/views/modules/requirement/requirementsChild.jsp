@@ -5,7 +5,14 @@
 <title>需求分配管理</title>
 <meta name="decorator" content="default" />
 <script type="text/javascript">
-	$(document).ready(function() {});
+	$(document).ready(function() {
+		$("#btnSubmit").click(function() {
+			if ($(".select2-chosen").eq(4).html() == "") {
+				alert("请选择需求拆分状态！");
+				return false;
+			}
+		});
+	});
 	function page(n, s) {
 		$("#pageNo").val(n);
 		$("#pageSize").val(s);
@@ -104,8 +111,11 @@
 					<td>${requirements.proposer}</td>
 					<td><fmt:formatDate value="${requirements.createDate}"
 							pattern="yyyy-MM-dd HH:mm:ss" /></td>
-					<td><a
-						href="${ctx}/requirementchild/requirementChild/form?requirementId=${requirements.id}">需求拆分</a>
+					<td><c:if test="${requirements.isAllocation ==2}">
+							<a
+								href="${ctx}/requirementchild/requirementChild/main?requirementId=${requirements.id}">查看</a>
+						</c:if> <a
+						href="${ctx}/requirementchild/requirementChild/form?requirementId=${requirements.id}">拆分</a>
 					</td>
 				</tr>
 			</c:forEach>

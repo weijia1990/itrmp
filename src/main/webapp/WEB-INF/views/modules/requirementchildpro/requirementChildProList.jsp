@@ -2,7 +2,7 @@
 <%@ include file="/WEB-INF/views/include/taglib.jsp"%>
 <html>
 <head>
-<title>需求列表管理</title>
+<title>需求分析管理</title>
 <meta name="decorator" content="default" />
 <script type="text/javascript">
 	$(document).ready(function() {});
@@ -75,41 +75,29 @@
 		class="table table-striped table-bordered table-condensed">
 		<thead>
 			<tr>
-				<th>id</th>
+				<th>需求编号</th>
+				<th>子需求编号</th>
 				<th>需求来源</th>
-				<th>需求分类</th>
+				<th>项目归属</th>
 				<th>业务系统</th>
 				<th>期望上线时间</th>
-				<th>申请人</th>
+				<th>预计完成时间</th>
 				<th>创建时间</th>
-				<shiro:hasPermission name="requirement:requirements:edit">
-					<th>操作</th>
-				</shiro:hasPermission>
+				<th>申请人</th>
 			</tr>
 		</thead>
 		<tbody>
 			<c:forEach items="${page.list}" var="requirements">
 				<tr>
+					<td>${requirements.id}</td>
+					<td>${requirements.childId}</td>
+					<td>${requirements.requirementSource}</td>
+					<td>${requirements.itemBelonds}</td>
 					<td><a
-						href="${ctx}/requirement/requirements/form?id=${requirements.id}">
-							${requirements.id} </a></td>
-					<td>${fns:getDictLabel(requirements.requirementSource, 'requirement_source', '')}
-					</td>
-					<td>${fns:getDictLabel(requirements.requirementClassify, 'requirement_classify', '')}
-					</td>
-					<td>${fns:getDictLabel(requirements.businessSystem, 'business_system', '')}</td>
-					<td><fmt:formatDate value="${requirements.expectOnline}"
-							pattern="yyyy-MM-dd HH:mm:ss" /></td>
-					<td>${requirements.proposer}</td>
-					<td><fmt:formatDate value="${requirements.createDate}"
-							pattern="yyyy-MM-dd HH:mm:ss" /></td>
-					<shiro:hasPermission name="requirement:requirements:edit">
-						<td><a
-							href="${ctx}/requirement/requirements/form?id=${requirements.id}">修改</a>
-							<a
-							href="${ctx}/requirement/requirements/delete?id=${requirements.id}"
-							onclick="return confirmx('确认要删除该需求创建吗？', this.href)">删除</a></td>
-					</shiro:hasPermission>
+						href="${ctx}/requirementchildpro/requirementChild/form?id=${requirementChild.id}">修改</a>
+						<a
+						href="${ctx}/requirementchildpro/requirementChild/delete?id=${requirementChild.id}"
+						onclick="return confirmx('确认要删除该子需求进度管理吗？', this.href)">删除</a></td>
 				</tr>
 			</c:forEach>
 		</tbody>

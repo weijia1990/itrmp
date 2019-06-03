@@ -10,6 +10,7 @@ import java.util.List;
 import com.google.common.collect.Lists;
 
 import com.thinkgem.jeesite.common.persistence.DataEntity;
+import com.thinkgem.jeesite.modules.requirementchild.entity.RequirementChild;
 
 /**
  * 需求管理Entity
@@ -45,7 +46,8 @@ public class Requirements extends DataEntity<Requirements> {
 	private String comments; // 备注
 	private String lastUpdate; // 最后更新者
 	private Date latUpdateTime; // 最后更新时间
-	private List<Problem> problemList = Lists.newArrayList(); // 子表列表
+	private List<Problem> problemList = Lists.newArrayList(); // 问题单子表列表
+	private List<RequirementChild> requirementChildList = Lists.newArrayList(); // 子需求子表列表
 
 	public Requirements() {
 		super();
@@ -286,5 +288,13 @@ public class Requirements extends DataEntity<Requirements> {
 
 	public void setProblemList(List<Problem> problemList) {
 		this.problemList = problemList;
+	}
+
+	public List<RequirementChild> getRequirementChildList() {
+		return requirementChildList;
+	}
+
+	public void setRequirementChildList(List<RequirementChild> requirementChildList) {
+		this.requirementChildList = requirementChildList;
 	}
 }

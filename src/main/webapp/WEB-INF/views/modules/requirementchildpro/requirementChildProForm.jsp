@@ -2,7 +2,7 @@
 <%@ include file="/WEB-INF/views/include/taglib.jsp"%>
 <html>
 <head>
-<title>子需求创建</title>
+<title>子需求进度管理管理</title>
 <meta name="decorator" content="default" />
 <script type="text/javascript">
 	$(document).ready(function() {
@@ -40,7 +40,6 @@
 				}
 			}
 		});
-		$("#addNew").hide();
 	}
 	function delRow(obj, prefix) {
 		var id = $(prefix + "_id");
@@ -56,22 +55,27 @@
 			$(obj).html("&times;").attr("title", "删除");
 			$(obj).parent().parent().removeClass("error");
 		}
-		$("#addNew").show();
 	}
 </script>
 </head>
 <body>
 	<ul class="nav nav-tabs">
 		<li class="active"><a
-			href="${ctx}/requirementchild/requirementChild/form?id=${requirementChild.id}">子需求创建</a></li>
+			href="${ctx}/requirementchildpro/requirementChild/form?id=${requirementChild.id}">子需求基本信息</a></li>
 	</ul>
 	<br />
 	<form:form id="inputForm" modelAttribute="requirementChild"
-		action="${ctx}/requirementchild/requirementChild/save" method="post"
-		class="form-horizontal">
+		action="${ctx}/requirementchildpro/requirementChild/save"
+		method="post" class="form-horizontal">
 		<form:hidden path="id" />
-		<form:hidden path="requirements" />
 		<sys:message content="${message}" />
+		<div class="control-group">
+			<label class="control-label">需求编号：</label>
+			<div class="controls">
+				<form:input path="requirements" htmlEscape="false" maxlength="32"
+					class="input-xlarge " />
+			</div>
+		</div>
 		<div class="control-group">
 			<label class="control-label">子需求标题：</label>
 			<div class="controls">
@@ -94,8 +98,8 @@
 			<div class="controls">
 				<form:select path="businessSystem" class="input-xlarge ">
 					<form:option value="" label="" />
-					<form:options items="${fns:getDictList('business_system')}"
-						itemLabel="label" itemValue="value" htmlEscape="false" />
+					<form:options items="${fns:getDictList('')}" itemLabel="label"
+						itemValue="value" htmlEscape="false" />
 				</form:select>
 			</div>
 		</div>
@@ -104,8 +108,8 @@
 			<div class="controls">
 				<form:select path="requirementEmergency" class="input-xlarge ">
 					<form:option value="" label="" />
-					<form:options items="${fns:getDictList('requirement_emergency')}"
-						itemLabel="label" itemValue="value" htmlEscape="false" />
+					<form:options items="${fns:getDictList('')}" itemLabel="label"
+						itemValue="value" htmlEscape="false" />
 				</form:select>
 			</div>
 		</div>
@@ -182,6 +186,14 @@
 			</div>
 		</div>
 		<div class="control-group">
+			<label class="control-label">remarks：</label>
+			<div class="controls">
+				<form:textarea path="remarks" htmlEscape="false" rows="4"
+					maxlength="255" class="input-xxlarge required" />
+				<span class="help-inline"><font color="red">*</font> </span>
+			</div>
+		</div>
+		<div class="control-group">
 			<label class="control-label">问题单表：</label>
 			<div class="controls">
 				<table id="contentTable"
@@ -191,18 +203,10 @@
 							<th class="hide"></th>
 							<th>问题描述</th>
 							<th>问题单编号</th>
-							<th width="10">&nbsp;</th>
 						</tr>
 					</thead>
 					<tbody id="problemList">
 					</tbody>
-					<tfoot id="addNew">
-						<tr>
-							<td colspan="6"><a href="javascript:"
-								onclick="addRow('#problemList', problemRowIdx, problemTpl);problemRowIdx = problemRowIdx + 1;"
-								class="btn">新增</a></td>
-						</tr>
-					</tfoot>
 				</table>
 				<script type="text/template" id="problemTpl">//<!--
 						<tr id="problemList{{idx}}">
@@ -216,9 +220,6 @@
 							<td>
 								<input id="problemList{{idx}}_problemNo" name="problemList[{{idx}}].problemNo" type="text" value="{{row.problemNo}}" maxlength="20" class="input-small "/>
 							</td>
-							<td class="text-center" width="10">
-								{{#delBtn}}<span class="close" onclick="delRow(this, '#problemList{{idx}}')" title="删除">&times;</span>{{/delBtn}}
-							</td>
 						</tr>//-->
 					</script>
 				<script type="text/javascript">
@@ -228,6 +229,67 @@
 							for (var i=0; i<data.length; i++){
 								addRow('#problemList', problemRowIdx, problemTpl, data[i]);
 								problemRowIdx = problemRowIdx + 1;
+							}
+						});
+					</script>
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label">子需求进度表：</label>
+			<div class="controls">
+				<table id="contentTable"
+					class="table table-striped table-bordered table-condensed">
+					<thead>
+						<tr>
+							<th class="hide"></th>
+							<th>子需求进度</th>
+							<th>需求文档查看</th>
+							<th>子需求进度追踪</th>
+							<th>remarks</th>
+							<th width="10">&nbsp;</th>
+						</tr>
+					</thead>
+					<tbody id="requirementproChildList">
+					</tbody>
+					<tfoot>
+						<tr>
+							<td colspan="6"><a href="javascript:"
+								onclick="addRow('#requirementproChildList', requirementproChildRowIdx, requirementproChildTpl);requirementproChildRowIdx = requirementproChildRowIdx + 1;"
+								class="btn">新增</a></td>
+						</tr>
+					</tfoot>
+				</table>
+				<script type="text/template" id="requirementproChildTpl">//<!--
+						<tr id="requirementproChildList{{idx}}">
+							<td class="hide">
+								<input id="requirementproChildList{{idx}}_id" name="requirementproChildList[{{idx}}].id" type="hidden" value="{{row.id}}"/>
+								<input id="requirementproChildList{{idx}}_delFlag" name="requirementproChildList[{{idx}}].delFlag" type="hidden" value="0"/>
+							</td>
+							<td>
+								<input id="requirementproChildList{{idx}}_requirementproChildTitle" name="requirementproChildList[{{idx}}].requirementproChildTitle" type="text" value="{{row.requirementproChildTitle}}" maxlength="50" class="input-small "/>
+							</td>
+							<td>
+								<input id="requirementproChildList{{idx}}_requirementpFile" name="requirementproChildList[{{idx}}].requirementpFile" type="hidden" value="{{row.requirementpFile}}" maxlength="50"/>
+								<sys:ckfinder input="requirementproChildList{{idx}}_requirementpFile" type="files" uploadPath="/requirementchildpro/requirementChild" selectMultiple="true"/>
+							</td>
+							<td>
+								<input id="requirementproChildList{{idx}}_requirementproChildTrack" name="requirementproChildList[{{idx}}].requirementproChildTrack" type="text" value="{{row.requirementproChildTrack}}" maxlength="50" class="input-small "/>
+							</td>
+							<td>
+								<textarea id="requirementproChildList{{idx}}_remarks" name="requirementproChildList[{{idx}}].remarks" rows="4" maxlength="255" class="input-small ">{{row.remarks}}</textarea>
+							</td>
+						<td class="text-center" width="10">
+								{{#delBtn}}<span class="close" onclick="delRow(this, '#requirementproChildList{{idx}}')" title="删除">&times;</span>{{/delBtn}}
+							</td>
+						</tr>//-->
+					</script>
+				<script type="text/javascript">
+						var requirementproChildRowIdx = 0, requirementproChildTpl = $("#requirementproChildTpl").html().replace(/(\/\/\<!\-\-)|(\/\/\-\->)/g,"");
+						$(document).ready(function() {
+							var data = ${fns:toJson(requirementChild.requirementproChildList)};
+							for (var i=0; i<data.length; i++){
+								addRow('#requirementproChildList', requirementproChildRowIdx, requirementproChildTpl, data[i]);
+								requirementproChildRowIdx = requirementproChildRowIdx + 1;
 							}
 						});
 					</script>

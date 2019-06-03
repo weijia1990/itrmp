@@ -48,17 +48,11 @@ public class TaskAllocationController extends BaseController {
 		Date expectFinsh = DateUtils.parseDate(request.getParameter("allocationList.expectFinsh"));
 
 		TaskAllocation taskAllocation = createTaskAllocation(requirementsId, requirementResponsePerson, expectFinsh);
-		Requirements requirements = changeAllocationStatus(requirementsId);
+		Requirements requirements = taskAllocationService.changeAllocationStatus(requirementsId, "1");
 
 		taskAllocationService.save(taskAllocation);
 		requirementsService.update(requirements);
 		return "modules/requirement/requirementsAllocation";
-	}
-
-	private Requirements changeAllocationStatus(String requirementsId) {
-		Requirements requirements = new Requirements(requirementsId);
-		requirements.setIsAllocation("1");
-		return requirements;
 	}
 
 	private TaskAllocation createTaskAllocation(String requirementsId, String requirementResponsePerson,
