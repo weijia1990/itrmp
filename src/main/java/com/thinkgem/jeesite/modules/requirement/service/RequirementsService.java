@@ -19,6 +19,7 @@ import com.thinkgem.jeesite.modules.requirement.dao.ProblemDao;
 
 /**
  * 需求管理Service
+ * 
  * @author weijia
  * @version 2019-05-28
  */
@@ -28,47 +29,51 @@ public class RequirementsService extends CrudService<RequirementsDao, Requiremen
 
 	@Autowired
 	private ProblemDao problemDao;
-	
+
 	public Requirements get(String id) {
 		Requirements requirements = super.get(id);
 		requirements.setProblemList(problemDao.findList(new Problem(requirements)));
 		return requirements;
 	}
-	
+
 	public List<Requirements> findList(Requirements requirements) {
 		return super.findList(requirements);
 	}
-	
+
 	public Page<Requirements> findPage(Page<Requirements> page, Requirements requirements) {
 		return super.findPage(page, requirements);
 	}
-	
+
 	@Transactional(readOnly = false)
 	public void save(Requirements requirements) {
 		super.save(requirements);
-		for (Problem problem : requirements.getProblemList()){
-			if (problem.getId() == null){
+		for (Problem problem : requirements.getProblemList()) {
+			if (problem.getId() == null) {
 				continue;
 			}
-			if (Problem.DEL_FLAG_NORMAL.equals(problem.getDelFlag())){
-				if (StringUtils.isBlank(problem.getId())){
+			if (Problem.DEL_FLAG_NORMAL.equals(problem.getDelFlag())) {
+				if (StringUtils.isBlank(problem.getId())) {
 					problem.setRequirements(requirements);
 					problem.preInsert();
 					problemDao.insert(problem);
-				}else{
+				} else {
 					problem.preUpdate();
 					problemDao.update(problem);
 				}
-			}else{
+			} else {
 				problemDao.delete(problem);
 			}
 		}
 	}
-	
+
 	@Transactional(readOnly = false)
 	public void delete(Requirements requirements) {
 		super.delete(requirements);
 		problemDao.delete(new Problem(requirements));
 	}
-	
+
+	public void update(Requirements requirements) {
+		dao.update(requirements);
+	}
+
 }

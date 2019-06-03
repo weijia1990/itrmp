@@ -324,7 +324,7 @@
 							</td>
 							<td>
 								<input id="allocationList{{idx}}_expectFinsh" name="allocationList.expectFinsh" type="text" value="<fmt:formatDate value="${row.expectFinsh}" pattern="yyyy-MM-dd HH:mm:ss"/>"
-					onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',isShowClear:false});"  maxlength="20" class="input-small required"/>	<span class="help-inline"><font color="red">*</font> </span></td>
+					onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',isShowClear:false});"  maxlength="20" class="Wdate required"/>	<span class="help-inline"><font color="red">*</font> </span></td>
 						</tr>//-->
 					</script>
 				<script type="text/javascript">

@@ -10,17 +10,16 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.thinkgem.jeesite.common.utils.DateUtils;
-import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.modules.allocation.entity.TaskAllocation;
 import com.thinkgem.jeesite.modules.allocation.service.TaskAllocationService;
 import com.thinkgem.jeesite.modules.requirement.entity.Requirements;
+import com.thinkgem.jeesite.modules.requirement.service.RequirementsService;
 
 /**
  * 需求分配Controller
@@ -34,6 +33,8 @@ public class TaskAllocationController extends BaseController {
 
 	@Autowired
 	private TaskAllocationService taskAllocationService;
+	@Autowired
+	private RequirementsService requirementsService;
 
 	@ModelAttribute
 	public Requirements get(@RequestParam(required = false) String id) {
@@ -45,12 +46,27 @@ public class TaskAllocationController extends BaseController {
 		String requirementsId = request.getParameter("id");
 		String requirementResponsePerson = request.getParameter("allocationList.requirementResponsePerson");
 		Date expectFinsh = DateUtils.parseDate(request.getParameter("allocationList.expectFinsh"));
+
+		TaskAllocation taskAllocation = createTaskAllocation(requirementsId, requirementResponsePerson, expectFinsh);
+		Requirements requirements = changeAllocationStatus(requirementsId);
+
+		taskAllocationService.save(taskAllocation);
+		requirementsService.update(requirements);
+		return "modules/requirement/requirementsAllocation";
+	}
+
+	private Requirements changeAllocationStatus(String requirementsId) {
+		Requirements requirements = new Requirements(requirementsId);
+		requirements.setIsAllocation("1");
+		return requirements;
+	}
+
+	private TaskAllocation createTaskAllocation(String requirementsId, String requirementResponsePerson,
+			Date expectFinsh) {
 		TaskAllocation taskAllocation = new TaskAllocation();
 		taskAllocation.setRequirementsId(requirementsId);
 		taskAllocation.setRequirementResponsePerson(requirementResponsePerson);
 		taskAllocation.setExpectFinsh(expectFinsh);
-
-		taskAllocationService.save(taskAllocation);
-		return "modules/requirement/requirementsAllocation";
+		return taskAllocation;
 	}
 }

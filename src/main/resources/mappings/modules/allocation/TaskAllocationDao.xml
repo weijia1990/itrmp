@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.thinkgem.jeesite.modules.allocation.dao.TaskAllocationDao">
-    
+
 	<sql id="taskAllocationColumns">
 		a.id AS "id",
 		a.requirements_id AS "requirementsId",
@@ -12,25 +12,32 @@
 		a.update_by AS "updateBy.id",
 		a.update_date AS "updateDate",
 		a.remarks AS "remarks",
-		a.del_flag AS "delFlag"
+		a.del_flag AS
+		"delFlag"
 	</sql>
-	
+
 	<sql id="taskAllocationJoins">
 	</sql>
-    
+
+	<select id="getAllocationByRequirements" resultType="TaskAllocation">
+		SELECT *
+		FROM task_allocation WHERE requirements_id =
+		#{requirements_id}
+	</select>
+
 	<select id="get" resultType="TaskAllocation">
-		SELECT 
-			<include refid="taskAllocationColumns"/>
+		SELECT
+		<include refid="taskAllocationColumns" />
 		FROM task_allocation a
-		<include refid="taskAllocationJoins"/>
+		<include refid="taskAllocationJoins" />
 		WHERE a.id = #{id}
 	</select>
-	
+
 	<select id="findList" resultType="TaskAllocation">
-		SELECT 
-			<include refid="taskAllocationColumns"/>
+		SELECT
+		<include refid="taskAllocationColumns" />
 		FROM task_allocation a
-		<include refid="taskAllocationJoins"/>
+		<include refid="taskAllocationJoins" />
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
 		</where>
@@ -43,15 +50,15 @@
 			</otherwise>
 		</choose>
 	</select>
-	
+
 	<select id="findAllList" resultType="TaskAllocation">
-		SELECT 
-			<include refid="taskAllocationColumns"/>
+		SELECT
+		<include refid="taskAllocationColumns" />
 		FROM task_allocation a
-		<include refid="taskAllocationJoins"/>
+		<include refid="taskAllocationJoins" />
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
-		</where>		
+		</where>
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
 				ORDER BY ${page.orderBy}
@@ -61,48 +68,53 @@
 			</otherwise>
 		</choose>
 	</select>
-	
+
 	<insert id="insert">
 		INSERT INTO task_allocation(
-			id,
-			requirements_id,
-			requirement_response_person,
-			expect_finsh,
-			create_by,
-			create_date,
-			update_by,
-			update_date,
-			remarks,
-			del_flag
+		id,
+		requirements_id,
+		requirement_response_person,
+		expect_finsh,
+		create_by,
+		create_date,
+		update_by,
+		update_date,
+		remarks,
+		del_flag
 		) VALUES (
-			#{id},
-			#{requirementsId},
-			#{requirementResponsePerson},
-			#{expectFinsh},
-			#{createBy.id},
-			#{createDate},
-			#{updateBy.id},
-			#{updateDate},
-			#{remarks},
-			#{delFlag}
+		#{id},
+		#{requirementsId},
+		#{requirementResponsePerson},
+		#{expectFinsh},
+		#{createBy.id},
+		#{createDate},
+		#{updateBy.id},
+		#{updateDate},
+		#{remarks},
+		#{delFlag}
 		)
 	</insert>
-	
+
 	<update id="update">
-		UPDATE task_allocation SET 	
-			requirements_id = #{requirementsId},
-			requirement_response_person = #{requirementResponsePerson},
-			expect_finsh = #{expectFinsh},
-			update_by = #{updateBy.id},
-			update_date = #{updateDate},
-			remarks = #{remarks}
-		WHERE id = #{id}
+		UPDATE task_allocation SET
+		requirements_id =
+		#{requirementsId},
+		requirement_response_person =
+		#{requirementResponsePerson},
+		expect_finsh = #{expectFinsh},
+		update_by =
+		#{updateBy.id},
+		update_date = #{updateDate},
+		remarks = #{remarks}
+		WHERE
+		id = #{id}
 	</update>
-	
+
 	<update id="delete">
-		UPDATE task_allocation SET 
-			del_flag = #{DEL_FLAG_DELETE}
+		UPDATE task_allocation SET
+		del_flag =
+		#{DEL_FLAG_DELETE}
 		WHERE id = #{id}
 	</update>
-	
+
 </mapper>

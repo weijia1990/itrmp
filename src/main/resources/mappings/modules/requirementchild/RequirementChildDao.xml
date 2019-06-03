@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.requirementchild.dao.RequirementChildDao">
+    
+	<sql id="requirementChildColumns">
+		a.id AS "id",
+		a.requirements_id AS "requirements",
+		a.requirement_child_title AS "requirementChildTitle",
+		a.item_belonds AS "itemBelonds",
+		a.business_system AS "businessSystem",
+		a.requirement_emergency AS "requirementEmergency",
+		a.except_finish AS "exceptFinish",
+		a.responsible_tax_person AS "responsibleTaxPerson",
+		a.related_business_requirements AS "relatedBusinessRequirements",
+		a.demand_no AS "demandNo",
+		a.target_desc AS "targetDesc",
+		a.contact AS "contact",
+		a.appendix AS "appendix",
+		a.demand_approve_person AS "demandApprovePerson",
+		a.demand_approve_phone AS "demandApprovePhone",
+		a.comments AS "comments",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="requirementChildJoins">
+	</sql>
+    
+	<select id="get" resultType="RequirementChild">
+		SELECT 
+			<include refid="requirementChildColumns"/>
+		FROM requirement_child a
+		<include refid="requirementChildJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="RequirementChild">
+		SELECT 
+			<include refid="requirementChildColumns"/>
+		FROM requirement_child a
+		<include refid="requirementChildJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="RequirementChild">
+		SELECT 
+			<include refid="requirementChildColumns"/>
+		FROM requirement_child a
+		<include refid="requirementChildJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO requirement_child(
+			id,
+			requirements_id,
+			requirement_child_title,
+			item_belonds,
+			business_system,
+			requirement_emergency,
+			except_finish,
+			responsible_tax_person,
+			related_business_requirements,
+			demand_no,
+			target_desc,
+			contact,
+			appendix,
+			demand_approve_person,
+			demand_approve_phone,
+			comments,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag
+		) VALUES (
+			#{id},
+			#{requirements},
+			#{requirementChildTitle},
+			#{itemBelonds},
+			#{businessSystem},
+			#{requirementEmergency},
+			#{exceptFinish},
+			#{responsibleTaxPerson},
+			#{relatedBusinessRequirements},
+			#{demandNo},
+			#{targetDesc},
+			#{contact},
+			#{appendix},
+			#{demandApprovePerson},
+			#{demandApprovePhone},
+			#{comments},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE requirement_child SET 	
+			requirements_id = #{requirements},
+			requirement_child_title = #{requirementChildTitle},
+			item_belonds = #{itemBelonds},
+			business_system = #{businessSystem},
+			requirement_emergency = #{requirementEmergency},
+			except_finish = #{exceptFinish},
+			responsible_tax_person = #{responsibleTaxPerson},
+			related_business_requirements = #{relatedBusinessRequirements},
+			demand_no = #{demandNo},
+			target_desc = #{targetDesc},
+			contact = #{contact},
+			appendix = #{appendix},
+			demand_approve_person = #{demandApprovePerson},
+			demand_approve_phone = #{demandApprovePhone},
+			comments = #{comments},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE requirement_child SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

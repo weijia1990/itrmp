@@ -2,7 +2,7 @@
 <%@ include file="/WEB-INF/views/include/taglib.jsp"%>
 <html>
 <head>
-<title>需求创建管理</title>
+<title>子需求管理管理</title>
 <meta name="decorator" content="default" />
 <script type="text/javascript">
 	$(document).ready(function() {
@@ -62,33 +62,33 @@
 </head>
 <body>
 	<ul class="nav nav-tabs">
-		<li><a href="${ctx}/requirement/requirements/">需求列表</a></li>
+		<li><a href="${ctx}/requirementchild/requirementChild/">子需求管理列表</a></li>
 		<li class="active"><a
-			href="${ctx}/requirement/requirements/form?id=${requirements.id}">需求创建</a></li>
+			href="${ctx}/requirementchild/requirementChild/form?id=${requirementChild.id}">子需求管理<shiro:hasPermission
+					name="requirementchild:requirementChild:edit">${not empty requirementChild.id?'修改':'添加'}</shiro:hasPermission>
+				<shiro:lacksPermission name="requirementchild:requirementChild:edit">查看</shiro:lacksPermission></a></li>
 	</ul>
 	<br />
-	<form:form id="inputForm" modelAttribute="requirements"
-		action="${ctx}/requirement/requirements/save" method="post"
+	<form:form id="inputForm" modelAttribute="requirementChild"
+		action="${ctx}/requirementchild/requirementChild/save" method="post"
 		class="form-horizontal">
 		<form:hidden path="id" />
+		<form:hidden path="requirements" value="${requirementId }" />
 		<sys:message content="${message}" />
 		<div class="control-group">
-			<label class="control-label">需求来源：</label>
+			<label class="control-label">子需求标题：</label>
 			<div class="controls">
-				<form:select path="requirementSource" class="input-xlarge ">
-					<form:option value="" label="" />
-					<form:options items="${fns:getDictList('requirement_source')}"
-						itemLabel="label" itemValue="value" htmlEscape="false" />
-				</form:select>
+				<form:input path="requirementChildTitle" htmlEscape="false"
+					maxlength="50" class="input-xlarge " />
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label">需求分类：</label>
+			<label class="control-label">项目归属：</label>
 			<div class="controls">
-				<form:select path="requirementClassify" class="input-xlarge ">
+				<form:select path="itemBelonds" class="input-xlarge ">
 					<form:option value="" label="" />
-					<form:options items="${fns:getDictList('requirement_classify')}"
-						itemLabel="label" itemValue="value" htmlEscape="false" />
+					<form:options items="${fns:getDictList('')}" itemLabel="label"
+						itemValue="value" htmlEscape="false" />
 				</form:select>
 			</div>
 		</div>
@@ -97,8 +97,8 @@
 			<div class="controls">
 				<form:select path="businessSystem" class="input-xlarge ">
 					<form:option value="" label="" />
-					<form:options items="${fns:getDictList('business_system')}"
-						itemLabel="label" itemValue="value" htmlEscape="false" />
+					<form:options items="${fns:getDictList('business_system')}" itemLabel="label"
+						itemValue="value" htmlEscape="false" />
 				</form:select>
 			</div>
 		</div>
@@ -107,32 +107,25 @@
 			<div class="controls">
 				<form:select path="requirementEmergency" class="input-xlarge ">
 					<form:option value="" label="" />
-					<form:options items="${fns:getDictList('requirement_emergency')}"
-						itemLabel="label" itemValue="value" htmlEscape="false" />
+					<form:options items="${fns:getDictList('requirement_emergency')}" itemLabel="label"
+						itemValue="value" htmlEscape="false" />
 				</form:select>
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label">业务期待及意向简介：</label>
+			<label class="control-label">预计完成时间：</label>
 			<div class="controls">
-				<form:input path="expectAndIntention" htmlEscape="false"
-					maxlength="200" class="input-xlarge " />
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">签报号：</label>
-			<div class="controls">
-				<form:input path="signNo" htmlEscape="false" maxlength="100"
-					class="input-xlarge " />
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">期望上线时间：</label>
-			<div class="controls">
-				<input name="expectOnline" type="text" readonly="readonly"
+				<input name="exceptFinish" type="text" readonly="readonly"
 					maxlength="20" class="input-medium Wdate "
-					value="<fmt:formatDate value="${requirements.expectOnline}" pattern="yyyy-MM-dd HH:mm:ss"/>"
+					value="<fmt:formatDate value="${requirementChild.exceptFinish}" pattern="yyyy-MM-dd HH:mm:ss"/>"
 					onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',isShowClear:false});" />
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label">受理人：</label>
+			<div class="controls">
+				<form:input path="responsibleTaxPerson" htmlEscape="false"
+					maxlength="1000" class="input-xlarge " />
 			</div>
 		</div>
 		<div class="control-group">
@@ -143,121 +136,56 @@
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label">变更原因：</label>
+			<label class="control-label">需求编号：</label>
 			<div class="controls">
-				<form:input path="reasonsChange" htmlEscape="false" maxlength="1000"
+				<form:input path="demandNo" htmlEscape="false" maxlength="1000"
 					class="input-xlarge " />
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label">当前业务处理方案：</label>
+			<label class="control-label">目标描述：</label>
 			<div class="controls">
-				<form:input path="currentBusiProcScenario" htmlEscape="false"
-					maxlength="1000" class="input-xlarge " />
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">提请方：</label>
-			<div class="controls">
-				<form:input path="submitTo" htmlEscape="false" maxlength="50"
+				<form:input path="targetDesc" htmlEscape="false" maxlength="1000"
 					class="input-xlarge " />
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">需求提出处室：</label>
-			<div class="controls">
-				<form:input path="requiremenPresentationOffice" htmlEscape="false"
-					maxlength="50" class="input-xlarge " />
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">申请人：</label>
-			<div class="controls">
-				<form:input path="proposer" htmlEscape="false" maxlength="50"
-					class="input-xlarge " />
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">联系方式：</label>
-			<div class="controls">
-				<form:input path="contact" htmlEscape="false" maxlength="50"
-					class="input-xlarge " />
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">需求原因描述：</label>
-			<div class="controls">
-				<form:input path="requirementCauseDescription" htmlEscape="false"
-					maxlength="500" class="input-xlarge " />
 			</div>
 		</div>
 		<div class="control-group">
 			<label class="control-label">需求内容：</label>
 			<div class="controls">
-				<form:input path="requirementContent" htmlEscape="false"
-					maxlength="500" class="input-xlarge " />
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">资料附件清单：</label>
-			<div class="controls">
-				<form:input path="annexList" htmlEscape="false" maxlength="500"
+				<form:input path="contact" htmlEscape="false" maxlength="1000"
 					class="input-xlarge " />
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label">需求验收联系人：</label>
+			<label class="control-label">附件：</label>
 			<div class="controls">
-				<form:input path="requirementAcceptancePerson" htmlEscape="false"
-					maxlength="50" class="input-xlarge " />
+				<form:input path="appendix" htmlEscape="false" maxlength="1000"
+					class="input-xlarge " />
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label">联系电话：</label>
+			<label class="control-label">需求审批联系人：</label>
 			<div class="controls">
-				<form:input path="requirementAcceptancePhone" htmlEscape="false"
-					maxlength="50" class="input-xlarge " />
+				<form:input path="demandApprovePerson" htmlEscape="false"
+					maxlength="1000" class="input-xlarge " />
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label">需求状态：</label>
+			<label class="control-label">需求审批联系人联系电话：</label>
 			<div class="controls">
-				<form:input path="requirementStatus" htmlEscape="false"
-					maxlength="20" class="input-xlarge " />
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">关联业务需求：</label>
-			<div class="controls">
-				<form:input path="relatedBusinessDemand" htmlEscape="false"
-					maxlength="20" class="input-xlarge " />
+				<form:input path="demandApprovePhone" htmlEscape="false"
+					maxlength="1000" class="input-xlarge " />
 			</div>
 		</div>
 		<div class="control-group">
 			<label class="control-label">备注：</label>
 			<div class="controls">
-				<form:input path="comments" htmlEscape="false" maxlength="500"
+				<form:input path="comments" htmlEscape="false" maxlength="1000"
 					class="input-xlarge " />
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label">最后更新者：</label>
-			<div class="controls">
-				<form:input path="lastUpdate" htmlEscape="false" maxlength="20"
-					class="input-xlarge " />
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">最后更新时间：</label>
-			<div class="controls">
-				<input name="latUpdateTime" type="text" readonly="readonly"
-					maxlength="20" class="input-medium Wdate "
-					value="<fmt:formatDate value="${requirements.latUpdateTime}" pattern="yyyy-MM-dd HH:mm:ss"/>"
-					onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',isShowClear:false});" />
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label"><b>问题单信息：</b></label>
+			<label class="control-label">问题单表：</label>
 			<div class="controls">
 				<table id="contentTable"
 					class="table table-striped table-bordered table-condensed">
@@ -266,9 +194,7 @@
 							<th class="hide"></th>
 							<th>问题描述</th>
 							<th>问题单编号</th>
-							<shiro:hasPermission name="requirement:requirements:edit">
-								<th width="10">&nbsp;</th>
-							</shiro:hasPermission>
+							<th width="10">&nbsp;</th>
 						</tr>
 					</thead>
 					<tbody id="problemList">
@@ -293,15 +219,15 @@
 							<td>
 								<input id="problemList{{idx}}_problemNo" name="problemList[{{idx}}].problemNo" type="text" value="{{row.problemNo}}" maxlength="20" class="input-small "/>
 							</td>
-							<shiro:hasPermission name="requirement:requirements:edit"><td class="text-center" width="10">
+							<td class="text-center" width="10">
 								{{#delBtn}}<span class="close" onclick="delRow(this, '#problemList{{idx}}')" title="删除">&times;</span>{{/delBtn}}
-							</td></shiro:hasPermission>
+							</td>
 						</tr>//-->
 					</script>
 				<script type="text/javascript">
 						var problemRowIdx = 0, problemTpl = $("#problemTpl").html().replace(/(\/\/\<!\-\-)|(\/\/\-\->)/g,"");
 						$(document).ready(function() {
-							var data = ${fns:toJson(requirements.problemList)};
+							var data = ${fns:toJson(requirementChild.problemList)};
 							for (var i=0; i<data.length; i++){
 								addRow('#problemList', problemRowIdx, problemTpl, data[i]);
 								problemRowIdx = problemRowIdx + 1;
@@ -311,11 +237,9 @@
 			</div>
 		</div>
 		<div class="form-actions">
-			<shiro:hasPermission name="requirement:requirements:edit">
-				<input id="btnSubmit" class="btn btn-primary" type="submit"
-					value="保 存" />&nbsp;</shiro:hasPermission>
-			<input id="btnCancel" class="btn" type="button" value="返 回"
-				onclick="history.go(-1)" />
+			<input id="btnSubmit" class="btn btn-primary" type="submit"
+				value="保 存" />&nbsp; <input id="btnCancel" class="btn"
+				type="button" value="返 回" onclick="history.go(-1)" />
 		</div>
 	</form:form>
 </body>

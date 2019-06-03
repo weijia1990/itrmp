@@ -9,10 +9,12 @@ import com.thinkgem.jeesite.modules.allocation.entity.TaskAllocation;
 
 /**
  * 需求分配DAO接口
+ * 
  * @author weijia
  * @version 2019-05-30
  */
 @MyBatisDao
 public interface TaskAllocationDao extends CrudDao<TaskAllocation> {
-	
+
+	TaskAllocation getAllocationByRequirements(String id);
 }

@@ -3,6 +3,9 @@
  */
 package com.thinkgem.jeesite.modules.requirement.web;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -18,6 +21,8 @@ import com.thinkgem.jeesite.common.config.Global;
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.common.web.BaseController;
+import com.thinkgem.jeesite.modules.allocation.entity.TaskAllocation;
+import com.thinkgem.jeesite.modules.allocation.service.TaskAllocationService;
 import com.thinkgem.jeesite.modules.requirement.entity.Requirements;
 import com.thinkgem.jeesite.modules.requirement.service.RequirementsService;
 
@@ -33,6 +38,9 @@ public class RequirementsController extends BaseController {
 
 	@Autowired
 	private RequirementsService requirementsService;
+
+	@Autowired
+	private TaskAllocationService taskAllocationService;
 
 	@ModelAttribute
 	public Requirements get(@RequestParam(required = false) String id) {
@@ -80,9 +88,32 @@ public class RequirementsController extends BaseController {
 		return "modules/requirement/requirementswaitAllocation";
 	}
 
+	@RequestMapping(value = "showAllocation")
+	public String showAllocation(Requirements requirements, Model model) {
+		TaskAllocation allocation = taskAllocationService.getAllocationByRequirements(requirements.getId());
+		List<TaskAllocation> allocations = new ArrayList<TaskAllocation>();
+		allocations.add(allocation);
+		model.addAttribute("requirements", requirements);
+		model.addAttribute("allocation", allocations);
+		return "modules/requirement/requirementsshowAllocation";
+	}
+
 	@RequestMapping(value = "allocation")
 	public String allocation(Requirements requirements, Model model) {
 		return "modules/requirement/requirementsAllocation";
+	}
+
+	@RequestMapping(value = "requirementChild")
+	public String requirementChild(Requirements requirements, Model model) {
+		return "modules/requirement/requirementsChild";
+	}
+
+	@RequestMapping(value = "requirementChilds")
+	public String requirementChilds(Requirements requirements, HttpServletRequest request, HttpServletResponse response,
+			Model model) {
+		Page<Requirements> page = requirementsService.findPage(new Page<Requirements>(request, response), requirements);
+		model.addAttribute("page", page);
+		return "modules/requirement/requirementsChild";
 	}
 
 	@RequestMapping(value = "examines")

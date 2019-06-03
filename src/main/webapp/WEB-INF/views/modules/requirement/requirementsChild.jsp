@@ -16,11 +16,11 @@
 </head>
 <body>
 	<ul class="nav nav-tabs">
-		<li class="active"><a href="${ctx}/requirement/requirements/">需求分配查询列表</a></li>
+		<li class="active"><a href="${ctx}/requirement/requirements/">需求拆分查询列表</a></li>
 	</ul>
 	<form:form id="searchForm" modelAttribute="requirements"
-		action="${ctx}/requirement/requirements/allocations" method="post"
-		class="breadcrumb form-search">
+		action="${ctx}/requirement/requirements/requirementChilds"
+		method="post" class="breadcrumb form-search">
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}" />
 		<input id="pageSize" name="pageSize" type="hidden"
 			value="${page.pageSize}" />
@@ -62,6 +62,12 @@
 				value="<fmt:formatDate value="${requirements.createDate}" pattern="yyyy-MM-dd HH:mm:ss"/>"
 				onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',isShowClear:false});" />
 			</li>
+			<li><label>需求拆分状态：</label> <form:select path="isAllocation"
+					class="input-medium">
+					<form:option value="" label="" />
+					<form:options items="${fns:getDictList('requirement_child')}"
+						itemLabel="label" itemValue="value" htmlEscape="false" />
+				</form:select></li>
 			<li class="btns"><input id="btnSubmit" class="btn btn-primary"
 				type="submit" value="查询" /></li>
 			<li class="clearfix"></li>
@@ -99,7 +105,7 @@
 					<td><fmt:formatDate value="${requirements.createDate}"
 							pattern="yyyy-MM-dd HH:mm:ss" /></td>
 					<td><a
-						href="${ctx}/requirement/requirements/${requirements.isAllocation == 0?'waitAllocation':'showAllocation'}?id=${requirements.id}">${requirements.isAllocation == 0?'请分配':'已分配'}</a>
+						href="${ctx}/requirementchild/requirementChild/form?requirementId=${requirements.id}">需求拆分</a>
 					</td>
 				</tr>
 			</c:forEach>

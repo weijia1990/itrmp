@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.requirementchild.dao.ProblemChildDao">
+    
+	<sql id="problemColumns">
+		a.id AS "id",
+		a.requirements_id AS "requirements.id",
+		a.requirement_child_id AS "requirementChild.id",
+		a.problem_desc AS "problemDesc",
+		a.problem_no AS "problemNo",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="problemJoins">
+		LEFT JOIN requirement_child b ON b.id = a.requirement_child_id
+	</sql>
+    
+	<select id="get" resultType="Problem">
+		SELECT 
+			<include refid="problemColumns"/>
+		FROM problem a
+		<include refid="problemJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="Problem">
+		SELECT 
+			<include refid="problemColumns"/>
+		FROM problem a
+		<include refid="problemJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="requirementChild != null and requirementChild.id != null and requirementChild.id != ''">
+				AND a.requirement_child_id = #{requirementChild.id}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.create_date ASC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="Problem">
+		SELECT 
+			<include refid="problemColumns"/>
+		FROM problem a
+		<include refid="problemJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.create_date ASC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO problem(
+			id,
+			requirements_id,
+			requirement_child_id,
+			problem_desc,
+			problem_no,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag
+		) VALUES (
+			#{id},
+			#{requirements.id},
+			#{requirementChild.id},
+			#{problemDesc},
+			#{problemNo},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE problem SET 	
+			requirements_id = #{requirements.id},
+			requirement_child_id = #{requirementChild.id},
+			problem_desc = #{problemDesc},
+			problem_no = #{problemNo},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE problem SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		<choose>
+			<when test="id !=null and id != ''">
+				WHERE id = #{id}
+			</when>
+			<otherwise>
+				WHERE requirement_child_id = #{requirementChild.id}
+			</otherwise>
+		</choose>
+	</update>
+	
+</mapper>
