@@ -9,7 +9,7 @@ import com.thinkgem.jeesite.modules.requirement.entity.Problem;
 
 /**
  * 需求管理DAO接口
- * @author weijia
+ * @author ygj
  * @version 2019-05-28
  */
 @MyBatisDao

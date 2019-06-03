@@ -1,18 +1,18 @@
 /**
  * Copyright &copy; 2012-2016 <a href="https://github.com/thinkgem/jeesite">JeeSite</a> All rights reserved.
  */
-package com.thinkgem.jeesite.modules.requirement.dao;
+package com.thinkgem.jeesite.modules.devtaskassign.dao;
 
 import com.thinkgem.jeesite.common.persistence.CrudDao;
 import com.thinkgem.jeesite.common.persistence.annotation.MyBatisDao;
-import com.thinkgem.jeesite.modules.requirement.entity.Requirements;
+import com.thinkgem.jeesite.modules.devtaskassign.entity.DevelopTaskassign;
 
 /**
- * 需求管理DAO接口
+ * 开发任务指派DAO接口
  * @author ygj
- * @version 2019-05-28
+ * @version 2019-05-31
  */
 @MyBatisDao
-public interface RequirementsDao extends CrudDao<Requirements> {
+public interface DevelopTaskassignDao extends CrudDao<DevelopTaskassign> {
 	
 }

@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.esttasktest.dao.EstTaskTestDao">
+    
+	<sql id="estTaskTestColumns">
+		a.requirement_source AS "requirementSource",
+		a.requirement_classify AS "requirementClassify",
+		a.business_system AS "businessSystem",
+		a.requirement_emergency AS "requirementEmergency",
+		a.id AS "id",
+		a.task_test_title AS "taskTestTitle",
+		a.sign_no AS "signNo",
+		a.test_incharge AS "testIncharge",
+		a.develop_incharge AS "developIncharge",
+		a.develop_work_account AS "developWorkAccount",
+		a.explan_online AS "explanOnline",
+		a.submit_test_systime AS "submitTestSystime",
+		a.develop_scale AS "developScale",
+		a.related_system AS "relatedSystem",
+		a.comments AS "comments",
+		a.test_environment AS "testEnvironment",
+		a.test_range AS "testRange",
+		a.test_application_desc AS "testApplicationDesc",
+		a.test_points_advice AS "testPointsAdvice",
+		a.appendix AS "appendix",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="estTaskTestJoins">
+	</sql>
+    
+	<select id="get" resultType="EstTaskTest">
+		SELECT 
+			<include refid="estTaskTestColumns"/>
+		FROM task_test a
+		<include refid="estTaskTestJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="EstTaskTest">
+		SELECT 
+			<include refid="estTaskTestColumns"/>
+		FROM task_test a
+		<include refid="estTaskTestJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="EstTaskTest">
+		SELECT 
+			<include refid="estTaskTestColumns"/>
+		FROM task_test a
+		<include refid="estTaskTestJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO task_test(
+			requirement_source,
+			requirement_classify,
+			business_system,
+			requirement_emergency,
+			id,
+			task_test_title,
+			sign_no,
+			test_incharge,
+			develop_incharge,
+			develop_work_account,
+			explan_online,
+			submit_test_systime,
+			develop_scale,
+			related_system,
+			comments,
+			test_environment,
+			test_range,
+			test_application_desc,
+			test_points_advice,
+			appendix,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag
+		) VALUES (
+			#{requirementSource},
+			#{requirementClassify},
+			#{businessSystem},
+			#{requirementEmergency},
+			#{id},
+			#{taskTestTitle},
+			#{signNo},
+			#{testIncharge},
+			#{developIncharge},
+			#{developWorkAccount},
+			#{explanOnline},
+			#{submitTestSystime},
+			#{developScale},
+			#{relatedSystem},
+			#{comments},
+			#{testEnvironment},
+			#{testRange},
+			#{testApplicationDesc},
+			#{testPointsAdvice},
+			#{appendix},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE task_test SET 	
+			requirement_source = #{requirementSource},
+			requirement_classify = #{requirementClassify},
+			business_system = #{businessSystem},
+			requirement_emergency = #{requirementEmergency},
+			task_test_title = #{taskTestTitle},
+			sign_no = #{signNo},
+			test_incharge = #{testIncharge},
+			develop_incharge = #{developIncharge},
+			develop_work_account = #{developWorkAccount},
+			explan_online = #{explanOnline},
+			submit_test_systime = #{submitTestSystime},
+			develop_scale = #{developScale},
+			related_system = #{relatedSystem},
+			comments = #{comments},
+			test_environment = #{testEnvironment},
+			test_range = #{testRange},
+			test_application_desc = #{testApplicationDesc},
+			test_points_advice = #{testPointsAdvice},
+			appendix = #{appendix},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE task_test SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

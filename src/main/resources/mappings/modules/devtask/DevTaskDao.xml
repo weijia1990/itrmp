@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.devtask.dao.DevTaskDao">
+    
+	<sql id="devTaskColumns">
+		a.requirement_source AS "requirementSource",
+		a.requirement_classify AS "requirementClassify",
+		a.business_system AS "businessSystem",
+		a.requirement_emergency AS "requirementEmergency",
+		a.task_title AS "taskTitle",
+		a.sign_no AS "signNo",
+		a.person_incgarge AS "personIncgarge",
+		a.major_system AS "majorSystem",
+		a.related_system AS "relatedSystem",
+		a.develop_task_cancel_time AS "developTaskCancelTime",
+		a.except_online AS "exceptOnline",
+		a.comments AS "comments",
+		a.task_desc AS "taskDesc",
+		a.attachment AS "attachment",
+		a.explan_end AS "explanEnd",
+		a.executor AS "executor",
+		a.explan_work_cacounts AS "explanWorkCacounts",
+		a.expact_finish AS "expactFinish",
+		a.create_by AS "createBy.id",
+		a.develop_task_cancel_desc AS "developTaskCancelDesc",
+		a.explan_begin AS "explanBegin",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag",
+		a.id AS "id"
+	</sql>
+	
+	<sql id="devTaskJoins">
+	</sql>
+    
+	<select id="get" resultType="DevTask">
+		SELECT 
+			<include refid="devTaskColumns"/>
+		FROM task a
+		<include refid="devTaskJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="DevTask">
+		SELECT 
+			<include refid="devTaskColumns"/>
+		FROM task a
+		<include refid="devTaskJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="DevTask">
+		SELECT 
+			<include refid="devTaskColumns"/>
+		FROM task a
+		<include refid="devTaskJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO task(
+			requirement_source,
+			requirement_classify,
+			business_system,
+			requirement_emergency,
+			task_title,
+			sign_no,
+			person_incgarge,
+			major_system,
+			related_system,
+			develop_task_cancel_time,
+			except_online,
+			comments,
+			task_desc,
+			attachment,
+			explan_end,
+			executor,
+			explan_work_cacounts,
+			expact_finish,
+			create_by,
+			develop_task_cancel_desc,
+			explan_begin,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag,
+			id
+		) VALUES (
+			#{requirementSource},
+			#{requirementClassify},
+			#{businessSystem},
+			#{requirementEmergency},
+			#{taskTitle},
+			#{signNo},
+			#{personIncgarge},
+			#{majorSystem},
+			#{relatedSystem},
+			#{developTaskCancelTime},
+			#{exceptOnline},
+			#{comments},
+			#{taskDesc},
+			#{attachment},
+			#{explanEnd},
+			#{executor},
+			#{explanWorkCacounts},
+			#{expactFinish},
+			#{createBy.id},
+			#{developTaskCancelDesc},
+			#{explanBegin},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag},
+			#{id}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE task SET 	
+			requirement_source = #{requirementSource},
+			requirement_classify = #{requirementClassify},
+			business_system = #{businessSystem},
+			requirement_emergency = #{requirementEmergency},
+			task_title = #{taskTitle},
+			sign_no = #{signNo},
+			person_incgarge = #{personIncgarge},
+			major_system = #{majorSystem},
+			related_system = #{relatedSystem},
+			develop_task_cancel_time = #{developTaskCancelTime},
+			except_online = #{exceptOnline},
+			comments = #{comments},
+			task_desc = #{taskDesc},
+			attachment = #{attachment},
+			explan_end = #{explanEnd},
+			executor = #{executor},
+			explan_work_cacounts = #{explanWorkCacounts},
+			expact_finish = #{expactFinish},
+			develop_task_cancel_desc = #{developTaskCancelDesc},
+			explan_begin = #{explanBegin},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE task SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

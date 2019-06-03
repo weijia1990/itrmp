@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.devtaskpro.dao.DevelopTaskproDao">
+    
+	<sql id="developTaskproColumns">
+		a.requirement_source AS "requirementSource",
+		a.requirement_classify AS "requirementClassify",
+		a.business_system AS "businessSystem",
+		a.requirement_emergency AS "requirementEmergency",
+		a.task_title AS "taskTitle",
+		a.sign_no AS "signNo",
+		a.acutal_begin_time AS "acutalBeginTime",
+		a.acutal_end_time AS "acutalEndTime",
+		a.executor AS "executor",
+		a.acutal_work_accounts AS "acutalWorkAccounts",
+		a.status AS "status",
+		a.develop_result AS "developResult",
+		a.test_result AS "testResult",
+		a.id AS "id",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="developTaskproJoins">
+	</sql>
+    
+	<select id="get" resultType="DevelopTaskpro">
+		SELECT 
+			<include refid="developTaskproColumns"/>
+		FROM develop_taskpro a
+		<include refid="developTaskproJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="DevelopTaskpro">
+		SELECT 
+			<include refid="developTaskproColumns"/>
+		FROM develop_taskpro a
+		<include refid="developTaskproJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="DevelopTaskpro">
+		SELECT 
+			<include refid="developTaskproColumns"/>
+		FROM develop_taskpro a
+		<include refid="developTaskproJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO develop_taskpro(
+			requirement_source,
+			requirement_classify,
+			business_system,
+			requirement_emergency,
+			task_title,
+			sign_no,
+			acutal_begin_time,
+			acutal_end_time,
+			executor,
+			acutal_work_accounts,
+			status,
+			develop_result,
+			test_result,
+			id,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag
+		) VALUES (
+			#{requirementSource},
+			#{requirementClassify},
+			#{businessSystem},
+			#{requirementEmergency},
+			#{taskTitle},
+			#{signNo},
+			#{acutalBeginTime},
+			#{acutalEndTime},
+			#{executor},
+			#{acutalWorkAccounts},
+			#{status},
+			#{developResult},
+			#{testResult},
+			#{id},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE develop_taskpro SET 	
+			requirement_source = #{requirementSource},
+			requirement_classify = #{requirementClassify},
+			business_system = #{businessSystem},
+			requirement_emergency = #{requirementEmergency},
+			task_title = #{taskTitle},
+			sign_no = #{signNo},
+			acutal_begin_time = #{acutalBeginTime},
+			acutal_end_time = #{acutalEndTime},
+			executor = #{executor},
+			acutal_work_accounts = #{acutalWorkAccounts},
+			status = #{status},
+			develop_result = #{developResult},
+			test_result = #{testResult},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE develop_taskpro SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

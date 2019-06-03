@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.devtaskassign.dao.DevelopTaskassignDao">
+    
+	<sql id="developTaskassignColumns">
+		a.id AS "id",
+		a.task_title AS "taskTitle",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag",
+		a.explan_begin AS "explanBegin",
+		a.explan_end AS "explanEnd",
+		a.executor AS "executor",
+		a.explan_work_cacounts AS "explanWorkCacounts",
+		a.task_desc AS "taskDesc",
+		a.requirement_source AS "requirementSource",
+		a.requirement_classify AS "requirementClassify",
+		a.business_system AS "businessSystem",
+		a.requirement_emergency AS "requirementEmergency",
+		a.sign_no AS "signNo"
+	</sql>
+	
+	<sql id="developTaskassignJoins">
+	</sql>
+    
+	<select id="get" resultType="DevelopTaskassign">
+		SELECT 
+			<include refid="developTaskassignColumns"/>
+		FROM develop_taskassign a
+		<include refid="developTaskassignJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="DevelopTaskassign">
+		SELECT 
+			<include refid="developTaskassignColumns"/>
+		FROM develop_taskassign a
+		<include refid="developTaskassignJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="DevelopTaskassign">
+		SELECT 
+			<include refid="developTaskassignColumns"/>
+		FROM develop_taskassign a
+		<include refid="developTaskassignJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO develop_taskassign(
+			id,
+			task_title,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag,
+			explan_begin,
+			explan_end,
+			executor,
+			explan_work_cacounts,
+			task_desc,
+			requirement_source,
+			requirement_classify,
+			business_system,
+			requirement_emergency,
+			sign_no
+		) VALUES (
+			#{id},
+			#{taskTitle},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag},
+			#{explanBegin},
+			#{explanEnd},
+			#{executor},
+			#{explanWorkCacounts},
+			#{taskDesc},
+			#{requirementSource},
+			#{requirementClassify},
+			#{businessSystem},
+			#{requirementEmergency},
+			#{signNo}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE develop_taskassign SET 	
+			task_title = #{taskTitle},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks},
+			explan_begin = #{explanBegin},
+			explan_end = #{explanEnd},
+			executor = #{executor},
+			explan_work_cacounts = #{explanWorkCacounts},
+			task_desc = #{taskDesc},
+			requirement_source = #{requirementSource},
+			requirement_classify = #{requirementClassify},
+			business_system = #{businessSystem},
+			requirement_emergency = #{requirementEmergency},
+			sign_no = #{signNo}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE develop_taskassign SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

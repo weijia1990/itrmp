@@ -9,16 +9,16 @@ import com.thinkgem.jeesite.common.persistence.DataEntity;
 
 /**
  * 需求管理Entity
- * @author weijia
+ * @author ygj
  * @version 2019-05-28
  */
 public class Problem extends DataEntity<Problem> {
 	
 	private static final long serialVersionUID = 1L;
-	private Requirements requirements;		// requirements_id 父类
-	private String requirementChildId;		// requirement_child_id
-	private String problemDesc;		// problem_desc
-	private String problemNo;		// problem_no
+	private Requirements requirements;		// 需求表流水号 父类
+	private String requirementChildId;		// 子需求表流水号
+	private String problemDesc;		// 问题描述
+	private String problemNo;		// 问题单编号
 	
 	public Problem() {
 		super();
@@ -32,7 +32,7 @@ public class Problem extends DataEntity<Problem> {
 		this.requirements = requirements;
 	}
 
-	@Length(min=0, max=32, message="requirements_id长度必须介于 0 和 32 之间")
+	@Length(min=0, max=32, message="需求表流水号长度必须介于 0 和 32 之间")
 	public Requirements getRequirements() {
 		return requirements;
 	}
@@ -41,7 +41,7 @@ public class Problem extends DataEntity<Problem> {
 		this.requirements = requirements;
 	}
 	
-	@Length(min=0, max=32, message="requirement_child_id长度必须介于 0 和 32 之间")
+	@Length(min=0, max=32, message="子需求表流水号长度必须介于 0 和 32 之间")
 	public String getRequirementChildId() {
 		return requirementChildId;
 	}
@@ -50,7 +50,7 @@ public class Problem extends DataEntity<Problem> {
 		this.requirementChildId = requirementChildId;
 	}
 	
-	@Length(min=0, max=1000, message="problem_desc长度必须介于 0 和 1000 之间")
+	@Length(min=0, max=1000, message="问题描述长度必须介于 0 和 1000 之间")
 	public String getProblemDesc() {
 		return problemDesc;
 	}
@@ -59,7 +59,7 @@ public class Problem extends DataEntity<Problem> {
 		this.problemDesc = problemDesc;
 	}
 	
-	@Length(min=0, max=20, message="problem_no长度必须介于 0 和 20 之间")
+	@Length(min=0, max=20, message="问题单编号长度必须介于 0 和 20 之间")
 	public String getProblemNo() {
 		return problemNo;
 	}
