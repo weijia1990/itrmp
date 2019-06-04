@@ -4,6 +4,7 @@
 package com.thinkgem.jeesite.modules.requirementchildpro.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +14,7 @@ import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.service.CrudService;
 import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.modules.requirement.entity.Problem;
+import com.thinkgem.jeesite.modules.requirement.entity.Requirements;
 import com.thinkgem.jeesite.modules.requirementchild.dao.ProblemChildDao;
 import com.thinkgem.jeesite.modules.requirementchild.dao.RequirementChildDao;
 import com.thinkgem.jeesite.modules.requirementchild.entity.ProblemChild;
@@ -97,4 +99,7 @@ public class RequirementChildProService extends CrudService<RequirementChildDao,
 		requirementproChildDao.delete(new RequirementproChild(requirementChild));
 	}
 
+	public List<Map<String, String>> query(Requirements requirements) {
+		return requirementproChildDao.query(requirements);
+	}
 }

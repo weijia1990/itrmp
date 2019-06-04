@@ -23,6 +23,44 @@
 			}
 		});
 	});
+	function addProRow(list, idx, tpl, row) {
+		$(list).append(Mustache.render(tpl, {
+			idx : idx,
+			delBtn : true,
+			row : row
+		}));
+		$(list + idx).find("select").each(function() {
+			$(this).val($(this).attr("data-value"));
+		});
+		$(list + idx).find("input[type='checkbox'], input[type='radio']").each(function() {
+			var ss = $(this).attr("data-value").split(',');
+			for (var i = 0; i < ss.length; i++) {
+				if ($(this).val() == ss[i]) {
+					$(this).attr("checked", "checked");
+				}
+			}
+		});
+		$("#addNew").hide();
+		var a = row.requirementproChildTitle;
+		a = "requirementChildPro_" + a;
+		$("#" + a).attr("selected", true);
+	}
+	function delProRow(obj, prefix) {
+		var id = $(prefix + "_id");
+		var delFlag = $(prefix + "_delFlag");
+		if (id.val() == "") {
+			$(obj).parent().parent().remove();
+		} else if (delFlag.val() == "0") {
+			delFlag.val("1");
+			$(obj).html("&divide;").attr("title", "撤销删除");
+			$(obj).parent().parent().addClass("error");
+		} else if (delFlag.val() == "1") {
+			delFlag.val("0");
+			$(obj).html("&times;").attr("title", "删除");
+			$(obj).parent().parent().removeClass("error");
+		}
+		$("#addNew").show();
+	}
 	function addRow(list, idx, tpl, row) {
 		$(list).append(Mustache.render(tpl, {
 			idx : idx,
@@ -73,20 +111,21 @@
 			<label class="control-label">需求编号：</label>
 			<div class="controls">
 				<form:input path="requirements" htmlEscape="false" maxlength="32"
-					class="input-xlarge " />
+					class="input-xlarge " disabled="true" />
 			</div>
 		</div>
 		<div class="control-group">
 			<label class="control-label">子需求标题：</label>
 			<div class="controls">
 				<form:input path="requirementChildTitle" htmlEscape="false"
-					maxlength="50" class="input-xlarge " />
+					maxlength="50" class="input-xlarge " disabled="true" />
 			</div>
 		</div>
 		<div class="control-group">
 			<label class="control-label">项目归属：</label>
 			<div class="controls">
-				<form:select path="itemBelonds" class="input-xlarge ">
+				<form:select path="itemBelonds" class="input-xlarge "
+					disabled="true">
 					<form:option value="" label="" />
 					<form:options items="${fns:getDictList('')}" itemLabel="label"
 						itemValue="value" htmlEscape="false" />
@@ -96,7 +135,8 @@
 		<div class="control-group">
 			<label class="control-label">业务系统：</label>
 			<div class="controls">
-				<form:select path="businessSystem" class="input-xlarge ">
+				<form:select path="businessSystem" class="input-xlarge "
+					disabled="true">
 					<form:option value="" label="" />
 					<form:options items="${fns:getDictList('')}" itemLabel="label"
 						itemValue="value" htmlEscape="false" />
@@ -106,7 +146,8 @@
 		<div class="control-group">
 			<label class="control-label">需求紧急程度：</label>
 			<div class="controls">
-				<form:select path="requirementEmergency" class="input-xlarge ">
+				<form:select path="requirementEmergency" class="input-xlarge "
+					disabled="true">
 					<form:option value="" label="" />
 					<form:options items="${fns:getDictList('')}" itemLabel="label"
 						itemValue="value" htmlEscape="false" />
@@ -116,8 +157,8 @@
 		<div class="control-group">
 			<label class="control-label">预计完成时间：</label>
 			<div class="controls">
-				<input name="exceptFinish" type="text" readonly="readonly"
-					maxlength="20" class="input-medium Wdate "
+				<input disabled="true" name="exceptFinish" type="text"
+					readonly="readonly" maxlength="20" class="input-medium Wdate "
 					value="<fmt:formatDate value="${requirementChild.exceptFinish}" pattern="yyyy-MM-dd HH:mm:ss"/>"
 					onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',isShowClear:false});" />
 			</div>
@@ -126,71 +167,63 @@
 			<label class="control-label">受理人：</label>
 			<div class="controls">
 				<form:input path="responsibleTaxPerson" htmlEscape="false"
-					maxlength="1000" class="input-xlarge " />
+					maxlength="1000" class="input-xlarge " disabled="true" />
 			</div>
 		</div>
 		<div class="control-group">
 			<label class="control-label">关联性业务需求：</label>
 			<div class="controls">
 				<form:input path="relatedBusinessRequirements" htmlEscape="false"
-					maxlength="1000" class="input-xlarge " />
+					maxlength="1000" class="input-xlarge " disabled="true" />
 			</div>
 		</div>
 		<div class="control-group">
 			<label class="control-label">需求编号：</label>
 			<div class="controls">
 				<form:input path="demandNo" htmlEscape="false" maxlength="1000"
-					class="input-xlarge " />
+					class="input-xlarge " disabled="true" />
 			</div>
 		</div>
 		<div class="control-group">
 			<label class="control-label">目标描述：</label>
 			<div class="controls">
 				<form:input path="targetDesc" htmlEscape="false" maxlength="1000"
-					class="input-xlarge " />
+					class="input-xlarge " disabled="true" />
 			</div>
 		</div>
 		<div class="control-group">
 			<label class="control-label">需求内容：</label>
 			<div class="controls">
 				<form:input path="contact" htmlEscape="false" maxlength="1000"
-					class="input-xlarge " />
+					class="input-xlarge " disabled="true" />
 			</div>
 		</div>
 		<div class="control-group">
 			<label class="control-label">附件：</label>
 			<div class="controls">
 				<form:input path="appendix" htmlEscape="false" maxlength="1000"
-					class="input-xlarge " />
+					class="input-xlarge " disabled="true" />
 			</div>
 		</div>
 		<div class="control-group">
 			<label class="control-label">需求审批联系人：</label>
 			<div class="controls">
 				<form:input path="demandApprovePerson" htmlEscape="false"
-					maxlength="1000" class="input-xlarge " />
+					maxlength="1000" class="input-xlarge " disabled="true" />
 			</div>
 		</div>
 		<div class="control-group">
 			<label class="control-label">需求审批联系人联系电话：</label>
 			<div class="controls">
 				<form:input path="demandApprovePhone" htmlEscape="false"
-					maxlength="1000" class="input-xlarge " />
+					maxlength="1000" class="input-xlarge " disabled="true" />
 			</div>
 		</div>
 		<div class="control-group">
 			<label class="control-label">备注：</label>
 			<div class="controls">
 				<form:input path="comments" htmlEscape="false" maxlength="1000"
-					class="input-xlarge " />
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">remarks：</label>
-			<div class="controls">
-				<form:textarea path="remarks" htmlEscape="false" rows="4"
-					maxlength="255" class="input-xxlarge required" />
-				<span class="help-inline"><font color="red">*</font> </span>
+					class="input-xlarge " disabled="true" />
 			</div>
 		</div>
 		<div class="control-group">
@@ -215,10 +248,10 @@
 								<input id="problemList{{idx}}_delFlag" name="problemList[{{idx}}].delFlag" type="hidden" value="0"/>
 							</td>
 							<td>
-								<input id="problemList{{idx}}_problemDesc" name="problemList[{{idx}}].problemDesc" type="text" value="{{row.problemDesc}}" maxlength="1000" class="input-small "/>
+								<input id="problemList{{idx}}_problemDesc" name="problemList[{{idx}}].problemDesc" type="text" value="{{row.problemDesc}}" maxlength="1000" class="input-small " disabled="true"/>
 							</td>
 							<td>
-								<input id="problemList{{idx}}_problemNo" name="problemList[{{idx}}].problemNo" type="text" value="{{row.problemNo}}" maxlength="20" class="input-small "/>
+								<input id="problemList{{idx}}_problemNo" name="problemList[{{idx}}].problemNo" type="text" value="{{row.problemNo}}" maxlength="20" class="input-small " disabled="true"/>
 							</td>
 						</tr>//-->
 					</script>
@@ -245,16 +278,14 @@
 							<th>子需求进度</th>
 							<th>需求文档查看</th>
 							<th>子需求进度追踪</th>
-							<th>remarks</th>
-							<th width="10">&nbsp;</th>
 						</tr>
 					</thead>
 					<tbody id="requirementproChildList">
 					</tbody>
-					<tfoot>
+					<tfoot id="addNew">
 						<tr>
 							<td colspan="6"><a href="javascript:"
-								onclick="addRow('#requirementproChildList', requirementproChildRowIdx, requirementproChildTpl);requirementproChildRowIdx = requirementproChildRowIdx + 1;"
+								onclick="addProRow('#requirementproChildList', requirementproChildRowIdx, requirementproChildTpl);requirementproChildRowIdx = requirementproChildRowIdx + 1;"
 								class="btn">新增</a></td>
 						</tr>
 					</tfoot>
@@ -266,7 +297,11 @@
 								<input id="requirementproChildList{{idx}}_delFlag" name="requirementproChildList[{{idx}}].delFlag" type="hidden" value="0"/>
 							</td>
 							<td>
-								<input id="requirementproChildList{{idx}}_requirementproChildTitle" name="requirementproChildList[{{idx}}].requirementproChildTitle" type="text" value="{{row.requirementproChildTitle}}" maxlength="50" class="input-small "/>
+							<select id="requirementproChildList{{idx}}_requirementproChildTitle" name="requirementproChildList[{{idx}}].requirementproChildTitle" >
+								<c:forEach items="${fns:getDictList('requirement_child_pro')}" var="title">
+									<option id ="requirementChildPro_${title.value}" value ="${title.value}">${title}</option>
+								</c:forEach>
+							</select>
 							</td>
 							<td>
 								<input id="requirementproChildList{{idx}}_requirementpFile" name="requirementproChildList[{{idx}}].requirementpFile" type="hidden" value="{{row.requirementpFile}}" maxlength="50"/>
@@ -275,11 +310,8 @@
 							<td>
 								<input id="requirementproChildList{{idx}}_requirementproChildTrack" name="requirementproChildList[{{idx}}].requirementproChildTrack" type="text" value="{{row.requirementproChildTrack}}" maxlength="50" class="input-small "/>
 							</td>
-							<td>
-								<textarea id="requirementproChildList{{idx}}_remarks" name="requirementproChildList[{{idx}}].remarks" rows="4" maxlength="255" class="input-small ">{{row.remarks}}</textarea>
-							</td>
-						<td class="text-center" width="10">
-								{{#delBtn}}<span class="close" onclick="delRow(this, '#requirementproChildList{{idx}}')" title="删除">&times;</span>{{/delBtn}}
+							<td class="text-center" width="10">
+								{{#delBtn}}<span class="close" onclick="delProRow(this, '#requirementproChildList{{idx}}')" title="删除">&times;</span>{{/delBtn}}
 							</td>
 						</tr>//-->
 					</script>
@@ -288,7 +320,7 @@
 						$(document).ready(function() {
 							var data = ${fns:toJson(requirementChild.requirementproChildList)};
 							for (var i=0; i<data.length; i++){
-								addRow('#requirementproChildList', requirementproChildRowIdx, requirementproChildTpl, data[i]);
+								addProRow('#requirementproChildList', requirementproChildRowIdx, requirementproChildTpl, data[i]);
 								requirementproChildRowIdx = requirementproChildRowIdx + 1;
 							}
 						});

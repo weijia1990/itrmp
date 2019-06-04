@@ -3,6 +3,9 @@
  */
 package com.thinkgem.jeesite.modules.requirementchildpro.web;
 
+import java.util.List;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -60,6 +63,15 @@ public class RequirementChildProController extends BaseController {
 	public String form(RequirementChild requirementChild, Model model) {
 		model.addAttribute("requirementChild", requirementChild);
 		return "modules/requirementchildpro/requirementChildProForm";
+	}
+
+	@RequestMapping(value = "query")
+	public String query(Requirements requirements, Model model) {
+		List<Map<String, String>> query = requirementChildService.query(requirements);
+		Page<Map<String, String>> page = new Page<Map<String, String>>();
+		page.setList(query);
+		model.addAttribute("page", page);
+		return "modules/requirementchildpro/requirementChildProList";
 	}
 
 	@RequestMapping(value = "save")

@@ -22,8 +22,8 @@
 		</shiro:hasPermission>
 	</ul>
 	<form:form id="searchForm" modelAttribute="requirements"
-		action="${ctx}/requirement/requirements/" method="post"
-		class="breadcrumb form-search">
+		action="${ctx}/requirementchildpro/requirementChild/query"
+		method="post" class="breadcrumb form-search">
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}" />
 		<input id="pageSize" name="pageSize" type="hidden"
 			value="${page.pageSize}" />
@@ -84,20 +84,24 @@
 				<th>预计完成时间</th>
 				<th>创建时间</th>
 				<th>申请人</th>
+				<th>操作</th>
 			</tr>
 		</thead>
 		<tbody>
 			<c:forEach items="${page.list}" var="requirements">
 				<tr>
 					<td>${requirements.id}</td>
-					<td>${requirements.childId}</td>
-					<td>${requirements.requirementSource}</td>
+					<td>${requirements.rcId}</td>
+					<td>${fns:getDictLabel(requirements.requirementSource, 'requirement_source', '')}</td>
 					<td>${requirements.itemBelonds}</td>
+					<td>${fns:getDictLabel(requirements.businessSystem, 'business_system', '')}</td>
+					<td>${requirements.expectOnline}</td>
+					<td>${requirements.exceptFinish}</td>
+					<td>${requirements.createDate}</td>
+					<td>${requirements.proposer}</td>
 					<td><a
-						href="${ctx}/requirementchildpro/requirementChild/form?id=${requirementChild.id}">修改</a>
-						<a
-						href="${ctx}/requirementchildpro/requirementChild/delete?id=${requirementChild.id}"
-						onclick="return confirmx('确认要删除该子需求进度管理吗？', this.href)">删除</a></td>
+						href="${ctx}/requirementchildpro/requirementChild/form?id=${requirements.rcId}">需求分析</a>
+						</td>
 				</tr>
 			</c:forEach>
 		</tbody>

@@ -61,7 +61,8 @@ public class RequirementsController extends BaseController {
 		model.addAttribute("page", page);
 		return "modules/requirement/requirementsList";
 	}
-	@RequestMapping(value = { "lists", "" })
+
+	@RequestMapping(value = "lists")
 	public String lists(Requirements requirements, HttpServletRequest request, HttpServletResponse response,
 			Model model) {
 		Page<Requirements> page = requirementsService.findPage(new Page<Requirements>(request, response), requirements);

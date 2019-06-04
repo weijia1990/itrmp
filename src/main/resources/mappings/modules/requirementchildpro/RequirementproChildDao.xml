@@ -1,41 +1,47 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.thinkgem.jeesite.modules.requirementchildpro.dao.RequirementproChildDao">
-    
+<mapper
+	namespace="com.thinkgem.jeesite.modules.requirementchildpro.dao.RequirementproChildDao">
+
 	<sql id="requirementproChildColumns">
 		a.id AS "id",
-		a.requirement_child_id AS "requirementChild.id",
-		a.requirementpro_child_title AS "requirementproChildTitle",
+		a.requirement_child_id AS
+		"requirementChild.id",
+		a.requirementpro_child_title AS
+		"requirementproChildTitle",
 		a.requirementp_file AS "requirementpFile",
 		a.requirementpro_child_track AS "requirementproChildTrack",
 		a.create_by AS "createBy.id",
 		a.create_date AS "createDate",
 		a.update_by AS "updateBy.id",
 		a.update_date AS "updateDate",
-		a.remarks AS "remarks",
+		a.remarks
+		AS "remarks",
 		a.del_flag AS "delFlag"
 	</sql>
-	
+
 	<sql id="requirementproChildJoins">
-		LEFT JOIN requirement_child b ON b.id = a.requirement_child_id
+		LEFT JOIN requirement_child b ON b.id =
+		a.requirement_child_id
 	</sql>
-    
+
 	<select id="get" resultType="RequirementproChild">
-		SELECT 
-			<include refid="requirementproChildColumns"/>
+		SELECT
+		<include refid="requirementproChildColumns" />
 		FROM requirementpro_child a
-		<include refid="requirementproChildJoins"/>
+		<include refid="requirementproChildJoins" />
 		WHERE a.id = #{id}
 	</select>
-	
+
 	<select id="findList" resultType="RequirementproChild">
-		SELECT 
-			<include refid="requirementproChildColumns"/>
+		SELECT
+		<include refid="requirementproChildColumns" />
 		FROM requirementpro_child a
-		<include refid="requirementproChildJoins"/>
+		<include refid="requirementproChildJoins" />
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
-			<if test="requirementChild != null and requirementChild.id != null and requirementChild.id != ''">
+			<if
+				test="requirementChild != null and requirementChild.id != null and requirementChild.id != ''">
 				AND a.requirement_child_id = #{requirementChild.id}
 			</if>
 		</where>
@@ -48,15 +54,15 @@
 			</otherwise>
 		</choose>
 	</select>
-	
+
 	<select id="findAllList" resultType="RequirementproChild">
-		SELECT 
-			<include refid="requirementproChildColumns"/>
+		SELECT
+		<include refid="requirementproChildColumns" />
 		FROM requirementpro_child a
-		<include refid="requirementproChildJoins"/>
+		<include refid="requirementproChildJoins" />
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
-		</where>		
+		</where>
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
 				ORDER BY ${page.orderBy}
@@ -66,50 +72,54 @@
 			</otherwise>
 		</choose>
 	</select>
-	
+
 	<insert id="insert">
 		INSERT INTO requirementpro_child(
-			id,
-			requirement_child_id,
-			requirementpro_child_title,
-			requirementp_file,
-			requirementpro_child_track,
-			create_by,
-			create_date,
-			update_by,
-			update_date,
-			remarks,
-			del_flag
+		id,
+		requirement_child_id,
+		requirementpro_child_title,
+		requirementp_file,
+		requirementpro_child_track,
+		create_by,
+		create_date,
+		update_by,
+		update_date,
+		remarks,
+		del_flag
 		) VALUES (
-			#{id},
-			#{requirementChild.id},
-			#{requirementproChildTitle},
-			#{requirementpFile},
-			#{requirementproChildTrack},
-			#{createBy.id},
-			#{createDate},
-			#{updateBy.id},
-			#{updateDate},
-			#{remarks},
-			#{delFlag}
+		#{id},
+		#{requirementChild.id},
+		#{requirementproChildTitle},
+		#{requirementpFile},
+		#{requirementproChildTrack},
+		#{createBy.id},
+		#{createDate},
+		#{updateBy.id},
+		#{updateDate},
+		#{remarks},
+		#{delFlag}
 		)
 	</insert>
-	
+
 	<update id="update">
-		UPDATE requirementpro_child SET 	
-			requirement_child_id = #{requirementChild.id},
-			requirementpro_child_title = #{requirementproChildTitle},
-			requirementp_file = #{requirementpFile},
-			requirementpro_child_track = #{requirementproChildTrack},
-			update_by = #{updateBy.id},
-			update_date = #{updateDate},
-			remarks = #{remarks}
-		WHERE id = #{id}
+		UPDATE requirementpro_child SET
+		requirement_child_id =
+		#{requirementChild.id},
+		requirementpro_child_title =
+		#{requirementproChildTitle},
+		requirementp_file = #{requirementpFile},
+		requirementpro_child_track = #{requirementproChildTrack},
+		update_by =
+		#{updateBy.id},
+		update_date = #{updateDate},
+		remarks = #{remarks}
+		WHERE
+		id = #{id}
 	</update>
-	
+
 	<update id="delete">
-		UPDATE requirementpro_child SET 
-			del_flag = #{DEL_FLAG_DELETE}
+		UPDATE requirementpro_child SET
+		del_flag = #{DEL_FLAG_DELETE}
 		<choose>
 			<when test="id !=null and id != ''">
 				WHERE id = #{id}
@@ -119,5 +129,61 @@
 			</otherwise>
 		</choose>
 	</update>
-	
+
+	<resultMap type="HashMap" id="queryMap">
+		<id property="id" column="id" />
+		<result property="rcId" column="rcid" javaType="String" />
+		<result property="requirementSource" column="requirement_source"
+			javaType="String" />
+		<result property="itemBelonds" column="item_belonds" javaType="String" />
+		<result property="businessSystem" column="business_system"
+			javaType="String" />
+		<result property="expectOnline" column="expect_online"
+			javaType="String" />
+		<result property="exceptFinish" column="except_finish"
+			javaType="String" />
+		<result property="createDate" column="create_date" javaType="String" />
+		<result property="proposer" column="proposer" javaType="String" />
+	</resultMap>
+
+	<select id="query" resultMap="queryMap"
+		parameterType="com.thinkgem.jeesite.modules.requirement.entity.Requirements">
+		SELECT r.id,
+		rc.id rcid,
+		r.requirement_source,
+		rc.item_belonds,
+		r.business_system,
+		r.expect_online,
+		rc.except_finish,
+		rc.create_date,
+		r.proposer
+		FROM requirements r
+		join requirement_child rc
+		on r.id =
+		rc.requirements_id
+		<where>
+			<if test="requirementSource !=null and requirementSource!=''">
+				and r.requirement_source = #{requirementSource}
+			</if>
+			<if test="requirementClassify !=null and requirementClassify!=''">
+				and r.requirement_classify = #{requirementClassify}
+			</if>
+			<if test="businessSystem !=null and businessSystem!=''">
+				and r.business_system = #{businessSystem}
+			</if>
+			<if test="requirementEmergency !=null and requirementEmergency!=''">
+				and r.requirement_emergency = #{requirementEmergency}
+			</if>
+			<if test="expectOnline !=null and expectOnline!=''">
+				and r.expect_online = #{expectOnline}
+			</if>
+			<if test="createDate !=null and createDate!=''">
+				and r.create_date = #{createDate}
+			</if>
+			<if test="proposer !=null and proposer!=''">
+				and r.proposer = #{proposer}
+			</if>
+		</where>
+	</select>
+
 </mapper>
