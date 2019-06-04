@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.service.CrudService;
 import com.thinkgem.jeesite.modules.allocation.entity.TaskAllocation;
+import com.thinkgem.jeesite.modules.requirement.entity.Requirements;
 import com.thinkgem.jeesite.modules.allocation.dao.TaskAllocationDao;
 
 /**
@@ -47,6 +48,13 @@ public class TaskAllocationService extends CrudService<TaskAllocationDao, TaskAl
 
 	public TaskAllocation getAllocationByRequirements(String id) {
 		return dao.getAllocationByRequirements(id);
+	}
+	
+
+	public Requirements changeAllocationStatus(String requirementsId, String status) {
+		Requirements requirements = new Requirements(requirementsId);
+		requirements.setIsAllocation(status);
+		return requirements;
 	}
 
 }
