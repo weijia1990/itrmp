@@ -258,7 +258,7 @@
 				<script type="text/javascript">
 						var problemRowIdx = 0, problemTpl = $("#problemTpl").html().replace(/(\/\/\<!\-\-)|(\/\/\-\->)/g,"");
 						$(document).ready(function() {
-							var data = ${fns:toJson(requirementChild.problemList)};
+							var data = ${fns:toJson(requirementChild.problemChildList)};
 							for (var i=0; i<data.length; i++){
 								addRow('#problemList', problemRowIdx, problemTpl, data[i]);
 								problemRowIdx = problemRowIdx + 1;
@@ -325,6 +325,14 @@
 							}
 						});
 					</script>
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label">退回原因：</label>
+			<div class="controls">
+				<form:input path="requirementChildExamineList[0].returnReason"
+					htmlEscape="false" maxlength="1000" class="input-xlarge "
+					disabled="true" />
 			</div>
 		</div>
 		<div class="form-actions">

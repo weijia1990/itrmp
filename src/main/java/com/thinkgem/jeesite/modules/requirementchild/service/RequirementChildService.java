@@ -13,8 +13,14 @@ import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.service.CrudService;
 import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.modules.requirementchild.entity.RequirementChild;
+import com.thinkgem.jeesite.modules.requirementchildpro.dao.RequirementproChildDao;
+import com.thinkgem.jeesite.modules.requirementchildpro.entity.RequirementproChild;
 import com.thinkgem.jeesite.modules.requirementchild.dao.RequirementChildDao;
 import com.thinkgem.jeesite.modules.requirementchild.entity.ProblemChild;
+import com.thinkgem.jeesite.modules.childexamine.dao.RequirementChildExamineDao;
+import com.thinkgem.jeesite.modules.childexamine.dao.RequirementFileDao;
+import com.thinkgem.jeesite.modules.childexamine.entity.RequirementChildExamine;
+import com.thinkgem.jeesite.modules.childexamine.entity.RequirementFile;
 import com.thinkgem.jeesite.modules.requirementchild.dao.ProblemChildDao;
 
 /**
@@ -31,10 +37,16 @@ public class RequirementChildService extends CrudService<RequirementChildDao, Re
 	private ProblemChildDao problemDao;
 	@Autowired
 	RequirementChildDao requirementChildDao;
+	@Autowired
+	private RequirementChildExamineDao requirementChildExamineDao;
+	@Autowired
+	private RequirementproChildDao requirementproChildDao;
+	@Autowired
+	private RequirementFileDao requirementFileDao;
 
 	public RequirementChild get(String id) {
 		RequirementChild requirementChild = super.get(id);
-		requirementChild.setProblemList(problemDao.findList(new ProblemChild(requirementChild)));
+		requirementChild.setProblemChildList(problemDao.findList(new ProblemChild(requirementChild)));
 		return requirementChild;
 	}
 
@@ -49,7 +61,7 @@ public class RequirementChildService extends CrudService<RequirementChildDao, Re
 	@Transactional(readOnly = false)
 	public void save(RequirementChild requirementChild) {
 		super.save(requirementChild);
-		for (ProblemChild problem : requirementChild.getProblemList()) {
+		for (ProblemChild problem : requirementChild.getProblemChildList()) {
 			if (problem.getId() == null) {
 				continue;
 			}
@@ -66,12 +78,66 @@ public class RequirementChildService extends CrudService<RequirementChildDao, Re
 				problemDao.delete(problem);
 			}
 		}
+		for (RequirementChildExamine requirementChildExamine : requirementChild.getRequirementChildExamineList()) {
+			if (requirementChildExamine.getId() == null) {
+				continue;
+			}
+			if (RequirementChildExamine.DEL_FLAG_NORMAL.equals(requirementChildExamine.getDelFlag())) {
+				if (StringUtils.isBlank(requirementChildExamine.getId())) {
+					requirementChildExamine.setRequirementChild(requirementChild);
+					requirementChildExamine.preInsert();
+					requirementChildExamineDao.insert(requirementChildExamine);
+				} else {
+					requirementChildExamine.preUpdate();
+					requirementChildExamineDao.update(requirementChildExamine);
+				}
+			} else {
+				requirementChildExamineDao.delete(requirementChildExamine);
+			}
+		}
+		for (RequirementFile requirementFile : requirementChild.getRequirementFileList()) {
+			if (requirementFile.getId() == null) {
+				continue;
+			}
+			if (RequirementFile.DEL_FLAG_NORMAL.equals(requirementFile.getDelFlag())) {
+				if (StringUtils.isBlank(requirementFile.getId())) {
+					requirementFile.setRequirementChild(requirementChild);
+					requirementFile.preInsert();
+					requirementFileDao.insert(requirementFile);
+				} else {
+					requirementFile.preUpdate();
+					requirementFileDao.update(requirementFile);
+				}
+			} else {
+				requirementFileDao.delete(requirementFile);
+			}
+		}
+		for (RequirementproChild requirementproChild : requirementChild.getRequirementproChildList()) {
+			if (requirementproChild.getId() == null) {
+				continue;
+			}
+			if (RequirementproChild.DEL_FLAG_NORMAL.equals(requirementproChild.getDelFlag())) {
+				if (StringUtils.isBlank(requirementproChild.getId())) {
+					requirementproChild.setRequirementChild(requirementChild);
+					requirementproChild.preInsert();
+					requirementproChildDao.insert(requirementproChild);
+				} else {
+					requirementproChild.preUpdate();
+					requirementproChildDao.update(requirementproChild);
+				}
+			} else {
+				requirementproChildDao.delete(requirementproChild);
+			}
+		}
 	}
 
 	@Transactional(readOnly = false)
 	public void delete(RequirementChild requirementChild) {
 		super.delete(requirementChild);
 		problemDao.delete(new ProblemChild(requirementChild));
+		requirementChildExamineDao.delete(new RequirementChildExamine(requirementChild));
+		requirementFileDao.delete(new RequirementFile(requirementChild));
+		requirementproChildDao.delete(new RequirementproChild(requirementChild));
 	}
 
 	public List<RequirementChild> getAllByRequirementId(String requirementId) {

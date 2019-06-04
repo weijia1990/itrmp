@@ -39,7 +39,7 @@ public class RequirementChildProService extends CrudService<RequirementChildDao,
 
 	public RequirementChild get(String id) {
 		RequirementChild requirementChild = super.get(id);
-		requirementChild.setProblemList(problemDao.findList(new ProblemChild(requirementChild)));
+		requirementChild.setProblemChildList(problemDao.findList(new ProblemChild(requirementChild)));
 		requirementChild
 				.setRequirementproChildList(requirementproChildDao.findList(new RequirementproChild(requirementChild)));
 		return requirementChild;
@@ -56,7 +56,7 @@ public class RequirementChildProService extends CrudService<RequirementChildDao,
 	@Transactional(readOnly = false)
 	public void save(RequirementChild requirementChild) {
 		super.save(requirementChild);
-		for (ProblemChild problem : requirementChild.getProblemList()) {
+		for (ProblemChild problem : requirementChild.getProblemChildList()) {
 			if (problem.getId() == null) {
 				continue;
 			}

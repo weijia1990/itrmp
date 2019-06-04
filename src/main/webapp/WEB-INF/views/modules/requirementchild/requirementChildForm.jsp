@@ -224,7 +224,7 @@
 				<script type="text/javascript">
 						var problemRowIdx = 0, problemTpl = $("#problemTpl").html().replace(/(\/\/\<!\-\-)|(\/\/\-\->)/g,"");
 						$(document).ready(function() {
-							var data = ${fns:toJson(requirementChild.problemList)};
+							var data = ${fns:toJson(requirementChild.problemChildList)};
 							for (var i=0; i<data.length; i++){
 								addRow('#problemList', problemRowIdx, problemTpl, data[i]);
 								problemRowIdx = problemRowIdx + 1;

@@ -6,6 +6,7 @@ package com.thinkgem.jeesite.modules.childexamine.entity;
 import org.hibernate.validator.constraints.Length;
 
 import com.thinkgem.jeesite.common.persistence.DataEntity;
+import com.thinkgem.jeesite.modules.requirementchild.entity.RequirementChild;
 
 /**
  * 需求审核管理Entity

@@ -10,6 +10,8 @@ import java.util.List;
 import com.google.common.collect.Lists;
 
 import com.thinkgem.jeesite.common.persistence.DataEntity;
+import com.thinkgem.jeesite.modules.childexamine.entity.RequirementChildExamine;
+import com.thinkgem.jeesite.modules.childexamine.entity.RequirementFile;
 import com.thinkgem.jeesite.modules.requirementchildpro.entity.RequirementproChild;
 
 /**
@@ -18,6 +20,7 @@ import com.thinkgem.jeesite.modules.requirementchildpro.entity.RequirementproChi
  * @author weijia
  * @version 2019-06-02
  */
+
 public class RequirementChild extends DataEntity<RequirementChild> {
 
 	private static final long serialVersionUID = 1L;
@@ -36,8 +39,10 @@ public class RequirementChild extends DataEntity<RequirementChild> {
 	private String demandApprovePerson; // 需求审批联系人
 	private String demandApprovePhone; // 需求审批联系人联系电话
 	private String comments; // 备注
-	private List<ProblemChild> problemList = Lists.newArrayList(); // 子表列表
-	private List<RequirementproChild> requirementproChildList = Lists.newArrayList();
+	private List<ProblemChild> ProblemChildList = Lists.newArrayList(); // 子表列表
+	private List<RequirementChildExamine> requirementChildExamineList = Lists.newArrayList(); // 子表列表
+	private List<RequirementFile> requirementFileList = Lists.newArrayList(); // 子表列表
+	private List<RequirementproChild> requirementproChildList = Lists.newArrayList(); // 子表列表
 
 	public RequirementChild() {
 		super();
@@ -182,12 +187,28 @@ public class RequirementChild extends DataEntity<RequirementChild> {
 		this.comments = comments;
 	}
 
-	public List<ProblemChild> getProblemList() {
-		return problemList;
+	public List<ProblemChild> getProblemChildList() {
+		return ProblemChildList;
 	}
 
-	public void setProblemList(List<ProblemChild> problemList) {
-		this.problemList = problemList;
+	public void setProblemChildList(List<ProblemChild> problemChildList) {
+		ProblemChildList = problemChildList;
+	}
+
+	public List<RequirementChildExamine> getRequirementChildExamineList() {
+		return requirementChildExamineList;
+	}
+
+	public void setRequirementChildExamineList(List<RequirementChildExamine> requirementChildExamineList) {
+		this.requirementChildExamineList = requirementChildExamineList;
+	}
+
+	public List<RequirementFile> getRequirementFileList() {
+		return requirementFileList;
+	}
+
+	public void setRequirementFileList(List<RequirementFile> requirementFileList) {
+		this.requirementFileList = requirementFileList;
 	}
 
 	public List<RequirementproChild> getRequirementproChildList() {
