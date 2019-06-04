@@ -12,13 +12,14 @@ import com.thinkgem.jeesite.common.persistence.DataEntity;
 /**
  * 开发任务撤销Entity
  * @author ygj
- * @version 2019-06-01
+ * @version 2019-06-03
  */
 public class DevelopTaskcancel extends DataEntity<DevelopTaskcancel> {
 	
 	private static final long serialVersionUID = 1L;
 	private Date cancelTime;		// 撤销日期
 	private String cancelDesc;		// 撤销说明
+	private String taskId;		// 任务编号
 	
 	public DevelopTaskcancel() {
 		super();
@@ -44,6 +45,15 @@ public class DevelopTaskcancel extends DataEntity<DevelopTaskcancel> {
 
 	public void setCancelDesc(String cancelDesc) {
 		this.cancelDesc = cancelDesc;
+	}
+	
+	@Length(min=0, max=1000, message="任务编号长度必须介于 0 和 1000 之间")
+	public String getTaskId() {
+		return taskId;
+	}
+
+	public void setTaskId(String taskId) {
+		this.taskId = taskId;
 	}
 	
 }

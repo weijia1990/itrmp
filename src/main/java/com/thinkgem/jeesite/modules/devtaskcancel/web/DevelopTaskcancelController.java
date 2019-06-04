@@ -3,6 +3,8 @@
  */
 package com.thinkgem.jeesite.modules.devtaskcancel.web;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -25,7 +27,7 @@ import com.thinkgem.jeesite.modules.devtaskcancel.service.DevelopTaskcancelServi
 /**
  * 开发任务撤销Controller
  * @author ygj
- * @version 2019-06-01
+ * @version 2019-06-03
  */
 @Controller
 @RequestMapping(value = "${adminPath}/devtaskcancel/developTaskcancel")
@@ -54,7 +56,13 @@ public class DevelopTaskcancelController extends BaseController {
 	}
 
 	@RequestMapping(value = "form")
-	public String form(DevelopTaskcancel developTaskcancel, Model model) {
+	public String forms(HttpServletRequest request, HttpServletResponse response,DevelopTaskcancel developTaskcancel, Model model) {
+		String requirementsId = request.getParameter("requirementsId");
+		List<DevelopTaskcancel> findList = developTaskcancelService.findList(developTaskcancel);
+		if (findList.size()>0) {
+			developTaskcancel.setDelFlag("1");
+		}
+		developTaskcancel.setTaskId(requirementsId);
 		model.addAttribute("developTaskcancel", developTaskcancel);
 		return "modules/devtaskcancel/developTaskcancelForm";
 	}
@@ -62,7 +70,7 @@ public class DevelopTaskcancelController extends BaseController {
 	@RequestMapping(value = "save")
 	public String save(DevelopTaskcancel developTaskcancel, Model model, RedirectAttributes redirectAttributes) {
 		if (!beanValidator(model, developTaskcancel)){
-			return form(developTaskcancel, model);
+			return forms(null, null, developTaskcancel, model);
 		}
 		developTaskcancelService.save(developTaskcancel);
 		addMessage(redirectAttributes, "保存开发任务撤销成功");

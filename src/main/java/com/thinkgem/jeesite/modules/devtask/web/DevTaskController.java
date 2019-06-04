@@ -50,6 +50,8 @@ public class DevTaskController extends BaseController {
 	public String list(DevTask devTask, HttpServletRequest request, HttpServletResponse response, Model model) {
 		Page<DevTask> page = devTaskService.findPage(new Page<DevTask>(request, response), devTask); 
 		model.addAttribute("page", page);
+		String tasksn = request.getParameter("tt");
+		model.addAttribute("tasksn", tasksn);
 		return "modules/devtask/devTaskList";
 	}
 
@@ -58,12 +60,27 @@ public class DevTaskController extends BaseController {
 		model.addAttribute("devTask", devTask);
 		return "modules/devtask/devTaskForm";
 	}
+	@RequestMapping(value = "forms")
+	public String forms(DevTask devTask,HttpServletRequest request, HttpServletResponse response, Model model) {
+		String requestIds = request.getParameter("requestId");
+		devTask.setRequerstId(requestIds);
+		model.addAttribute("devTask", devTask);
+		return "modules/devtask/devTaskForm";
+	}
+	@RequestMapping(value = "reqToTask")
+	public String reqToTask(DevTask devTask, Model model) {
+		model.addAttribute("devTask", devTask);
+		return "modules/devtask/requestToTaskList";
+	}
 
 	@RequestMapping(value = "save")
-	public String save(DevTask devTask, Model model, RedirectAttributes redirectAttributes) {
+	public String save(DevTask devTask, Model model,HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes) {
 		if (!beanValidator(model, devTask)){
 			return form(devTask, model);
 		}
+		String requestIds = request.getParameter("requestId");
+		devTask.setRequerstId(requestIds);
+		
 		devTaskService.save(devTask);
 		addMessage(redirectAttributes, "保存开发任务创建成功");
 		return "redirect:"+Global.getAdminPath()+"/devtask/devTask/?repage";

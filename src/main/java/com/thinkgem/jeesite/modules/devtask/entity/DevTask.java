@@ -37,9 +37,17 @@ public class DevTask extends DataEntity<DevTask> {
 	private Date expactFinish;		// 预计完成时间
 	private String developTaskCancelDesc;		// 开发任务撤销说明
 	private Date explanBegin;		// 计划开始日期
-	
+	private String requerstId;     
 	public DevTask() {
 		super();
+	}
+
+	public String getRequerstId() {
+		return requerstId;
+	}
+
+	public void setRequerstId(String requerstId) {
+		this.requerstId = requerstId;
 	}
 
 	public DevTask(String id){

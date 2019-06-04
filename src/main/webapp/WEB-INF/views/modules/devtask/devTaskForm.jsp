@@ -30,7 +30,7 @@
 		<li><a href="${ctx}/devtask/devTask/">开发任务创建列表</a></li>
 		<li class="active"><a href="${ctx}/devtask/devTask/form?id=${devTask.id}">开发任务创建<shiro:hasPermission name="devtask:devTask:edit">${not empty devTask.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="devtask:devTask:edit">查看</shiro:lacksPermission></a></li>
 	</ul><br/>
-	<form:form id="inputForm" modelAttribute="devTask" action="${ctx}/devtask/devTask/save" method="post" class="form-horizontal">
+	<form:form id="inputForm" modelAttribute="devTask" action="${ctx}/devtask/devTask/save?requestId=${devTask.requerstId} " method="post" class="form-horizontal">
 		<form:hidden path="id"/>
 		<sys:message content="${message}"/>		
 		<div class="control-group">

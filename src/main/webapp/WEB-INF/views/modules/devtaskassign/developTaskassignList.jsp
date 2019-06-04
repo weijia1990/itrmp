@@ -16,7 +16,7 @@
         }
 	</script>
 </head>
-<body>
+<%-- <body>
 	<ul class="nav nav-tabs">
 		<li class="active"><a href="${ctx}/devtaskassign/developTaskassign/">开发任务指派列表</a></li>
 		<shiro:hasPermission name="devtaskassign:developTaskassign:edit"><li><a href="${ctx}/devtaskassign/developTaskassign/form">开发任务指派添加</a></li></shiro:hasPermission>
@@ -48,9 +48,51 @@
 					${developTaskassign.remarks}
 				</td>
 				<td>
-    				<a href="${ctx}/devtaskassign/developTaskassign/form?id=${developTaskassign.id}">修改</a>
+    				<a href="${ctx}/devtaskassign/developTaskassign/form?id=${developTaskassign.id}">开发任务指派</a>
 					<a href="${ctx}/devtaskassign/developTaskassign/delete?id=${developTaskassign.id}" onclick="return confirmx('确认要删除该开发任务指派吗？', this.href)">删除</a>
 				</td>
+			</tr>
+		</c:forEach>
+		</tbody>
+	</table>
+	<div class="pagination">${page}</div>
+</body> --%>
+<body>
+	<ul class="nav nav-tabs">
+		<li class="active"><a href="${ctx}/devtask/devTask/">开发任务指派列表</a></li>
+<%-- 		<li><a href="${ctx}/devtask/devTask/form">开发任务指派添加</a>
+ --%>	</ul>
+	<form:form id="searchForm" modelAttribute="devTask" action="${ctx}/devtask/devTask/" method="post" class="breadcrumb form-search">
+		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
+		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
+		<ul class="ul-form">
+			<li class="btns"><input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/></li>
+			<li class="clearfix"></li>
+		</ul>
+	</form:form>
+	<sys:message content="${message}"/>
+	<table id="contentTable" class="table table-striped table-bordered table-condensed">
+		<thead>
+			<tr>
+				<th>更新日期</th>
+				<th>标记</th>
+				<shiro:hasPermission name="devtask:devTask:edit"><th>操作</th></shiro:hasPermission>
+			</tr>
+		</thead>
+		<tbody>
+		<c:forEach items="${page.list}" var="devTask">
+			<tr>
+				<td><a href="${ctx}/devtask/devTask/form?id=${devTask.id}">
+					<fmt:formatDate value="${devTask.updateDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
+				</a></td>
+				<td>
+					${devTask.remarks}
+				</td>
+				<td>
+    				<a href="${ctx}/devtaskassign/developTaskassign/form?id=${developTaskassign.id}">修改 </a>
+    				<%-- <a href="${ctx}/devtaskassign/developTaskassign/form?id=${devTask.id}">开发任务指派</a>
+					<a href="${ctx}/devtask/devTask/delete?id=${devTask.id}" onclick="return confirmx('确认要删除该开发任务创建吗？', this.href)">删除</a>
+ --%>				</td>
 			</tr>
 		</c:forEach>
 		</tbody>

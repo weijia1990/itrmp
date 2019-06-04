@@ -10,7 +10,7 @@ import com.thinkgem.jeesite.modules.devtaskassign.entity.DevelopTaskassign;
 /**
  * 开发任务指派DAO接口
  * @author ygj
- * @version 2019-05-31
+ * @version 2019-06-03
  */
 @MyBatisDao
 public interface DevelopTaskassignDao extends CrudDao<DevelopTaskassign> {

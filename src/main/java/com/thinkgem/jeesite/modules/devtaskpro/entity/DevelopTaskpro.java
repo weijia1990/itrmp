@@ -12,7 +12,7 @@ import com.thinkgem.jeesite.common.persistence.DataEntity;
 /**
  * 开发任务跟进Entity
  * @author ygj
- * @version 2019-06-01
+ * @version 2019-06-03
  */
 public class DevelopTaskpro extends DataEntity<DevelopTaskpro> {
 	
@@ -20,16 +20,17 @@ public class DevelopTaskpro extends DataEntity<DevelopTaskpro> {
 	private String requirementSource;		// 需求来源
 	private String requirementClassify;		// 需求分类
 	private String businessSystem;		// 业务系统
-	private String requirementEmergency;		// 需求紧急程度
-	private String taskTitle;		// 任务名称
+	private String requirementEmergency;		// 紧急程度
+	private String taskTitle;		// 任务标题
 	private String signNo;		// 签报号
 	private Date acutalBeginTime;		// 实际开始日期
-	private Date acutalEndTime;		// 实际结束日期
+	private Date acutalEndTime;		// 实际结束时间
 	private String executor;		// 执行人员
 	private String acutalWorkAccounts;		// 实际工作量
 	private String status;		// 状态
 	private String developResult;		// 开发结果
 	private String testResult;		// 测试结果
+	private String taskId;		// 任务编号
 	
 	public DevelopTaskpro() {
 		super();
@@ -66,7 +67,7 @@ public class DevelopTaskpro extends DataEntity<DevelopTaskpro> {
 		this.businessSystem = businessSystem;
 	}
 	
-	@Length(min=0, max=100, message="需求紧急程度长度必须介于 0 和 100 之间")
+	@Length(min=0, max=100, message="紧急程度长度必须介于 0 和 100 之间")
 	public String getRequirementEmergency() {
 		return requirementEmergency;
 	}
@@ -75,7 +76,7 @@ public class DevelopTaskpro extends DataEntity<DevelopTaskpro> {
 		this.requirementEmergency = requirementEmergency;
 	}
 	
-	@Length(min=0, max=1000, message="任务名称长度必须介于 0 和 1000 之间")
+	@Length(min=0, max=1000, message="任务标题长度必须介于 0 和 1000 之间")
 	public String getTaskTitle() {
 		return taskTitle;
 	}
@@ -154,6 +155,15 @@ public class DevelopTaskpro extends DataEntity<DevelopTaskpro> {
 
 	public void setTestResult(String testResult) {
 		this.testResult = testResult;
+	}
+	
+	@Length(min=0, max=1000, message="任务编号长度必须介于 0 和 1000 之间")
+	public String getTaskId() {
+		return taskId;
+	}
+
+	public void setTaskId(String taskId) {
+		this.taskId = taskId;
 	}
 	
 }

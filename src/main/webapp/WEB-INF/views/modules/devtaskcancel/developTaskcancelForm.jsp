@@ -47,8 +47,20 @@
 				<form:input path="cancelDesc" htmlEscape="false" maxlength="20" class="input-xlarge "/>
 			</div>
 		</div>
+		<div class="control-group">
+			<label class="control-label">标记：</label>
+			<div class="controls">
+				<form:textarea path="remarks" htmlEscape="false" rows="4" maxlength="255" class="input-xxlarge "/>
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label">任务编号：</label>
+			<div class="controls">
+				<form:input path="taskId" htmlEscape="false" maxlength="1000" class="input-xlarge "/>
+			</div>
+		</div>
 		<div class="form-actions">
-			 <input id="btnSubmit" name="devtaskcancel:developTaskcancel:edit" class="btn btn-primary" type="submit" value="提交"/>&nbsp;
+			<input id="btnSubmit" class="btn btn-primary" type="submit" value="撤销"/>&nbsp;
 			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
 		</div>
 	</form:form>

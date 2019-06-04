@@ -81,6 +81,7 @@
 	
 	<insert id="insert">
 		INSERT INTO task(
+		    requerstId,
 			requirement_source,
 			requirement_classify,
 			business_system,
@@ -109,6 +110,7 @@
 			del_flag,
 			id
 		) VALUES (
+		    #{requerstId},
 			#{requirementSource},
 			#{requirementClassify},
 			#{businessSystem},

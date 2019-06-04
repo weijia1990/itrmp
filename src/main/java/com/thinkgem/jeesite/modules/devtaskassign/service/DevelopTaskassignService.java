@@ -16,7 +16,7 @@ import com.thinkgem.jeesite.modules.devtaskassign.dao.DevelopTaskassignDao;
 /**
  * 开发任务指派Service
  * @author ygj
- * @version 2019-05-31
+ * @version 2019-06-03
  */
 @Service
 @Transactional(readOnly = true)

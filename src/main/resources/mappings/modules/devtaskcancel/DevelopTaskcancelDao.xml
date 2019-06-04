@@ -11,7 +11,8 @@
 		a.update_by AS "updateBy.id",
 		a.update_date AS "updateDate",
 		a.remarks AS "remarks",
-		a.del_flag AS "delFlag"
+		a.del_flag AS "delFlag",
+		a.task_id AS "taskId"
 	</sql>
 	
 	<sql id="developTaskcancelJoins">
@@ -71,7 +72,8 @@
 			update_by,
 			update_date,
 			remarks,
-			del_flag
+			del_flag,
+			task_id
 		) VALUES (
 			#{id},
 			#{cancelTime},
@@ -81,7 +83,8 @@
 			#{updateBy.id},
 			#{updateDate},
 			#{remarks},
-			#{delFlag}
+			#{delFlag},
+			#{taskId}
 		)
 	</insert>
 	
@@ -91,7 +94,8 @@
 			cancel_desc = #{cancelDesc},
 			update_by = #{updateBy.id},
 			update_date = #{updateDate},
-			remarks = #{remarks}
+			remarks = #{remarks},
+			task_id = #{taskId}
 		WHERE id = #{id}
 	</update>
 	

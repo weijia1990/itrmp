@@ -3,24 +3,25 @@
 <mapper namespace="com.thinkgem.jeesite.modules.devtaskassign.dao.DevelopTaskassignDao">
     
 	<sql id="developTaskassignColumns">
-		a.id AS "id",
+		a.requirement_source AS "requirementSource",
+		a.requirement_classify AS "requirementClassify",
+		a.business_system AS "businessSystem",
+		a.requirement_emergency AS "requirementEmergency",
 		a.task_title AS "taskTitle",
+		a.sign_no AS "signNo",
+		a.explan_begin AS "explanBegin",
+		a.explan_end AS "explanEnd",
+		a.executor AS "executor",
+		a.explan_work_cacounts AS "explanWorkCacounts",
+		a.task_desc AS "taskDesc",
+		a.id AS "id",
 		a.create_by AS "createBy.id",
 		a.create_date AS "createDate",
 		a.update_by AS "updateBy.id",
 		a.update_date AS "updateDate",
 		a.remarks AS "remarks",
 		a.del_flag AS "delFlag",
-		a.explan_begin AS "explanBegin",
-		a.explan_end AS "explanEnd",
-		a.executor AS "executor",
-		a.explan_work_cacounts AS "explanWorkCacounts",
-		a.task_desc AS "taskDesc",
-		a.requirement_source AS "requirementSource",
-		a.requirement_classify AS "requirementClassify",
-		a.business_system AS "businessSystem",
-		a.requirement_emergency AS "requirementEmergency",
-		a.sign_no AS "signNo"
+		a.task_id AS "taskId"
 	</sql>
 	
 	<sql id="developTaskassignJoins">
@@ -72,62 +73,65 @@
 	
 	<insert id="insert">
 		INSERT INTO develop_taskassign(
-			id,
+			requirement_source,
+			requirement_classify,
+			business_system,
+			requirement_emergency,
 			task_title,
+			sign_no,
+			explan_begin,
+			explan_end,
+			executor,
+			explan_work_cacounts,
+			task_desc,
+			id,
 			create_by,
 			create_date,
 			update_by,
 			update_date,
 			remarks,
 			del_flag,
-			explan_begin,
-			explan_end,
-			executor,
-			explan_work_cacounts,
-			task_desc,
-			requirement_source,
-			requirement_classify,
-			business_system,
-			requirement_emergency,
-			sign_no
+			task_id
 		) VALUES (
-			#{id},
+			#{requirementSource},
+			#{requirementClassify},
+			#{businessSystem},
+			#{requirementEmergency},
 			#{taskTitle},
+			#{signNo},
+			#{explanBegin},
+			#{explanEnd},
+			#{executor},
+			#{explanWorkCacounts},
+			#{taskDesc},
+			#{id},
 			#{createBy.id},
 			#{createDate},
 			#{updateBy.id},
 			#{updateDate},
 			#{remarks},
 			#{delFlag},
-			#{explanBegin},
-			#{explanEnd},
-			#{executor},
-			#{explanWorkCacounts},
-			#{taskDesc},
-			#{requirementSource},
-			#{requirementClassify},
-			#{businessSystem},
-			#{requirementEmergency},
-			#{signNo}
+			#{taskId}
 		)
 	</insert>
 	
 	<update id="update">
 		UPDATE develop_taskassign SET 	
+			requirement_source = #{requirementSource},
+			requirement_classify = #{requirementClassify},
+			business_system = #{businessSystem},
+			requirement_emergency = #{requirementEmergency},
 			task_title = #{taskTitle},
-			update_by = #{updateBy.id},
-			update_date = #{updateDate},
-			remarks = #{remarks},
+			sign_no = #{signNo},
 			explan_begin = #{explanBegin},
 			explan_end = #{explanEnd},
 			executor = #{executor},
 			explan_work_cacounts = #{explanWorkCacounts},
 			task_desc = #{taskDesc},
-			requirement_source = #{requirementSource},
-			requirement_classify = #{requirementClassify},
-			business_system = #{businessSystem},
-			requirement_emergency = #{requirementEmergency},
-			sign_no = #{signNo}
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks},
+			task_id = #{taskId}
 		WHERE id = #{id}
 	</update>
 	

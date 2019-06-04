@@ -52,13 +52,13 @@
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label">需求紧急程度：</label>
+			<label class="control-label">紧急程度：</label>
 			<div class="controls">
 				<form:input path="requirementEmergency" htmlEscape="false" maxlength="100" class="input-xlarge "/>
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label">任务名称：</label>
+			<label class="control-label">任务标题：</label>
 			<div class="controls">
 				<form:input path="taskTitle" htmlEscape="false" maxlength="1000" class="input-xlarge "/>
 			</div>
@@ -78,7 +78,7 @@
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label">实际结束日期：</label>
+			<label class="control-label">实际结束时间：</label>
 			<div class="controls">
 				<input name="acutalEndTime" type="text" readonly="readonly" maxlength="20" class="input-medium Wdate "
 					value="<fmt:formatDate value="${developTaskpro.acutalEndTime}" pattern="yyyy-MM-dd HH:mm:ss"/>"
@@ -88,26 +88,19 @@
 		<div class="control-group">
 			<label class="control-label">执行人员：</label>
 			<div class="controls">
-				<form:select path="executor" class="input-xlarge ">
-					<form:option value="" label=""/>
-					<form:options items="${fns:getDictList('')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
-				</form:select>
+				<form:input path="executor" htmlEscape="false" maxlength="100" class="input-xlarge "/>
 			</div>
 		</div>
 		<div class="control-group">
 			<label class="control-label">实际工作量：</label>
 			<div class="controls">
-				<form:input path="acutalWorkAccounts" htmlEscape="false" maxlength="1000" class="input-xlarge "/>	工时
+				<form:input path="acutalWorkAccounts" htmlEscape="false" maxlength="1000" class="input-xlarge "/>
 			</div>
-		
 		</div>
 		<div class="control-group">
 			<label class="control-label">状态：</label>
 			<div class="controls">
-				<form:select path="status" class="input-xlarge ">
-					<form:option value="" label=""/>
-					<form:options items="${fns:getDictList('')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
-				</form:select>
+				<form:input path="status" htmlEscape="false" maxlength="1000" class="input-xlarge "/>
 			</div>
 		</div>
 		<div class="control-group">
@@ -122,8 +115,20 @@
 				<form:input path="testResult" htmlEscape="false" maxlength="64" class="input-xlarge "/>
 			</div>
 		</div>
+		<div class="control-group">
+			<label class="control-label">标记：</label>
+			<div class="controls">
+				<form:textarea path="remarks" htmlEscape="false" rows="4" maxlength="255" class="input-xxlarge "/>
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label">任务编号：</label>
+			<div class="controls">
+				<form:input path="taskId" htmlEscape="false" maxlength="1000" class="input-xlarge "/>
+			</div>
+		</div>
 		<div class="form-actions">
-			<input id="btnSubmit" name="devtaskpro:developTaskpro:edit" class="btn btn-primary" type="submit" value="提交"/>&nbsp;
+			<input id="btnSubmit" class="btn btn-primary" type="submit" value="跟进"/>&nbsp;
 			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
 		</div>
 	</form:form>

@@ -47,10 +47,10 @@
 				<td>
 					${developTaskcancel.remarks}
 				</td>
-				<td>
+				<shiro:hasPermission name="devtaskcancel:developTaskcancel:edit"><td>
     				<a href="${ctx}/devtaskcancel/developTaskcancel/form?id=${developTaskcancel.id}">修改</a>
 					<a href="${ctx}/devtaskcancel/developTaskcancel/delete?id=${developTaskcancel.id}" onclick="return confirmx('确认要删除该开发任务撤销吗？', this.href)">删除</a>
-				</td>
+				</td></shiro:hasPermission>
 			</tr>
 		</c:forEach>
 		</tbody>

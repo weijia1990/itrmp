@@ -10,7 +10,7 @@ import com.thinkgem.jeesite.modules.devtaskpro.entity.DevelopTaskpro;
 /**
  * 开发任务跟进DAO接口
  * @author ygj
- * @version 2019-06-01
+ * @version 2019-06-03
  */
 @MyBatisDao
 public interface DevelopTaskproDao extends CrudDao<DevelopTaskpro> {

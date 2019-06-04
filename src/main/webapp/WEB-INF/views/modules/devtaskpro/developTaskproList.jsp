@@ -47,10 +47,10 @@
 				<td>
 					${developTaskpro.remarks}
 				</td>
-				<td>
+				<shiro:hasPermission name="devtaskpro:developTaskpro:edit"><td>
     				<a href="${ctx}/devtaskpro/developTaskpro/form?id=${developTaskpro.id}">修改</a>
 					<a href="${ctx}/devtaskpro/developTaskpro/delete?id=${developTaskpro.id}" onclick="return confirmx('确认要删除该开发任务跟进吗？', this.href)">删除</a>
-				</td>
+				</td></shiro:hasPermission>
 			</tr>
 		</c:forEach>
 		</tbody>

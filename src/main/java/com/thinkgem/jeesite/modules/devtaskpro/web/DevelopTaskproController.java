@@ -25,7 +25,7 @@ import com.thinkgem.jeesite.modules.devtaskpro.service.DevelopTaskproService;
 /**
  * 开发任务跟进Controller
  * @author ygj
- * @version 2019-06-01
+ * @version 2019-06-03
  */
 @Controller
 @RequestMapping(value = "${adminPath}/devtaskpro/developTaskpro")
@@ -54,7 +54,9 @@ public class DevelopTaskproController extends BaseController {
 	}
 
 	@RequestMapping(value = "form")
-	public String form(DevelopTaskpro developTaskpro, Model model) {
+	public String forms(HttpServletRequest request, HttpServletResponse response,DevelopTaskpro developTaskpro, Model model) {
+		String requirementsId = request.getParameter("requirementsId");
+		developTaskpro.setTaskId(requirementsId);
 		model.addAttribute("developTaskpro", developTaskpro);
 		return "modules/devtaskpro/developTaskproForm";
 	}
@@ -62,7 +64,7 @@ public class DevelopTaskproController extends BaseController {
 	@RequestMapping(value = "save")
 	public String save(DevelopTaskpro developTaskpro, Model model, RedirectAttributes redirectAttributes) {
 		if (!beanValidator(model, developTaskpro)){
-			return form(developTaskpro, model);
+			return forms(null, null, developTaskpro, model);
 		}
 		developTaskproService.save(developTaskpro);
 		addMessage(redirectAttributes, "保存开发任务跟进成功");

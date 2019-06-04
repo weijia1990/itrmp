@@ -22,7 +22,8 @@
 		a.update_by AS "updateBy.id",
 		a.update_date AS "updateDate",
 		a.remarks AS "remarks",
-		a.del_flag AS "delFlag"
+		a.del_flag AS "delFlag",
+		a.task_id AS "taskId"
 	</sql>
 	
 	<sql id="developTaskproJoins">
@@ -93,7 +94,8 @@
 			update_by,
 			update_date,
 			remarks,
-			del_flag
+			del_flag,
+			task_id
 		) VALUES (
 			#{requirementSource},
 			#{requirementClassify},
@@ -114,7 +116,8 @@
 			#{updateBy.id},
 			#{updateDate},
 			#{remarks},
-			#{delFlag}
+			#{delFlag},
+			#{taskId}
 		)
 	</insert>
 	
@@ -135,7 +138,8 @@
 			test_result = #{testResult},
 			update_by = #{updateBy.id},
 			update_date = #{updateDate},
-			remarks = #{remarks}
+			remarks = #{remarks},
+			task_id = #{taskId}
 		WHERE id = #{id}
 	</update>
 	

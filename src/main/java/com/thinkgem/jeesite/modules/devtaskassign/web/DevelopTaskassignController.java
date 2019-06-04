@@ -3,6 +3,8 @@
  */
 package com.thinkgem.jeesite.modules.devtaskassign.web;
 
+import java.util.Date;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -18,14 +20,17 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.thinkgem.jeesite.common.config.Global;
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.web.BaseController;
+import com.thinkgem.jeesite.common.utils.DateUtils;
 import com.thinkgem.jeesite.common.utils.StringUtils;
+import com.thinkgem.jeesite.modules.allocation.entity.TaskAllocation;
 import com.thinkgem.jeesite.modules.devtaskassign.entity.DevelopTaskassign;
 import com.thinkgem.jeesite.modules.devtaskassign.service.DevelopTaskassignService;
+import com.thinkgem.jeesite.modules.requirement.entity.Requirements;
 
 /**
  * 开发任务指派Controller
  * @author ygj
- * @version 2019-05-31
+ * @version 2019-06-03
  */
 @Controller
 @RequestMapping(value = "${adminPath}/devtaskassign/developTaskassign")
@@ -53,8 +58,15 @@ public class DevelopTaskassignController extends BaseController {
 		return "modules/devtaskassign/developTaskassignList";
 	}
 
-	@RequestMapping(value = "form")
+	/*@RequestMapping(value = "form")
 	public String form(DevelopTaskassign developTaskassign, Model model) {
+		model.addAttribute("developTaskassign", developTaskassign);
+		return "modules/devtaskassign/developTaskassignForm";
+	}*/
+	@RequestMapping(value = "form")
+	public String forms(HttpServletRequest request, HttpServletResponse response,DevelopTaskassign developTaskassign, Model model) {
+		String requirementsId = request.getParameter("requirementsId");
+        developTaskassign.setTaskId(requirementsId);
 		model.addAttribute("developTaskassign", developTaskassign);
 		return "modules/devtaskassign/developTaskassignForm";
 	}
@@ -62,7 +74,7 @@ public class DevelopTaskassignController extends BaseController {
 	@RequestMapping(value = "save")
 	public String save(DevelopTaskassign developTaskassign, Model model, RedirectAttributes redirectAttributes) {
 		if (!beanValidator(model, developTaskassign)){
-			return form(developTaskassign, model);
+			return forms(null, null, developTaskassign, model);
 		}
 		developTaskassignService.save(developTaskassign);
 		addMessage(redirectAttributes, "保存开发任务指派成功");
@@ -76,4 +88,14 @@ public class DevelopTaskassignController extends BaseController {
 		return "redirect:"+Global.getAdminPath()+"/devtaskassign/developTaskassign/?repage";
 	}
 
+	@RequestMapping(value = "assign")
+	public String save(HttpServletRequest request, HttpServletResponse response) {
+		String requirementsId = request.getParameter("id");
+		DevelopTaskassignService   developTaskassignService=new DevelopTaskassignService();
+		DevelopTaskassign developTaskassign =new DevelopTaskassign();
+		developTaskassign.setTaskId(requirementsId);
+		developTaskassignService.save(developTaskassign);
+		return "modules/devtaskassign/developTaskassignForm";
+	}
+	
 }

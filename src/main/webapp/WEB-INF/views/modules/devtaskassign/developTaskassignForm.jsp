@@ -27,12 +27,12 @@
 </head>
 <body>
 	<ul class="nav nav-tabs">
-		<li><a href="${ctx}/devtaskassign/developTaskassign/">开发任务指派列表</a></li>
-		<li class="active"><a href="${ctx}/devtaskassign/developTaskassign/form?id=${developTaskassign.id}">开发任务指派<shiro:hasPermission name="devtaskassign:developTaskassign:edit">${not empty developTaskassign.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="devtaskassign:developTaskassign:edit">查看</shiro:lacksPermission></a></li>
-	</ul><br/>
+		<li><a href="${ctx}/devtaskassign/developTaskassign/">开发任务指派</a></li>
+<%-- 		<li class="active"><a href="${ctx}/devtaskassign/developTaskassign/form?id=${developTaskassign.id}">开发任务指派<shiro:hasPermission name="devtaskassign:developTaskassign:edit">${not empty developTaskassign.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="devtaskassign:developTaskassign:edit">查看</shiro:lacksPermission></a></li>
+ --%>	</ul><br/>
 	<form:form id="inputForm" modelAttribute="developTaskassign" action="${ctx}/devtaskassign/developTaskassign/save" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
-		<sys:message content="${message}"/>	
+		<sys:message content="${message}"/>		
 		<div class="control-group">
 			<label class="control-label">需求来源：</label>
 			<div class="controls">
@@ -52,7 +52,7 @@
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label">需求紧急程度：</label>
+			<label class="control-label">紧急程度：</label>
 			<div class="controls">
 				<form:input path="requirementEmergency" htmlEscape="false" maxlength="100" class="input-xlarge "/>
 			</div>
@@ -68,8 +68,7 @@
 			<div class="controls">
 				<form:input path="signNo" htmlEscape="false" maxlength="1000" class="input-xlarge "/>
 			</div>
-		</div>	
-			
+		</div>
 		<div class="control-group">
 			<label class="control-label">计划开始日期：</label>
 			<div class="controls">
@@ -107,9 +106,20 @@
 				<form:input path="taskDesc" htmlEscape="false" maxlength="1000" class="input-xlarge "/>
 			</div>
 		</div>
-		
+		<div class="control-group">
+			<label class="control-label">标记：</label>
+			<div class="controls">
+				<form:textarea path="remarks" htmlEscape="false" rows="4" maxlength="255" class="input-xxlarge "/>
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label">任务编号：</label>
+			<div class="controls">
+				<form:input path="taskId"  htmlEscape="false" maxlength="1000" class="input-xlarge "/>
+			</div>
+		</div>
 		<div class="form-actions">
-			<input id="btnSubmit"  name="devtaskassign:developTaskassign:edit" class="btn btn-primary" type="submit" value="保 存"/>&nbsp;
+			<input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>&nbsp;
 			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
 		</div>
 	</form:form>
