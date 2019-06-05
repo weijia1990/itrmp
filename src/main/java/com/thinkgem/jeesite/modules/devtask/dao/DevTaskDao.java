@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.thinkgem.jeesite.common.persistence.CrudDao;
 import com.thinkgem.jeesite.common.persistence.annotation.MyBatisDao;
 import com.thinkgem.jeesite.modules.devtask.entity.DevTask;
-import com.thinkgem.jeesite.modules.devtask.entity.ReqTaskUn;
 import com.thinkgem.jeesite.modules.requirement.entity.Requirements;
 
 /**

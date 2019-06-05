@@ -11,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.thinkgem.jeesite.common.persistence.CrudDao;
 import com.thinkgem.jeesite.common.persistence.DataEntity;
 import com.thinkgem.jeesite.common.persistence.Page;
-import com.thinkgem.jeesite.modules.devtask.entity.ReqTaskUn;
 
 /**
  * Service基类
