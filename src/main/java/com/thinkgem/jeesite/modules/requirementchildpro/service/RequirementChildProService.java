@@ -13,6 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.service.CrudService;
 import com.thinkgem.jeesite.common.utils.StringUtils;
+import com.thinkgem.jeesite.modules.childexamine.dao.RequirementChildExamineDao;
+import com.thinkgem.jeesite.modules.childexamine.entity.RequirementChildExamine;
 import com.thinkgem.jeesite.modules.requirement.entity.Problem;
 import com.thinkgem.jeesite.modules.requirement.entity.Requirements;
 import com.thinkgem.jeesite.modules.requirementchild.dao.ProblemChildDao;
@@ -36,12 +38,16 @@ public class RequirementChildProService extends CrudService<RequirementChildDao,
 	private ProblemChildDao problemDao;
 	@Autowired
 	private RequirementproChildDao requirementproChildDao;
+	@Autowired
+	private RequirementChildExamineDao requirementChildExamineDao;
 
 	public RequirementChild get(String id) {
 		RequirementChild requirementChild = super.get(id);
 		requirementChild.setProblemChildList(problemDao.findList(new ProblemChild(requirementChild)));
 		requirementChild
 				.setRequirementproChildList(requirementproChildDao.findList(new RequirementproChild(requirementChild)));
+		requirementChild.setRequirementChildExamineList(
+				requirementChildExamineDao.findList(new RequirementChildExamine(requirementChild)));
 		return requirementChild;
 	}
 
@@ -101,5 +107,9 @@ public class RequirementChildProService extends CrudService<RequirementChildDao,
 
 	public List<Map<String, String>> query(Requirements requirements) {
 		return requirementproChildDao.query(requirements);
+	}
+
+	public List<Map<String, String>> queryExamine(Requirements requirements) {
+		return requirementproChildDao.queryExamine(requirements);
 	}
 }

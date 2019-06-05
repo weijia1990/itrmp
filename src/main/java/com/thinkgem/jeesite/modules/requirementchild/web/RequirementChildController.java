@@ -88,7 +88,7 @@ public class RequirementChildController extends BaseController {
 			return form(requirementChild, null, model);
 		}
 		Requirements requirements = taskAllocationService.changeAllocationStatus(requirementChild.getRequirements(),
-				"2");
+				"3");
 		requirementsService.update(requirements);
 		requirementChildService.save(requirementChild);
 		addMessage(redirectAttributes, "保存子需求管理成功");

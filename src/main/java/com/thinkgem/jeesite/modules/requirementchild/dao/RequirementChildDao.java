@@ -20,4 +20,6 @@ public interface RequirementChildDao extends CrudDao<RequirementChild> {
 
 	List<RequirementChild> getAllByRequirementId(String requirementId);
 
+	void updateExamine(RequirementChild requirementChild);
+
 }

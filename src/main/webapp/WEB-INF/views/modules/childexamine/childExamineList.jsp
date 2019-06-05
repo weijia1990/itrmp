@@ -2,7 +2,7 @@
 <%@ include file="/WEB-INF/views/include/taglib.jsp"%>
 <html>
 <head>
-<title>需求分配管理</title>
+<title>需求审核管理管理</title>
 <meta name="decorator" content="default" />
 <script type="text/javascript">
 	$(document).ready(function() {});
@@ -16,11 +16,14 @@
 </head>
 <body>
 	<ul class="nav nav-tabs">
-		<li class="active"><a href="${ctx}/requirement/requirements/">需求分配查询列表</a></li>
+		<li class="active"><a href="${ctx}/requirement/requirements/">需求列表</a></li>
+		<shiro:hasPermission name="requirement:requirements:edit">
+			<li><a href="${ctx}/requirement/requirements/form">需求创建</a></li>
+		</shiro:hasPermission>
 	</ul>
 	<form:form id="searchForm" modelAttribute="requirements"
-		action="${ctx}/requirement/requirements/allocations" method="post"
-		class="breadcrumb form-search">
+		action="${ctx}/childexamine/requirementChild/query"
+		method="post" class="breadcrumb form-search">
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}" />
 		<input id="pageSize" name="pageSize" type="hidden"
 			value="${page.pageSize}" />
@@ -73,35 +76,33 @@
 		<thead>
 			<tr>
 				<th>需求编号</th>
+				<th>子需求编号</th>
 				<th>需求来源</th>
-				<th>需求分类</th>
+				<th>项目归属</th>
 				<th>业务系统</th>
 				<th>期望上线时间</th>
-				<th>申请人</th>
+				<th>预计完成时间</th>
 				<th>创建时间</th>
+				<th>申请人</th>
 				<th>操作</th>
 			</tr>
 		</thead>
 		<tbody>
 			<c:forEach items="${page.list}" var="requirements">
-				<c:if test="${requirements.isAllocation != 0}">
-					<tr>
-						<td>${requirements.id}</td>
-						<td>${fns:getDictLabel(requirements.requirementSource, 'requirement', '')}
-						</td>
-						<td>${fns:getDictLabel(requirements.requirementClassify, '', '')}
-						</td>
-						<td>${fns:getDictLabel(requirements.businessSystem, '', '')}</td>
-						<td><fmt:formatDate value="${requirements.expectOnline}"
-								pattern="yyyy-MM-dd HH:mm:ss" /></td>
-						<td>${requirements.proposer}</td>
-						<td><fmt:formatDate value="${requirements.createDate}"
-								pattern="yyyy-MM-dd HH:mm:ss" /></td>
-						<td><a
-							href="${ctx}/requirement/requirements/${requirements.isAllocation == 1?'waitAllocation':'showAllocation'}?id=${requirements.id}">${requirements.isAllocation == 1?'请分配':'已分配'}</a>
-						</td>
-					</tr>
-				</c:if>
+				<tr>
+					<td>${requirements.id}</td>
+					<td>${requirements.rcId}</td>
+					<td>${fns:getDictLabel(requirements.requirementSource, 'requirement_source', '')}</td>
+					<td>${requirements.itemBelonds}</td>
+					<td>${fns:getDictLabel(requirements.businessSystem, 'business_system', '')}</td>
+					<td>${requirements.expectOnline}</td>
+					<td>${requirements.exceptFinish}</td>
+					<td>${requirements.createDate}</td>
+					<td>${requirements.proposer}</td>
+					<td><a
+						href="${ctx}/childexamine/requirementChild/form?id=${requirements.rcId}">需求审核</a>
+					</td>
+				</tr>
 			</c:forEach>
 		</tbody>
 	</table>

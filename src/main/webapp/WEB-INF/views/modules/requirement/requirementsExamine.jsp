@@ -69,6 +69,7 @@
 		action="${ctx}/requirement/requirements/save" method="post"
 		class="form-horizontal">
 		<form:hidden path="id" />
+		<form:input path="isAllocation" value='1' type="hidden" />
 		<sys:message content="${message}" />
 		<div class="control-group">
 			<label class="control-label">需求来源：</label>

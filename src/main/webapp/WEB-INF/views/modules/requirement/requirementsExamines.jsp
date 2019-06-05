@@ -38,6 +38,7 @@
 					<form:options items="${fns:getDictList('requirement_classify')}"
 						itemLabel="label" itemValue="value" htmlEscape="false" />
 				</form:select></li>
+			<form:input path="isAllocation" value='0' type="hidden" />
 			<li class="btns"><input id="btnSubmit" class="btn btn-primary"
 				type="submit" value="查询" /></li>
 			<li class="clearfix"></li>
@@ -66,9 +67,9 @@
 					<td>${requirements.id}</td>
 					<td>${fns:getDictLabel(requirements.requirementSource, 'requirement', '')}
 					</td>
-					<td>${fns:getDictLabel(requirements.requirementClassify, '', '')}
+					<td>${fns:getDictLabel(requirements.requirementClassify, 'requirement_classify', '')}
 					</td>
-					<td>${fns:getDictLabel(requirements.businessSystem, '', '')}</td>
+					<td>${fns:getDictLabel(requirements.businessSystem, 'business_system', '')}</td>
 					<td><fmt:formatDate value="${requirements.expectOnline}"
 							pattern="yyyy-MM-dd HH:mm:ss" /></td>
 					<td>${requirements.proposer}</td>

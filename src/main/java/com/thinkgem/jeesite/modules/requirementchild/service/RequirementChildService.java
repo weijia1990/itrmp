@@ -144,4 +144,8 @@ public class RequirementChildService extends CrudService<RequirementChildDao, Re
 		return requirementChildDao.getAllByRequirementId(requirementId);
 	}
 
+	public void updateExamine(RequirementChild requirementChild) {
+		requirementChildDao.updateExamine(requirementChild);
+	}
+
 }

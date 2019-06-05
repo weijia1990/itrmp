@@ -175,4 +175,10 @@
 		WHERE a.requirements_id = #{id}
 	</select>
 
+	<update id="updateExamine"
+		parameterType="com.thinkgem.jeesite.modules.requirementchild.entity.RequirementChild">
+		update requirement_child rc set rc.examine_status = '1'
+		WHERE rc.id=#{id}
+	</update>
+
 </mapper>

@@ -22,4 +22,6 @@ public interface RequirementproChildDao extends CrudDao<RequirementproChild> {
 
 	List<Map<String, String>> query(Requirements requirements);
 
+	List<Map<String, String>> queryExamine(Requirements requirements);
+
 }

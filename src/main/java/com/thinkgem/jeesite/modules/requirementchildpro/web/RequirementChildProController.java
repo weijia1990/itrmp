@@ -53,8 +53,6 @@ public class RequirementChildProController extends BaseController {
 	@RequestMapping(value = { "list", "" })
 	public String list(RequirementChild requirementChild, HttpServletRequest request, HttpServletResponse response,
 			Model model) {
-		Page<RequirementChild> page = requirementChildService.findPage(new Page<RequirementChild>(request, response),
-				requirementChild);
 		model.addAttribute("requirements", new Requirements());
 		return "modules/requirementchildpro/requirementChildProList";
 	}

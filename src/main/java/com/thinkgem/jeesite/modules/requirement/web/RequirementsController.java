@@ -143,7 +143,6 @@ public class RequirementsController extends BaseController {
 			return form(requirements, model);
 		}
 		requirementsService.save(requirements);
-		addMessage(redirectAttributes, "保存需求创建成功");
 		return "redirect:" + Global.getAdminPath() + "/requirement/requirements/?repage";
 	}
 

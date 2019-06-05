@@ -111,7 +111,7 @@
 					<td>${requirements.proposer}</td>
 					<td><fmt:formatDate value="${requirements.createDate}"
 							pattern="yyyy-MM-dd HH:mm:ss" /></td>
-					<td><c:if test="${requirements.isAllocation ==2}">
+					<td><c:if test="${requirements.isAllocation ==3}">
 							<a
 								href="${ctx}/requirementchild/requirementChild/main?requirementId=${requirements.id}">查看</a>
 						</c:if> <a
