@@ -38,7 +38,16 @@ public class EstTaskTest extends DataEntity<EstTaskTest> {
 	private String testApplicationDesc;		// 测试申请描述
 	private String testPointsAdvice;		// 测试要点及建议
 	private String appendix;		// 附件
+	private String requestId;
 	
+	public String getRequestId() {
+		return requestId;
+	}
+
+	public void setRequestId(String requestId) {
+		this.requestId = requestId;
+	}
+
 	public EstTaskTest() {
 		super();
 	}

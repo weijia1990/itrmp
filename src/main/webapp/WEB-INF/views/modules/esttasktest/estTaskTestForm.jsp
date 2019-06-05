@@ -30,7 +30,7 @@
 		<li><a href="${ctx}/esttasktest/estTaskTest/">测试任务创建列表</a></li>
 		<li class="active"><a href="${ctx}/esttasktest/estTaskTest/form?id=${estTaskTest.id}">测试任务创建<shiro:hasPermission name="esttasktest:estTaskTest:edit">${not empty estTaskTest.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="esttasktest:estTaskTest:edit">查看</shiro:lacksPermission></a></li>
 	</ul><br/>
-	<form:form id="inputForm" modelAttribute="estTaskTest" action="${ctx}/esttasktest/estTaskTest/save" method="post" class="form-horizontal">
+	<form:form id="inputForm" modelAttribute="estTaskTest" action="${ctx}/esttasktest/estTaskTest/save?requestId=${estTaskTest.requestId}" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
 		<sys:message content="${message}"/>		
 		<div class="control-group">

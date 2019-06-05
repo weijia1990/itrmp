@@ -4,14 +4,18 @@
 package com.thinkgem.jeesite.modules.devtask.service;
 
 import java.util.List;
+import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.service.CrudService;
 import com.thinkgem.jeesite.modules.devtask.entity.DevTask;
+import com.thinkgem.jeesite.modules.devtask.entity.ReqTaskUn;
 import com.thinkgem.jeesite.modules.devtask.dao.DevTaskDao;
+import com.thinkgem.jeesite.modules.requirement.entity.Requirements;
 
 /**
  * 开发任务创建Service
@@ -22,6 +26,9 @@ import com.thinkgem.jeesite.modules.devtask.dao.DevTaskDao;
 @Transactional(readOnly = true)
 public class DevTaskService extends CrudService<DevTaskDao, DevTask> {
 
+	@Autowired
+	private DevTaskDao devTaskDao;
+	
 	public DevTask get(String id) {
 		return super.get(id);
 	}
@@ -30,7 +37,7 @@ public class DevTaskService extends CrudService<DevTaskDao, DevTask> {
 		return super.findList(devTask);
 	}
 	
-	public Page<DevTask> findPage(Page<DevTask> page, DevTask devTask) {
+	public Page<DevTask> findPage(Page<DevTask> page,DevTask devTask) {
 		return super.findPage(page, devTask);
 	}
 	
@@ -42,6 +49,10 @@ public class DevTaskService extends CrudService<DevTaskDao, DevTask> {
 	@Transactional(readOnly = false)
 	public void delete(DevTask devTask) {
 		super.delete(devTask);
+	}
+
+	public List<Map<String, String>> query(Requirements requirements) {
+		return devTaskDao.query(requirements);
 	}
 	
 }

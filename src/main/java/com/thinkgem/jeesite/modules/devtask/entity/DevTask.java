@@ -37,7 +37,37 @@ public class DevTask extends DataEntity<DevTask> {
 	private Date expactFinish;		// 预计完成时间
 	private String developTaskCancelDesc;		// 开发任务撤销说明
 	private Date explanBegin;		// 计划开始日期
-	private String requerstId;     
+	private String requerstId;   
+	private String isAssign;
+	private String isCancel;
+	private String ispro;
+	
+	
+	
+	public String getIsAssign() {
+		return isAssign;
+	}
+
+	public void setIsAssign(String isAssign) {
+		this.isAssign = isAssign;
+	}
+
+	public String getIsCancel() {
+		return isCancel;
+	}
+
+	public void setIsCancel(String isCancel) {
+		this.isCancel = isCancel;
+	}
+
+	public String getIspro() {
+		return ispro;
+	}
+
+	public void setIspro(String ispro) {
+		this.ispro = ispro;
+	}
+
 	public DevTask() {
 		super();
 	}

@@ -80,6 +80,7 @@
 	
 	<insert id="insert">
 		INSERT INTO task_test(
+			requestId,
 			requirement_source,
 			requirement_classify,
 			business_system,
@@ -107,6 +108,7 @@
 			remarks,
 			del_flag
 		) VALUES (
+			#{requestId},
 			#{requirementSource},
 			#{requirementClassify},
 			#{businessSystem},

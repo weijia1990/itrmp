@@ -23,7 +23,7 @@
 	    <li class="active"><a href="${ctx}/requirement/requirements/">需求列表</a></li>
 		
 	</ul>
-		<form:form id="searchForm" modelAttribute="requirements" action="${ctx}/requirement/requirements/lists" method="post" class="breadcrumb form-search">
+		<form:form id="searchForm" modelAttribute="requirements" action="${ctx}/requirement/requirements/lists?tete=${cdt}" method="post" class="breadcrumb form-search">
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
 		<ul class="ul-form">
@@ -50,7 +50,15 @@
 					${requirements.remarks}
 				</td>
 				<td>
-    				<a href="${ctx}/devtask/devTask/forms?requestId=${requirements.id}">创建</a>
+				   <c:choose>
+				      <c:when test="${tete=='dev'}">
+    				     <a href="${ctx}/devtask/devTask/forms?requestId=${requirements.id}">创建开发任务</a>
+				      </c:when>
+				      <c:when test="${tete=='tests'}">
+				           <a href="${ctx}/esttasktest/estTaskTest/forms?requestId=${requirements.id}">创建测试任务</a>
+				      </c:when>
+				      <c:otherwise></c:otherwise>
+				   </c:choose>
 				</td>
 			</tr>
 		</c:forEach>

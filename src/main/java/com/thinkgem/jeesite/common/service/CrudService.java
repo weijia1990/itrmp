@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.thinkgem.jeesite.common.persistence.CrudDao;
 import com.thinkgem.jeesite.common.persistence.DataEntity;
 import com.thinkgem.jeesite.common.persistence.Page;
+import com.thinkgem.jeesite.modules.devtask.entity.ReqTaskUn;
 
 /**
  * Service基类
@@ -88,5 +89,6 @@ public abstract class CrudService<D extends CrudDao<T>, T extends DataEntity<T>>
 	public void delete(T entity) {
 		dao.delete(entity);
 	}
+
 
 }

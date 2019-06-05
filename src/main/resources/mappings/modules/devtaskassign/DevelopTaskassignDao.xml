@@ -140,5 +140,9 @@
 			del_flag = #{DEL_FLAG_DELETE}
 		WHERE id = #{id}
 	</update>
-	
+	<select id="getAllAssignByTaskId" resultType="DevelopTaskassign">
+		SELECT *
+		FROM develop_taskassign WHERE task_id =
+		#{requirementsId}
+	</select>
 </mapper>

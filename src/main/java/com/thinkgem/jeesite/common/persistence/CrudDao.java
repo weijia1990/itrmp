@@ -5,6 +5,8 @@ package com.thinkgem.jeesite.common.persistence;
 
 import java.util.List;
 
+import com.thinkgem.jeesite.modules.devtask.entity.ReqTaskUn;
+
 /**
  * DAO支持类实现
  * @author ThinkGem
@@ -33,6 +35,7 @@ public interface CrudDao<T> extends BaseDao {
 	 * @return
 	 */
 	public List<T> findList(T entity);
+	
 	
 	/**
 	 * 查询所有数据列表

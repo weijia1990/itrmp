@@ -66,7 +66,9 @@ public class RequirementsController extends BaseController {
 	public String lists(Requirements requirements, HttpServletRequest request, HttpServletResponse response,
 			Model model) {
 		Page<Requirements> page = requirementsService.findPage(new Page<Requirements>(request, response), requirements);
+		String tete = request.getParameter("tete");
 		model.addAttribute("page", page);
+		model.addAttribute("tete", tete);
 		return "modules/devtask/requestToTaskList";
 	}
 

@@ -47,9 +47,9 @@
 		SELECT 
 			<include refid="devTaskColumns"/>
 		FROM task a
-		<include refid="devTaskJoins"/>
+		    <include refid="devTaskJoins"/>
 		<where>
-			a.del_flag = #{DEL_FLAG_NORMAL}
+			 a.del_flag = #{DEL_FLAG_NORMAL}
 		</where>
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
@@ -174,5 +174,72 @@
 			del_flag = #{DEL_FLAG_DELETE}
 		WHERE id = #{id}
 	</update>
+	
+	<resultMap type="HashMap" id="queryMap">
+		<id property="id" column="id" />
+		<result property="bcId" column="bcid" javaType="String" />
+		<result property="tasktitle" column="task_title"
+			javaType="String" />
+		<result property="businessSystem" column="business_system" javaType="String" />
+		<result property="status" column="status"
+			javaType="String" />
+		<result property="personIncharge" column="person_incgarge"
+			javaType="String" />
+		<result property="exceptBegin" column="explan_begin"
+			javaType="String" />
+		<result property="exceptEnd" column="explan_end"
+			javaType="String" />
+		<result property="acutalbeginTime" column="acutal_begin_time"
+			javaType="String" />
+		<result property="acutalendTime" column="acutal_end_time"
+			javaType="String" />
+		<result property="createDate" column="create_date" javaType="String" />
+		<result property="isAssign" column="is_assign" javaType="String" />
+		<result property="isCancel" column="is_cancel" javaType="String" />
+		<result property="isPro" column="is_pro" javaType="String" />
+	</resultMap>
+
+	<select id="query" resultMap="queryMap"
+		parameterType="com.thinkgem.jeesite.modules.requirement.entity.Requirements">
+		select 
+		 a.id,
+		 b.id bcid,
+		 a.task_title,
+		 b.business_system,
+		 e.status,
+		 a.person_incgarge,
+		 c.explan_begin,
+		 c.explan_end,
+		 e.acutal_begin_time,
+		 e.acutal_end_time,
+		 a.create_date,
+		 a.is_assign,
+		 a.is_cancel,
+		 a.is_pro
+		FROM task a join requirements b on a.requerstid = b.id join develop_taskassign c on a.id = c.task_id join  develop_taskpro e on a.id = e.task_id
+		<where>
+			<if test="requirementSource !=null and requirementSource!=''">
+				and b.requirement_source = #{requirementSource}
+			</if>
+			<if test="requirementClassify !=null and requirementClassify!=''">
+				and b.requirement_classify = #{requirementClassify}
+			</if>
+			<if test="businessSystem !=null and businessSystem!=''">
+				and b.business_system = #{businessSystem}
+			</if>
+			<if test="requirementEmergency !=null and requirementEmergency!=''">
+				and b.requirement_emergency = #{requirementEmergency}
+			</if>
+			<if test="expectOnline !=null and expectOnline!=''">
+				and b.expect_online = #{expectOnline}
+			</if>
+			<if test="createDate !=null and createDate!=''">
+				and b.create_date = #{createDate}
+			</if>
+			<if test="proposer !=null and proposer!=''">
+				and b.proposer = #{proposer}
+			</if>
+		</where>
+	</select>
 	
 </mapper>

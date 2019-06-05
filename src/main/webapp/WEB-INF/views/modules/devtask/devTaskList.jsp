@@ -23,7 +23,7 @@
 		<li class="active"><a href="${ctx}/devtask/devTask/">开发任务列表</a></li>
 		<li><a href="${ctx}/devtask/devTask/form">开发任务创建添加</a> 
 	</ul>
-	<form:form id="searchForm" modelAttribute="devTask" action="${ctx}/devtask/devTask/list?tt=${tasksn}" method="post" class="breadcrumb form-search">
+	<form:form id="searchForm" modelAttribute="requirements" action="${ctx}/devtask/devTask/query?tt=${tasksn}" method="post" class="breadcrumb form-search">
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
 		<ul class="ul-form">
@@ -52,6 +52,15 @@
 					<form:options items="${fns:getDictList('requirement_emergency')}"
 						itemLabel="label" itemValue="value" htmlEscape="false" />
 				</form:select></li>
+			<li><label>期望上线时间：</label> <input name="expectOnline"
+				type="text" readonly="readonly" maxlength="20"
+				class="input-medium Wdate"
+				value="<fmt:formatDate value="${requirements.expectOnline}" pattern="yyyy-MM-dd HH:mm:ss"/>"
+				onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',isShowClear:false});" />
+			</li>
+			<li><label>申请人：</label> <form:input path="proposer"
+					htmlEscape="false" maxlength="50" class="input-medium" /></li>
+			
 			<li><label>创建时间：</label> <input name="createDate" type="text"
 				readonly="readonly" maxlength="20" class="input-medium Wdate"
 				value="<fmt:formatDate value="${requirements.createDate}" pattern="yyyy-MM-dd HH:mm:ss"/>"
@@ -67,35 +76,51 @@
 		<thead>
 			<tr>
 				<th>开发任务编号</th>
+				<th>需求编号</th>
+				<th>标题</th>
+				<th>业务系统</th>
+				<th>状态</th>
+				<th>开发负责人</th>
+				<th>计划开始时间</th>
+				<th>计划完成时间</th>
+				<th>实际开始时间</th>
+				<th>实际完成时间</th>
 				<th>创建时间</th>
-				<shiro:hasPermission name="devtask:devTask:edit"><th>操作</th></shiro:hasPermission>
+				<th>操作</th>
 			</tr>
 		</thead>
 		<tbody>
-		<c:forEach items="${page.list}" var="devTask">
+		<c:forEach items="${page.list}" var="devTasks">
 			<tr>
-					<td>${devTask.id}</td>
-					<td><fmt:formatDate value="${devTask.createDate}"
-							pattern="yyyy-MM-dd HH:mm:ss" /></td>
+					<td>${devTasks.id}</td>
+					<td>${devTasks.bcId}</td>
+					<td>${devTasks.tasktitle}</td>
+					<td>${fns:getDictLabel(devTasks.businessSystem, 'business_system', '')}</td>
+					<td>${devTasks.status}</td>
+					<td>${devTasks.personIncharge}</td>
+					<td>${devTasks.exceptBegin}</td>
+					<td>${devTasks.exceptEnd}</td>
+					<td>${devTasks.acutalbeginTime}</td>
+					<td>${devTasks.acutalendTime}</td>
+					<td><fmt:formatDate value="${devTasks.createDate}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
+					
 			<td>				
 				<c:choose>
 				  <c:when test="${tasksn=='assign'}">
-				   <a href="${ctx}/devtaskassign/developTaskassign/form?requirementsId=${devTask.id}">指派</a>
+				   <a href="${ctx}/devtaskassign/developTaskassign/form?requirementsId=${devTasks.id}">指派</a>
 				 
 				  </c:when>
 				  <c:when test="${tasksn=='cancel'}">
-				   <a href="${ctx}/devtaskcancel/developTaskcancel/form?requirementsId=${devTask.id}">撤销</a>
+				   <a href="${ctx}/devtaskcancel/developTaskcancel/form?requirementsId=${devTasks.id}">撤销</a>
 				  
 				  </c:when>
 				  <c:when test="${tasksn=='pro'}">
-				   <a href="${ctx}/devtaskpro/developTaskpro/form?requirementsId=${devTask.id}">跟进</a>
+				   <a href="${ctx}/devtaskpro/developTaskpro/form?requirementsId=${devTasks.id}">跟进</a>
 				  
 				  </c:when>
 				  <c:otherwise>
 				  </c:otherwise>
 				</c:choose>
-    				<a href="${ctx}/devtask/devTask/form?id=${devTask.id}">修改</a>
-					<a href="${ctx}/devtask/devTask/delete?id=${devTask.id}" onclick="return confirmx('确认要删除该开发任务创建吗？', this.href)">删除</a>
 				</td>
 			</tr>
 		</c:forEach>

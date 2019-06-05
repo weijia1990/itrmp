@@ -14,5 +14,7 @@ import com.thinkgem.jeesite.modules.devtaskassign.entity.DevelopTaskassign;
  */
 @MyBatisDao
 public interface DevelopTaskassignDao extends CrudDao<DevelopTaskassign> {
+
+	DevelopTaskassign getAllAssignByTaskId(String requirementsId);
 	
 }

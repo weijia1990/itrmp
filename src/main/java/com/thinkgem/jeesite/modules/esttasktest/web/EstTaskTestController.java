@@ -58,12 +58,21 @@ public class EstTaskTestController extends BaseController {
 		model.addAttribute("estTaskTest", estTaskTest);
 		return "modules/esttasktest/estTaskTestForm";
 	}
+	@RequestMapping(value = "forms")
+	public String forms(EstTaskTest estTaskTest, Model model,HttpServletRequest request, HttpServletResponse response) {
+		String requestIds = request.getParameter("requestId");
+		estTaskTest.setRequestId(requestIds);
+		model.addAttribute("estTaskTest", estTaskTest);
+		return "modules/esttasktest/estTaskTestForm";
+	}
 
 	@RequestMapping(value = "save")
-	public String save(EstTaskTest estTaskTest, Model model, RedirectAttributes redirectAttributes) {
+	public String save(EstTaskTest estTaskTest, Model model,HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes) {
 		if (!beanValidator(model, estTaskTest)){
 			return form(estTaskTest, model);
 		}
+		String requestIds = request.getParameter("requestId");
+		estTaskTest.setRequestId(requestIds);
 		estTaskTestService.save(estTaskTest);
 		addMessage(redirectAttributes, "保存测试任务创建成功");
 		return "redirect:"+Global.getAdminPath()+"/esttasktest/estTaskTest/?repage";

@@ -3,6 +3,9 @@
  */
 package com.thinkgem.jeesite.modules.devtask.web;
 
+import java.util.List;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -20,7 +23,9 @@ import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.modules.devtask.entity.DevTask;
+import com.thinkgem.jeesite.modules.devtask.entity.ReqTaskUn;
 import com.thinkgem.jeesite.modules.devtask.service.DevTaskService;
+import com.thinkgem.jeesite.modules.requirement.entity.Requirements;
 
 /**
  * 开发任务创建Controller
@@ -48,13 +53,25 @@ public class DevTaskController extends BaseController {
 	
 	@RequestMapping(value = {"list", ""})
 	public String list(DevTask devTask, HttpServletRequest request, HttpServletResponse response, Model model) {
-		Page<DevTask> page = devTaskService.findPage(new Page<DevTask>(request, response), devTask); 
+	//	Page<DevTask> page = devTaskService.findPage(new Page<DevTask>(request, response), devTask); 
+		Page<Map<String, String>> page = new Page<Map<String, String>>();
+		Requirements requirements=new Requirements();
+		model.addAttribute("requirements", requirements);
 		model.addAttribute("page", page);
 		String tasksn = request.getParameter("tt");
 		model.addAttribute("tasksn", tasksn);
 		return "modules/devtask/devTaskList";
 	}
-
+	@RequestMapping(value = "query")
+	public String query(Requirements requirements,HttpServletRequest request, HttpServletResponse response, Model model) {
+		List<Map<String, String>> query = devTaskService.query(requirements);
+		Page<Map<String, String>> page = new Page<Map<String, String>>();
+		page.setList(query);
+		model.addAttribute("page", page);
+		String tasksn = request.getParameter("tt");
+		model.addAttribute("tasksn", tasksn);
+		return "modules/devtask/devTaskList";
+	}
 	@RequestMapping(value = "form")
 	public String form(DevTask devTask, Model model) {
 		model.addAttribute("devTask", devTask);
@@ -70,6 +87,15 @@ public class DevTaskController extends BaseController {
 	@RequestMapping(value = "reqToTask")
 	public String reqToTask(DevTask devTask, Model model) {
 		model.addAttribute("devTask", devTask);
+		String dev="dev";
+		model.addAttribute("cdt", dev);
+		return "modules/devtask/requestToTaskList";
+	}
+	@RequestMapping(value = "reqToTest")
+	public String reqToTest(DevTask devTask, Model model) {
+		model.addAttribute("devTask", devTask);
+		String tests="tests";
+		model.addAttribute("cdt", tests);
 		return "modules/devtask/requestToTaskList";
 	}
 
