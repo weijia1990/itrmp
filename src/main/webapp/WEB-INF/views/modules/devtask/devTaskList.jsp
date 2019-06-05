@@ -102,7 +102,7 @@
 					<td>${devTasks.exceptEnd}</td>
 					<td>${devTasks.acutalbeginTime}</td>
 					<td>${devTasks.acutalendTime}</td>
-					<td><fmt:formatDate value="${devTasks.createDate}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
+					<td>${devTasks.createDate}</td>
 					
 			<td>				
 				<c:choose>
