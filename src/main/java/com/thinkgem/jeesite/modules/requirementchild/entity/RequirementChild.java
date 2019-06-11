@@ -3,13 +3,14 @@
  */
 package com.thinkgem.jeesite.modules.requirementchild.entity;
 
-import org.hibernate.validator.constraints.Length;
 import java.util.Date;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import java.util.List;
-import com.google.common.collect.Lists;
 
-import com.thinkgem.jeesite.common.persistence.DataEntity;
+import org.hibernate.validator.constraints.Length;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.google.common.collect.Lists;
+import com.thinkgem.jeesite.common.persistence.ActEntity;
 import com.thinkgem.jeesite.modules.childexamine.entity.RequirementChildExamine;
 import com.thinkgem.jeesite.modules.childexamine.entity.RequirementFile;
 import com.thinkgem.jeesite.modules.requirementchildpro.entity.RequirementproChild;
@@ -21,7 +22,7 @@ import com.thinkgem.jeesite.modules.requirementchildpro.entity.RequirementproChi
  * @version 2019-06-02
  */
 
-public class RequirementChild extends DataEntity<RequirementChild> {
+public class RequirementChild extends ActEntity<RequirementChild> {
 
 	private static final long serialVersionUID = 1L;
 	private String requirements; // 需求编号

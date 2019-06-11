@@ -71,6 +71,12 @@
 		action="${ctx}/requirement/requirements/save" method="post"
 		class="form-horizontal">
 		<form:hidden path="id" />
+		<form:hidden path="act.taskId" />
+		<form:hidden path="act.taskName" />
+		<form:hidden path="act.taskDefKey" />
+		<form:hidden path="act.procInsId" />
+		<form:hidden path="act.procDefId" />
+		<form:hidden id="flag" path="act.flag" />
 		<sys:message content="${message}" />
 		<div class="control-group">
 			<label class="control-label">需求来源：</label>
@@ -317,6 +323,7 @@
 			<input id="btnCancel" class="btn" type="button" value="返 回"
 				onclick="history.go(-1)" />
 		</div>
+		<act:histoicFlow procInsId="${requirements.act.procInsId}" />
 	</form:form>
 </body>
 </html>

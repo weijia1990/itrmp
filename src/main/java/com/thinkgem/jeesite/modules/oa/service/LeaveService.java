@@ -88,7 +88,7 @@ public class LeaveService extends BaseService {
 		identityService.setAuthenticatedUserId(leave.getCurrentUser().getLoginName());
 		
 		// 启动流程
-		String businessKey = leave.getId().toString();
+		String businessKey = "oa_leave:"+leave.getId().toString();
 		variables.put("type", "leave");
 		variables.put("busId", businessKey);
 		ProcessInstance processInstance = runtimeService.startProcessInstanceByKey(ActUtils.PD_LEAVE[0], businessKey, variables);

@@ -66,9 +66,15 @@
 	</ul>
 	<br />
 	<form:form id="inputForm" modelAttribute="requirements"
-		action="${ctx}/requirement/requirements/save" method="post"
+		action="${ctx}/requirement/requirements/saveExamine" method="post"
 		class="form-horizontal">
 		<form:hidden path="id" />
+		<form:hidden path="act.taskId" />
+		<form:hidden path="act.taskName" />
+		<form:hidden path="act.taskDefKey" />
+		<form:hidden path="act.procInsId" />
+		<form:hidden path="act.procDefId" />
+		<form:hidden id="flag" path="act.flag" />
 		<form:input path="isAllocation" value='1' type="hidden" />
 		<sys:message content="${message}" />
 		<div class="control-group">
@@ -251,6 +257,13 @@
 			</div>
 		</div>
 		<div class="control-group">
+			<label class="control-label">您的意见：</label>
+			<div class="controls">
+				<form:textarea path="act.comment" class="required" rows="5"
+					maxlength="20" cssStyle="width:500px" />
+			</div>
+		</div>
+		<div class="control-group">
 			<label class="control-label">最后更新时间：</label>
 			<div class="controls">
 				<input name="latUpdateTime" type="text" readonly="readonly"
@@ -308,12 +321,13 @@
 			</div>
 		</div>
 		<div class="form-actions">
-			<shiro:hasPermission name="requirement:requirements:edit">
-				<input id="btnSubmit" class="btn btn-primary" type="submit"
-					value="审 核" />&nbsp;</shiro:hasPermission>
-			<input id="btnCancel" class="btn" type="button" value="返 回"
-				onclick="history.go(-1)" />
+			<input id="btnSubmit" class="btn btn-primary" type="submit"
+				value="同 意" onclick="$('#flag').val('yes')" />&nbsp; <input
+				id="btnSubmit" class="btn btn-inverse" type="submit" value="驳 回"
+				onclick="$('#flag').val('no')" />&nbsp; <input id="btnCancel"
+				class="btn" type="button" value="返 回" onclick="history.go(-1)" />
 		</div>
+		<act:histoicFlow procInsId="${requirements.act.procInsId}" />
 	</form:form>
 </body>
 </html>

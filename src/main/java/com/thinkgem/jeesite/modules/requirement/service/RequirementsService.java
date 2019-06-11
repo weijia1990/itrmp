@@ -4,17 +4,21 @@
 package com.thinkgem.jeesite.modules.requirement.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.google.common.collect.Maps;
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.service.CrudService;
 import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.modules.requirement.entity.Requirements;
 import com.thinkgem.jeesite.modules.requirement.dao.RequirementsDao;
 import com.thinkgem.jeesite.modules.requirement.entity.Problem;
+import com.thinkgem.jeesite.modules.act.service.ActTaskService;
+import com.thinkgem.jeesite.modules.act.utils.ActUtils;
 import com.thinkgem.jeesite.modules.requirement.dao.ProblemDao;
 
 /**
@@ -29,6 +33,9 @@ public class RequirementsService extends CrudService<RequirementsDao, Requiremen
 
 	@Autowired
 	private ProblemDao problemDao;
+
+	@Autowired
+	private ActTaskService actTaskService;
 
 	public Requirements get(String id) {
 		Requirements requirements = super.get(id);
@@ -64,6 +71,9 @@ public class RequirementsService extends CrudService<RequirementsDao, Requiremen
 				problemDao.delete(problem);
 			}
 		}
+		// 启动流程
+		actTaskService.startProcess(ActUtils.PD_REQUIREMENT[0], ActUtils.PD_REQUIREMENT[1], requirements.getId(),
+				requirements.getComments());
 	}
 
 	@Transactional(readOnly = false)
@@ -74,6 +84,30 @@ public class RequirementsService extends CrudService<RequirementsDao, Requiremen
 
 	public void update(Requirements requirements) {
 		dao.update(requirements);
+	}
+
+	public void saveExamine(Requirements requirements) {
+
+		String taskDefKey = requirements.getAct().getTaskDefKey();
+
+		// 设置意见
+		requirements.getAct().setComment(("yes".equals(requirements.getAct().getFlag()) ? "[同意] " : "[驳回] ")
+				+ requirements.getAct().getComment());
+
+		if ("examine".equals(taskDefKey)) {
+			requirements.setIsAllocation("1");
+		} else if ("allocation".equals(taskDefKey)) {
+			requirements.setIsAllocation("2");
+		}
+
+		requirements.preUpdate();
+
+		// 提交流程任务
+		Map<String, Object> vars = Maps.newHashMap();
+		vars.put("pass", "yes".equals(requirements.getAct().getFlag()) ? "1" : "0");
+		actTaskService.complete(requirements.getAct().getTaskId(), requirements.getAct().getProcInsId(),
+				requirements.getAct().getComment(), vars);
+
 	}
 
 }

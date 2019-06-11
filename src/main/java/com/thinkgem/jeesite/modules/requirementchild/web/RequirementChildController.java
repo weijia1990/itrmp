@@ -47,7 +47,10 @@ public class RequirementChildController extends BaseController {
 	public RequirementChild get(@RequestParam(required = false) String id) {
 		RequirementChild entity = null;
 		if (StringUtils.isNotBlank(id)) {
-			entity = requirementChildService.get(id);
+			try {
+				entity = requirementChildService.get(id);
+			} catch (Exception e) {
+			}
 		}
 		if (entity == null) {
 			entity = new RequirementChild();

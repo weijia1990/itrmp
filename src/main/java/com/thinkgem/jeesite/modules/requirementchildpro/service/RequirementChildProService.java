@@ -112,4 +112,8 @@ public class RequirementChildProService extends CrudService<RequirementChildDao,
 	public List<Map<String, String>> queryExamine(Requirements requirements) {
 		return requirementproChildDao.queryExamine(requirements);
 	}
+
+	public List<Map<String, String>> queryExamined(Requirements requirements) {
+		return requirementproChildDao.queryExamined(requirements);
+	}
 }

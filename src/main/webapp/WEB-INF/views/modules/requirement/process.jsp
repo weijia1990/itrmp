@@ -2,7 +2,7 @@
 <%@ include file="/WEB-INF/views/include/taglib.jsp"%>
 <html>
 <head>
-<title>需求任务待分配管理</title>
+<title>需求处理</title>
 <meta name="decorator" content="default" />
 <script type="text/javascript">
 	$(document).ready(function() {
@@ -40,6 +40,7 @@
 				}
 			}
 		});
+		$("#addNew").hide();
 	}
 	function delRow(obj, prefix) {
 		var id = $(prefix + "_id");
@@ -55,14 +56,14 @@
 			$(obj).html("&times;").attr("title", "删除");
 			$(obj).parent().parent().removeClass("error");
 		}
+		$("#addNew").show();
 	}
 </script>
 </head>
 <body>
 	<ul class="nav nav-tabs">
-		<li><a href="${ctx}/requirement/requirements/examines">需求分配查询列表</a></li>
 		<li class="active"><a
-			href="${ctx}/requirement/requirements/form?id=${requirements.id}">需求分配</a></li>
+			href="${ctx}/requirement/requirements/form?id=${requirements.id}">需求处理</a></li>
 	</ul>
 	<br />
 	<form:form id="inputForm" modelAttribute="requirements"
@@ -138,9 +139,10 @@
 			<label class="control-label">期望上线时间：</label>
 			<div class="controls">
 				<input name="expectOnline" type="text" readonly="readonly"
-					disabled="true" maxlength="20" class="input-medium Wdate "
+					maxlength="20" class="input-medium Wdate "
 					value="<fmt:formatDate value="${requirements.expectOnline}" pattern="yyyy-MM-dd HH:mm:ss"/>"
-					onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',isShowClear:false});" />
+					onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',isShowClear:false});"
+					disabled="true" />
 			</div>
 		</div>
 		<div class="control-group">
@@ -256,13 +258,6 @@
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label">分配意见：</label>
-			<div class="controls">
-				<form:textarea path="act.comment" class="required" rows="5"
-					maxlength="20" cssStyle="width:500px" />
-			</div>
-		</div>
-		<div class="control-group">
 			<label class="control-label">最后更新时间：</label>
 			<div class="controls">
 				<input name="latUpdateTime" type="text" readonly="readonly"
@@ -270,6 +265,13 @@
 					value="<fmt:formatDate value="${requirements.latUpdateTime}" pattern="yyyy-MM-dd HH:mm:ss"/>"
 					onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',isShowClear:false});"
 					disabled="true" />
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label">您的意见：</label>
+			<div class="controls">
+				<form:textarea path="act.comment" class="required" rows="5"
+					maxlength="20" cssStyle="width:500px" />
 			</div>
 		</div>
 		<div class="control-group">
@@ -289,6 +291,13 @@
 					</thead>
 					<tbody id="problemList">
 					</tbody>
+					<tfoot id="addNew">
+						<tr>
+							<td colspan="6"><a href="javascript:"
+								onclick="addRow('#problemList', problemRowIdx, problemTpl);problemRowIdx = problemRowIdx + 1;"
+								class="btn">新增</a></td>
+						</tr>
+					</tfoot>
 				</table>
 				<script type="text/template" id="problemTpl">//<!--
 						<tr id="problemList{{idx}}">
@@ -297,53 +306,18 @@
 								<input id="problemList{{idx}}_delFlag" name="problemList[{{idx}}].delFlag" type="hidden" value="0"/>
 							</td>
 							<td>
-								<input id="problemList{{idx}}_problemDesc" name="problemList[{{idx}}].problemDesc" type="text" value="{{row.problemDesc}}" maxlength="1000" class="input-small "  disabled="true"/>
+								<input disabled="true" id="problemList{{idx}}_problemDesc" name="problemList[{{idx}}].problemDesc" type="text" value="{{row.problemDesc}}" maxlength="1000" class="input-small "/>
 							</td>
 							<td>
-								<input id="problemList{{idx}}_problemNo" name="problemList[{{idx}}].problemNo" type="text" value="{{row.problemNo}}" maxlength="20" class="input-small "  disabled="true"/>
+								<input disabled="true" id="problemList{{idx}}_problemNo" name="problemList[{{idx}}].problemNo" type="text" value="{{row.problemNo}}" maxlength="20" class="input-small "/>
 							</td>
-						</tr>//-->
-					</script>
-			</div>
-		</div>
-
-		<div class="control-group">
-			<label class="control-label"><b>任务分配信息：</b></label>
-			<div class="controls">
-				<table id="contentTable"
-					class="table table-striped table-bordered table-condensed">
-					<thead>
-						<tr>
-							<th class="hide"></th>
-							<th>需求负责人</th>
-							<th>预计完成时间</th>
-							<shiro:hasPermission name="requirement:requirements:edit">
-								<th width="10">&nbsp;</th>
-							</shiro:hasPermission>
-						</tr>
-					</thead>
-					<tbody id="allocationList">
-					</tbody>
-				</table>
-				<script type="text/template" id="allocationTpl">//<!--
-						<tr id="allocationList{{idx}}">
-							<td class="hide">
-								<input id="allocationList{{idx}}_id" name="allocationList.id" type="hidden" value="{{row.id}}"/>
-								<input id="allocationList{{idx}}_delFlag" name="allocationList.delFlag" type="hidden" value="0"/>
-							</td>
-							<td>
-								<input id="allocationList{{idx}}_requirementResponsePerson" name="allocationList.requirementResponsePerson" type="text" value="{{row.requirementResponsePerson}}" maxlength="1000" class="input-small required"  />
-								<span class="help-inline"><font color="red">*</font> </span>
-							</td>
-							<td>
-								<input id="allocationList{{idx}}_expectFinsh" name="allocationList.expectFinsh" type="text" value="<fmt:formatDate value="${row.expectFinsh}" pattern="yyyy-MM-dd HH:mm:ss"/>"
-					onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',isShowClear:false});"  maxlength="20" class="Wdate required"/>	<span class="help-inline"><font color="red">*</font> </span></td>
+							<shiro:hasPermission name="requirement:requirements:edit"><td class="text-center" width="10">
+								{{#delBtn}}<span class="close" onclick="delRow(this, '#problemList{{idx}}')" title="删除">&times;</span>{{/delBtn}}
+							</td></shiro:hasPermission>
 						</tr>//-->
 					</script>
 				<script type="text/javascript">
 						var problemRowIdx = 0, problemTpl = $("#problemTpl").html().replace(/(\/\/\<!\-\-)|(\/\/\-\->)/g,"");
-						var allocationRowIdx = 0, allocationTpl = $("#allocationTpl").html().replace(/(\/\/\<!\-\-)|(\/\/\-\->)/g,"");
-						addRow('#allocationList', allocationRowIdx, allocationTpl);allocationRowIdx = allocationRowIdx + 1;
 						$(document).ready(function() {
 							var data = ${fns:toJson(requirements.problemList)};
 							for (var i=0; i<data.length; i++){
@@ -356,9 +330,10 @@
 		</div>
 		<div class="form-actions">
 			<input id="btnSubmit" class="btn btn-primary" type="submit"
-				value="保 存" onclick="$('#flag').val('yes')" />&nbsp; <input
-				id="btnCancel" class="btn" type="button" value="返 回"
-				onclick="history.go(-1)" />
+				value="需求分析" onclick="$('#flag').val('no')" />&nbsp; <input
+				id="btnChexiao" class="btn btn-primary" type="submit" value="拆分需求"
+				onclick="$('#flag').val('yes')" />&nbsp; <input id="btnCancel"
+				class="btn" type="button" value="返 回" onclick="history.go(-1)" />
 		</div>
 		<act:histoicFlow procInsId="${requirements.act.procInsId}" />
 	</form:form>

@@ -86,8 +86,8 @@ public class DevTaskController extends BaseController {
 	@RequestMapping(value = "reqToTask")
 	public String reqToTask(DevTask devTask, Model model) {
 		model.addAttribute("devTask", devTask);
-		String dev="dev";
-		model.addAttribute("cdt", dev);
+		model.addAttribute("cdt", "dev");
+		model.addAttribute("requirements", new Requirements());
 		return "modules/devtask/requestToTaskList";
 	}
 	@RequestMapping(value = "reqToTest")

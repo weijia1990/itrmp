@@ -21,6 +21,7 @@ import com.thinkgem.jeesite.common.config.Global;
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.common.web.BaseController;
+import com.thinkgem.jeesite.modules.act.service.ActTaskService;
 import com.thinkgem.jeesite.modules.allocation.entity.TaskAllocation;
 import com.thinkgem.jeesite.modules.allocation.service.TaskAllocationService;
 import com.thinkgem.jeesite.modules.requirement.entity.Requirements;
@@ -41,6 +42,9 @@ public class RequirementsController extends BaseController {
 
 	@Autowired
 	private TaskAllocationService taskAllocationService;
+
+	@Autowired
+	private ActTaskService actTaskService;
 
 	@ModelAttribute
 	public Requirements get(@RequestParam(required = false) String id) {
@@ -92,6 +96,12 @@ public class RequirementsController extends BaseController {
 		return "modules/requirement/requirementsExamine";
 	}
 
+	@RequestMapping(value = "created")
+	public String created(Requirements requirements, Model model) {
+		model.addAttribute("requirements", requirements);
+		return "modules/requirement/created";
+	}
+
 	@RequestMapping(value = "waitAllocation")
 	public String waitAllocation(Requirements requirements, Model model) {
 		model.addAttribute("requirements", requirements);
@@ -116,6 +126,16 @@ public class RequirementsController extends BaseController {
 	@RequestMapping(value = "requirementChild")
 	public String requirementChild(Requirements requirements, Model model) {
 		return "modules/requirement/requirementsChild";
+	}
+
+	@RequestMapping(value = "show")
+	public String show(Requirements requirements, Model model) {
+		return "modules/requirement/show";
+	}
+
+	@RequestMapping(value = "process")
+	public String process(Requirements requirements, Model model) {
+		return "modules/requirement/process";
 	}
 
 	@RequestMapping(value = "requirementChilds")
@@ -144,8 +164,20 @@ public class RequirementsController extends BaseController {
 		if (!beanValidator(model, requirements)) {
 			return form(requirements, model);
 		}
+
 		requirementsService.save(requirements);
 		return "redirect:" + Global.getAdminPath() + "/requirement/requirements/?repage";
+	}
+
+	@RequestMapping(value = "saveExamine")
+	public String saveExamine(Requirements requirements, Model model, RedirectAttributes redirectAttributes) {
+		if (StringUtils.isBlank(requirements.getAct().getFlag())
+				|| StringUtils.isBlank(requirements.getAct().getComment())) {
+			addMessage(model, "请填写审核意见。");
+			return form(requirements, model);
+		}
+		requirementsService.saveExamine(requirements);
+		return "redirect:" + adminPath + "/act/task/todo/";
 	}
 
 	@RequestMapping(value = "delete")

@@ -227,4 +227,45 @@
 		</where>
 	</select>
 
+	<select id="queryExamined" resultMap="queryMap"
+		parameterType="com.thinkgem.jeesite.modules.requirement.entity.Requirements">
+		SELECT r.id,
+		rc.id rcid,
+		r.requirement_source,
+		rc.item_belonds,
+		r.business_system,
+		r.expect_online,
+		rc.except_finish,
+		rc.create_date,
+		r.proposer
+		FROM requirements r
+		join (SELECT * FROM requirement_child
+		WHERE examine_status = '1') rc
+		on r.id =
+		rc.requirements_id
+		<where>
+			<if test="requirementSource !=null and requirementSource!=''">
+				and r.requirement_source = #{requirementSource}
+			</if>
+			<if test="requirementClassify !=null and requirementClassify!=''">
+				and r.requirement_classify = #{requirementClassify}
+			</if>
+			<if test="businessSystem !=null and businessSystem!=''">
+				and r.business_system = #{businessSystem}
+			</if>
+			<if test="requirementEmergency !=null and requirementEmergency!=''">
+				and r.requirement_emergency = #{requirementEmergency}
+			</if>
+			<if test="expectOnline !=null and expectOnline!=''">
+				and r.expect_online = #{expectOnline}
+			</if>
+			<if test="createDate !=null and createDate!=''">
+				and r.create_date = #{createDate}
+			</if>
+			<if test="proposer !=null and proposer!=''">
+				and r.proposer = #{proposer}
+			</if>
+		</where>
+	</select>
+
 </mapper>

@@ -958,5 +958,5 @@ public class ActTaskService extends BaseService {
 	public ProcessEngine getProcessEngine() {
 		return processEngine;
 	}
-	
+
 }
