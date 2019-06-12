@@ -4,11 +4,13 @@
 package com.thinkgem.jeesite.modules.requirementchild.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.google.common.collect.Maps;
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.service.CrudService;
 import com.thinkgem.jeesite.common.utils.StringUtils;
@@ -17,6 +19,7 @@ import com.thinkgem.jeesite.modules.requirementchildpro.dao.RequirementproChildD
 import com.thinkgem.jeesite.modules.requirementchildpro.entity.RequirementproChild;
 import com.thinkgem.jeesite.modules.requirementchild.dao.RequirementChildDao;
 import com.thinkgem.jeesite.modules.requirementchild.entity.ProblemChild;
+import com.thinkgem.jeesite.modules.act.service.ActTaskService;
 import com.thinkgem.jeesite.modules.childexamine.dao.RequirementChildExamineDao;
 import com.thinkgem.jeesite.modules.childexamine.dao.RequirementFileDao;
 import com.thinkgem.jeesite.modules.childexamine.entity.RequirementChildExamine;
@@ -43,6 +46,8 @@ public class RequirementChildService extends CrudService<RequirementChildDao, Re
 	private RequirementproChildDao requirementproChildDao;
 	@Autowired
 	private RequirementFileDao requirementFileDao;
+	@Autowired
+	private ActTaskService actTaskService;
 
 	public RequirementChild get(String id) {
 		RequirementChild requirementChild = super.get(id);
@@ -129,6 +134,18 @@ public class RequirementChildService extends CrudService<RequirementChildDao, Re
 				requirementproChildDao.delete(requirementproChild);
 			}
 		}
+
+		// 设置意见
+		requirementChild.getAct().setComment(("yes".equals(requirementChild.getAct().getFlag()) ? "[同意] " : "[驳回] ")
+				+ requirementChild.getAct().getComment());
+
+		requirementChild.preUpdate();
+
+		// 提交流程任务
+		Map<String, Object> vars = Maps.newHashMap();
+		vars.put("pass", "yes".equals(requirementChild.getAct().getFlag()) ? "1" : "0");
+		actTaskService.complete(requirementChild.getAct().getTaskId(), requirementChild.getAct().getProcInsId(),
+				requirementChild.getAct().getComment(), vars);
 	}
 
 	@Transactional(readOnly = false)

@@ -67,7 +67,7 @@
 	</ul>
 	<br />
 	<form:form id="inputForm" modelAttribute="requirementChild"
-		action="${ctx}/requirement/requirements/saveExamine" method="post"
+		action="${ctx}/requirementchild/requirementChild/save" method="post"
 		class="form-horizontal">
 		<form:hidden path="id" />
 		<form:hidden path="act.taskId" />
@@ -252,7 +252,7 @@
 				id="btnCancel" class="btn" type="button" value="返 回"
 				onclick="history.go(-1)" />
 		</div>
-		<act:histoicFlow procInsId="${requirements.act.procInsId}" />
+		<act:histoicFlow procInsId="${requirementChild.act.procInsId}" />
 	</form:form>
 </body>
 </html>

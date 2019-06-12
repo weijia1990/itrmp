@@ -21,7 +21,6 @@ import com.thinkgem.jeesite.common.config.Global;
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.common.web.BaseController;
-import com.thinkgem.jeesite.modules.act.service.ActTaskService;
 import com.thinkgem.jeesite.modules.allocation.entity.TaskAllocation;
 import com.thinkgem.jeesite.modules.allocation.service.TaskAllocationService;
 import com.thinkgem.jeesite.modules.requirement.entity.Requirements;
@@ -42,9 +41,6 @@ public class RequirementsController extends BaseController {
 
 	@Autowired
 	private TaskAllocationService taskAllocationService;
-
-	@Autowired
-	private ActTaskService actTaskService;
 
 	@ModelAttribute
 	public Requirements get(@RequestParam(required = false) String id) {

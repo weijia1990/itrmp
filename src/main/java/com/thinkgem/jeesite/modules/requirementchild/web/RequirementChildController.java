@@ -69,8 +69,8 @@ public class RequirementChildController extends BaseController {
 
 	@RequestMapping(value = "form")
 	public String form(RequirementChild requirementChild, HttpServletRequest request, Model model) {
-		String requirementId = request.getParameter("requirementId");
-		requirementChild.setRequirements(requirementId);
+		requirementChild.setRequirements(requirementChild.getId());
+		requirementChild.setId("");
 		model.addAttribute("requirementChild", requirementChild);
 		return "modules/requirementchild/requirementChildForm";
 	}
@@ -95,7 +95,7 @@ public class RequirementChildController extends BaseController {
 		requirementsService.update(requirements);
 		requirementChildService.save(requirementChild);
 		addMessage(redirectAttributes, "保存子需求管理成功");
-		return "redirect:" + Global.getAdminPath() + "/requirement/requirements/requirementChild";
+		return "redirect:" + adminPath + "/act/task/todo/";
 	}
 
 	@RequestMapping(value = "delete")

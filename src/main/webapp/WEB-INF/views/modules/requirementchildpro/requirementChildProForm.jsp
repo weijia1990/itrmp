@@ -103,9 +103,15 @@
 	</ul>
 	<br />
 	<form:form id="inputForm" modelAttribute="requirementChild"
-		action="${ctx}/requirementchildpro/requirementChild/save"
-		method="post" class="form-horizontal">
+		action="${ctx}/requirement/requirements/saveExamine" method="post"
+		class="form-horizontal">
 		<form:hidden path="id" />
+		<form:hidden path="act.taskId" />
+		<form:hidden path="act.taskName" />
+		<form:hidden path="act.taskDefKey" />
+		<form:hidden path="act.procInsId" />
+		<form:hidden path="act.procDefId" />
+		<form:hidden id="flag" path="act.flag" />
 		<sys:message content="${message}" />
 		<div class="control-group">
 			<label class="control-label">需求编号：</label>
@@ -227,6 +233,13 @@
 			</div>
 		</div>
 		<div class="control-group">
+			<label class="control-label">您的意见：</label>
+			<div class="controls">
+				<form:textarea path="act.comment" class="required" rows="5"
+					maxlength="20" cssStyle="width:500px" />
+			</div>
+		</div>
+		<div class="control-group">
 			<label class="control-label">问题单表：</label>
 			<div class="controls">
 				<table id="contentTable"
@@ -337,9 +350,11 @@
 		</div>
 		<div class="form-actions">
 			<input id="btnSubmit" class="btn btn-primary" type="submit"
-				value="保 存" />&nbsp; <input id="btnCancel" class="btn"
-				type="button" value="返 回" onclick="history.go(-1)" />
+				value="保 存" onclick="$('#flag').val('yes')" />&nbsp; <input
+				id="btnCancel" class="btn" type="button" value="返 回"
+				onclick="history.go(-1)" />
 		</div>
+		<act:histoicFlow procInsId="${requirements.act.procInsId}" />
 	</form:form>
 </body>
 </html>
