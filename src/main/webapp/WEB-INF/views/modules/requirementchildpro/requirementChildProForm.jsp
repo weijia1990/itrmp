@@ -103,8 +103,8 @@
 	</ul>
 	<br />
 	<form:form id="inputForm" modelAttribute="requirementChild"
-		action="${ctx}/requirement/requirements/saveExamine" method="post"
-		class="form-horizontal">
+		action="${ctx}/requirementchildpro/requirementChild/saveExamine"
+		method="post" class="form-horizontal">
 		<form:hidden path="id" />
 		<form:hidden path="act.taskId" />
 		<form:hidden path="act.taskName" />

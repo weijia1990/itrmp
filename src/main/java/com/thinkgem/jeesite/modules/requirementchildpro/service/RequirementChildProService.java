@@ -10,9 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.google.common.collect.Maps;
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.service.CrudService;
 import com.thinkgem.jeesite.common.utils.StringUtils;
+import com.thinkgem.jeesite.modules.act.service.ActTaskService;
 import com.thinkgem.jeesite.modules.childexamine.dao.RequirementChildExamineDao;
 import com.thinkgem.jeesite.modules.childexamine.entity.RequirementChildExamine;
 import com.thinkgem.jeesite.modules.requirement.entity.Problem;
@@ -40,6 +42,8 @@ public class RequirementChildProService extends CrudService<RequirementChildDao,
 	private RequirementproChildDao requirementproChildDao;
 	@Autowired
 	private RequirementChildExamineDao requirementChildExamineDao;
+	@Autowired
+	private ActTaskService actTaskService;
 
 	public RequirementChild get(String id) {
 		RequirementChild requirementChild = super.get(id);
@@ -96,6 +100,12 @@ public class RequirementChildProService extends CrudService<RequirementChildDao,
 				requirementproChildDao.delete(requirementproChild);
 			}
 		}
+
+		// 提交流程任务
+		Map<String, Object> vars = Maps.newHashMap();
+		vars.put("pass", "yes".equals(requirementChild.getAct().getFlag()) ? "1" : "0");
+		actTaskService.complete(requirementChild.getAct().getTaskId(), requirementChild.getAct().getProcInsId(),
+				requirementChild.getAct().getComment(), vars);
 	}
 
 	@Transactional(readOnly = false)
@@ -115,5 +125,21 @@ public class RequirementChildProService extends CrudService<RequirementChildDao,
 
 	public List<Map<String, String>> queryExamined(Requirements requirements) {
 		return requirementproChildDao.queryExamined(requirements);
+	}
+
+	public void saveExamine(RequirementChild requirementChild) {
+
+		// 设置意见
+		requirementChild.getAct().setComment(("yes".equals(requirementChild.getAct().getFlag()) ? "[同意] " : "[驳回] ")
+				+ requirementChild.getAct().getComment());
+
+		requirementChild.preUpdate();
+
+		// 提交流程任务
+		Map<String, Object> vars = Maps.newHashMap();
+		vars.put("pass", "yes".equals(requirementChild.getAct().getFlag()) ? "1" : "0");
+		actTaskService.complete(requirementChild.getAct().getTaskId(), requirementChild.getAct().getProcInsId(),
+				requirementChild.getAct().getComment(), vars);
+
 	}
 }

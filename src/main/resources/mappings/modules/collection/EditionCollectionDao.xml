@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="com.thinkgem.jeesite.modules.collection.dao.EditionCollectionDao">
+
+	<sql id="editionCollectionColumns">
+		a.id AS "id",
+		a.edition_id AS "edition.id",
+		a.time_online AS
+		"timeOnline",
+		a.edition_files AS "editionFiles",
+		a.comments AS
+		"comments",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks
+		AS "remarks",
+		a.del_flag AS "delFlag"
+	</sql>
+
+	<sql id="editionCollectionJoins">
+		LEFT JOIN edition b ON b.id = a.edition_id
+	</sql>
+
+	<select id="get" resultType="EditionCollection">
+		SELECT
+		<include refid="editionCollectionColumns" />
+		FROM edition_collection a
+		<include refid="editionCollectionJoins" />
+		WHERE a.id = #{id}
+	</select>
+
+	<select id="findList" resultType="EditionCollection">
+		SELECT
+		<include refid="editionCollectionColumns" />
+		FROM edition_collection a
+		<include refid="editionCollectionJoins" />
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="edition != null and edition.id != null and edition.id != ''">
+				AND a.edition_id = #{edition.id}
+			</if>
+			<if test="timeOnline != null and timeOnline != ''">
+				AND a.time_online = #{timeOnline}
+			</if>
+			<if test="editionFiles != null and editionFiles != ''">
+				AND a.edition_files = #{editionFiles}
+			</if>
+			<if test="comments != null and comments != ''">
+				AND a.comments = #{comments}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.create_date ASC
+			</otherwise>
+		</choose>
+	</select>
+
+	<select id="findAllList" resultType="EditionCollection">
+		SELECT
+		<include refid="editionCollectionColumns" />
+		FROM edition_collection a
+		<include refid="editionCollectionJoins" />
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.create_date ASC
+			</otherwise>
+		</choose>
+	</select>
+
+	<insert id="insert">
+		INSERT INTO edition_collection(
+		id,
+		edition_id,
+		time_online,
+		edition_files,
+		comments,
+		create_by,
+		create_date,
+		update_by,
+		update_date,
+		remarks,
+		del_flag
+		) VALUES (
+		#{id},
+		#{edition.id},
+		#{timeOnline},
+		#{editionFiles},
+		#{comments},
+		#{createBy.id},
+		#{createDate},
+		#{updateBy.id},
+		#{updateDate},
+		#{remarks},
+		#{delFlag}
+		)
+	</insert>
+
+	<update id="update">
+		UPDATE edition_collection SET
+		edition_id = #{edition.id},
+		time_online = #{timeOnline},
+		edition_files = #{editionFiles},
+		comments = #{comments},
+		update_by = #{updateBy.id},
+		update_date = #{updateDate},
+		remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+
+	<update id="delete">
+		UPDATE edition_collection SET
+		del_flag = #{DEL_FLAG_DELETE}
+		<choose>
+			<when test="id !=null and id != ''">
+				WHERE id = #{id}
+			</when>
+			<otherwise>
+				WHERE edition_id = #{edition.id}
+			</otherwise>
+		</choose>
+	</update>
+
+	<select id="selectEditionCollection" parameterType="String"
+		resultType="EditionCollection">
+		select * from edition_collection s where s.edition_id=#{editionId}
+	</select>
+
+</mapper>

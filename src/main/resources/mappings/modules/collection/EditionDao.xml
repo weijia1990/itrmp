@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.collection.dao.EditionDao">
+
+	<resultMap type="HashMap" id="queryMap">
+		<id property="id" column="id" />
+		<result property="editionFiles" column="edition_files"
+			javaType="String" />
+		<result property="timeOnline" column="time_online" javaType="String" />
+		<result property="createDate" column="create_date" javaType="String" />
+		<result property="createBy" column="create_by" javaType="String" />
+	</resultMap>
+
+	<select id="query" resultMap="queryMap"
+		parameterType="com.thinkgem.jeesite.modules.collection.entity.Edition">
+		SELECT e.id, ec.edition_files, ec.time_online,
+		e.create_date, e.create_by
+		FROM edition e
+		join edition_collection ec
+		on
+		e.id = ec.edition_id
+		and ec.time_online =
+		#{editionCollectionList[0].timeOnline}
+		and ec.edition_files =
+		#{editionCollectionList[0].editionFiles}
+	</select>
+
+	<resultMap type="HashMap" id="editionShowMap">
+		<id property="id" column="id" />
+		<result property="requirementSource" column="requirement_source"
+			javaType="String" />
+		<result property="requirementClassify" column="requirement_classify"
+			javaType="String" />
+		<result property="businessSystem" column="business_system"
+			javaType="String" />
+		<result property="reId" column="re_id" javaType="String" />
+		<result property="createDate" column="create_date" javaType="String" />
+		<result property="createBy" column="create_by" javaType="String" />
+	</resultMap>
+
+	<select id="editionShow" resultMap="editionShowMap"
+		parameterType="com.thinkgem.jeesite.modules.collection.entity.Edition">
+		SELECT rc.id,
+		r.requirement_source,
+		r.requirement_classify,
+		r.business_system,
+		r.id re_id,
+		rc.create_date,
+		rc.create_by
+		FROM EDITION_REQUIREMENT er
+		join edition e
+		on er.edition_id
+		= e.id
+		join requirement_child rc
+		on er.child_requirement_id = rc.id
+		join
+		requirements r
+		on rc.requirements_id = r.id
+		WHERE er.edition_id = #{id}
+	</select>
+
+	<sql id="editionColumns">
+		a.id AS "id",
+		a.create_by AS "createBy.id",
+		a.create_date AS
+		"createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS
+		"updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag"
+	</sql>
+
+	<sql id="editionJoins">
+	</sql>
+
+	<select id="get" resultType="Edition">
+		SELECT
+		<include refid="editionColumns" />
+		FROM edition a
+		<include refid="editionJoins" />
+		WHERE a.id = #{id}
+	</select>
+
+	<select id="findList" resultType="Edition">
+		SELECT
+		<include refid="editionColumns" />
+		FROM edition a
+		<include refid="editionJoins" />
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+
+	<select id="findAllList" resultType="Edition">
+		SELECT
+		<include refid="editionColumns" />
+		FROM edition a
+		<include refid="editionJoins" />
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+
+	<insert id="insert">
+		INSERT INTO edition(
+		id,
+		create_by,
+		create_date,
+		update_by,
+		update_date,
+		remarks,
+		del_flag
+		) VALUES (
+		#{id},
+		#{createBy.id},
+		#{createDate},
+		#{updateBy.id},
+		#{updateDate},
+		#{remarks},
+		#{delFlag}
+		)
+	</insert>
+
+	<update id="update">
+		UPDATE edition SET
+		update_by = #{updateBy.id},
+		update_date = #{updateDate},
+		remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+
+	<update id="delete">
+		UPDATE edition SET
+		del_flag = #{DEL_FLAG_DELETE}
+		WHERE
+		id = #{id}
+	</update>
+
+	<insert id="addRequirement" parameterType="HashMap">
+		INSERT INTO
+		edition_requirement
+		(edition_id, child_requirement_id)
+		values
+		(#{editionId},
+		#{reId})
+	</insert>
+
+</mapper>

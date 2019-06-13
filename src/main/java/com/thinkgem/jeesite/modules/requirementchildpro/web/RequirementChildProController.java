@@ -87,6 +87,12 @@ public class RequirementChildProController extends BaseController {
 		return "modules/devtask/requestToTaskList";
 	}
 
+	@RequestMapping(value = "examine")
+	public String examine(RequirementChild requirementChild, Model model) {
+		model.addAttribute("requirementChild", requirementChild);
+		return "modules/requirementchild/requirementChildExamine";
+	}
+
 	@RequestMapping(value = "save")
 	public String save(RequirementChild requirementChild, Model model, RedirectAttributes redirectAttributes) {
 		if (!beanValidator(model, requirementChild)) {
@@ -95,6 +101,17 @@ public class RequirementChildProController extends BaseController {
 		requirementChildService.save(requirementChild);
 		addMessage(redirectAttributes, "保存子需求进度管理成功");
 		return "redirect:" + Global.getAdminPath() + "/requirementchildpro/requirementChild/?repage";
+	}
+
+	@RequestMapping(value = "saveExamine")
+	public String saveExamine(RequirementChild requirementChild, Model model, RedirectAttributes redirectAttributes) {
+		if (StringUtils.isBlank(requirementChild.getAct().getFlag())
+				|| StringUtils.isBlank(requirementChild.getAct().getComment())) {
+			addMessage(model, "请填写审核意见。");
+			return form(requirementChild, model);
+		}
+		requirementChildService.saveExamine(requirementChild);
+		return "redirect:" + adminPath + "/act/task/todo/";
 	}
 
 	@RequestMapping(value = "delete")

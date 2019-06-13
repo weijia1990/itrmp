@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.collection.dao.EditionRevertDao">
+    
+	<sql id="editionRevertColumns">
+		a.id AS "id",
+		a.edition_id AS "edition.id",
+		a.edition_revert_reason AS "editionRevertReason",
+		a.edition_revert_time AS "editionRevertTime",
+		a.approver AS "approver",
+		a.comments AS "comments",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="editionRevertJoins">
+		LEFT JOIN edition b ON b.id = a.edition_id
+	</sql>
+    
+	<select id="get" resultType="EditionRevert">
+		SELECT 
+			<include refid="editionRevertColumns"/>
+		FROM edition_revert a
+		<include refid="editionRevertJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="EditionRevert">
+		SELECT 
+			<include refid="editionRevertColumns"/>
+		FROM edition_revert a
+		<include refid="editionRevertJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="edition != null and edition.id != null and edition.id != ''">
+				AND a.edition_id = #{edition.id}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.create_date ASC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="EditionRevert">
+		SELECT 
+			<include refid="editionRevertColumns"/>
+		FROM edition_revert a
+		<include refid="editionRevertJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.create_date ASC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO edition_revert(
+			id,
+			edition_id,
+			edition_revert_reason,
+			edition_revert_time,
+			approver,
+			comments,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag
+		) VALUES (
+			#{id},
+			#{edition.id},
+			#{editionRevertReason},
+			#{editionRevertTime},
+			#{approver},
+			#{comments},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE edition_revert SET 	
+			edition_id = #{edition.id},
+			edition_revert_reason = #{editionRevertReason},
+			edition_revert_time = #{editionRevertTime},
+			approver = #{approver},
+			comments = #{comments},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE edition_revert SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		<choose>
+			<when test="id !=null and id != ''">
+				WHERE id = #{id}
+			</when>
+			<otherwise>
+				WHERE edition_id = #{edition.id}
+			</otherwise>
+		</choose>
+	</update>
+	
+</mapper>
