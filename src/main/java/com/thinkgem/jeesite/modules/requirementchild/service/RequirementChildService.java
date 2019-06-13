@@ -14,17 +14,18 @@ import com.google.common.collect.Maps;
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.service.CrudService;
 import com.thinkgem.jeesite.common.utils.StringUtils;
-import com.thinkgem.jeesite.modules.requirementchild.entity.RequirementChild;
-import com.thinkgem.jeesite.modules.requirementchildpro.dao.RequirementproChildDao;
-import com.thinkgem.jeesite.modules.requirementchildpro.entity.RequirementproChild;
-import com.thinkgem.jeesite.modules.requirementchild.dao.RequirementChildDao;
-import com.thinkgem.jeesite.modules.requirementchild.entity.ProblemChild;
 import com.thinkgem.jeesite.modules.act.service.ActTaskService;
+import com.thinkgem.jeesite.modules.act.utils.ActUtils;
 import com.thinkgem.jeesite.modules.childexamine.dao.RequirementChildExamineDao;
 import com.thinkgem.jeesite.modules.childexamine.dao.RequirementFileDao;
 import com.thinkgem.jeesite.modules.childexamine.entity.RequirementChildExamine;
 import com.thinkgem.jeesite.modules.childexamine.entity.RequirementFile;
 import com.thinkgem.jeesite.modules.requirementchild.dao.ProblemChildDao;
+import com.thinkgem.jeesite.modules.requirementchild.dao.RequirementChildDao;
+import com.thinkgem.jeesite.modules.requirementchild.entity.ProblemChild;
+import com.thinkgem.jeesite.modules.requirementchild.entity.RequirementChild;
+import com.thinkgem.jeesite.modules.requirementchildpro.dao.RequirementproChildDao;
+import com.thinkgem.jeesite.modules.requirementchildpro.entity.RequirementproChild;
 
 /**
  * 子需求管理Service
@@ -140,6 +141,10 @@ public class RequirementChildService extends CrudService<RequirementChildDao, Re
 				+ requirementChild.getAct().getComment());
 
 		requirementChild.preUpdate();
+
+		// 启动流程
+		actTaskService.startProcess(ActUtils.PD_CHILD_REQUIREMENT[0], ActUtils.PD_CHILD_REQUIREMENT[1],
+				requirementChild.getId(), requirementChild.getComments());
 
 		// 提交流程任务
 		Map<String, Object> vars = Maps.newHashMap();
