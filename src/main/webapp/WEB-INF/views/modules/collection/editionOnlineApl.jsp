@@ -28,7 +28,7 @@
 			<li><label>需求版本：</label> <input
 					 htmlEscape="false"
 					maxlength="50" class="input-medium" /></li>
-			<li><label>版本上线时间：</label> <input
+			<li><label style="width: 91px;">版本上线时间：</label> <input
 				htmlEscape="false"
 					maxlength="50" class="input-medium" /></li>
 			<li class="btns"><input id="btnSubmit" class="btn btn-primary"

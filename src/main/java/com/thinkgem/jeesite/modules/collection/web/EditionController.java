@@ -23,6 +23,7 @@ import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.modules.collection.entity.Edition;
+import com.thinkgem.jeesite.modules.collection.entity.EditionCollection;
 import com.thinkgem.jeesite.modules.collection.service.EditionService;
 import com.thinkgem.jeesite.modules.requirementchild.entity.RequirementChild;
 import com.thinkgem.jeesite.modules.requirementchild.service.RequirementChildService;
@@ -93,6 +94,12 @@ public class EditionController extends BaseController {
 
 	@RequestMapping(value = "query")
 	public String query(Edition edition, Model model) {
+
+		List<EditionCollection> editionCollectionList = edition.getEditionCollectionList();
+		if (editionCollectionList.size() == 0) {
+			model.addAttribute("page", null);
+			return "modules/collection/editionList";
+		}
 		List<Map<String, String>> query = editionService.query(edition);
 		Page<Map<String, String>> page = new Page<Map<String, String>>();
 		page.setList(query);
