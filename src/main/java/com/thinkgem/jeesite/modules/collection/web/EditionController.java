@@ -54,8 +54,40 @@ public class EditionController extends BaseController {
 		return entity;
 	}
 
+	@RequestMapping(value = "editionAuditQueryMainPage")
+	public String editionAuditQueryMainPage(Edition edition, HttpServletRequest request, HttpServletResponse response,
+			Model model) {
+		return "modules/collection/editionAuditQueryMainPage";
+	}
+
+	@RequestMapping(value = "editionAuditQuery")
+	public String editionAuditQuery(Edition edition, HttpServletRequest request, HttpServletResponse response,
+			Model model) {
+		return "modules/collection/editionAuditQuery";
+	}
+
+	@RequestMapping(value = "editionOnlineApl")
+	public String editionOnlineApply(Edition edition, HttpServletRequest request, HttpServletResponse response,
+			Model model) {
+		return "modules/collection/editionOnlineApl";
+	}
+
+	@RequestMapping(value = "editionOnlineAudit")
+	public String editionOnlineAudit(Edition edition, HttpServletRequest request, HttpServletResponse response,
+			Model model) {
+		return "modules/collection/editionOnlineAudit";
+	}
+
+	@RequestMapping(value = "editionOnlineImpl")
+	public String editionOnlineImpl(Edition edition, HttpServletRequest request, HttpServletResponse response,
+			Model model) {
+		return "modules/collection/editionOnlineImpl";
+	}
+
 	@RequestMapping(value = { "list", "" })
 	public String list(Edition edition, HttpServletRequest request, HttpServletResponse response, Model model) {
+		Page<Edition> page = editionService.findPage(new Page<Edition>(request, response), edition);
+		model.addAttribute("page", page);
 		return "modules/collection/editionList";
 	}
 
