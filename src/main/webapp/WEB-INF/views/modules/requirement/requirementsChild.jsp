@@ -101,11 +101,11 @@
 			<c:forEach items="${page.list}" var="requirements">
 				<tr>
 					<td>${requirements.id}</td>
-					<td>${fns:getDictLabel(requirements.requirementSource, 'requirement', '')}
+					<td>${fns:getDictLabel(requirements.requirementSource, 'requirement_source', '')}
 					</td>
-					<td>${fns:getDictLabel(requirements.requirementClassify, '', '')}
+					<td>${fns:getDictLabel(requirements.requirementClassify, 'requirement_classify', '')}
 					</td>
-					<td>${fns:getDictLabel(requirements.businessSystem, '', '')}</td>
+					<td>${fns:getDictLabel(requirements.businessSystem, 'business_system', '')}</td>
 					<td><fmt:formatDate value="${requirements.expectOnline}"
 							pattern="yyyy-MM-dd HH:mm:ss" /></td>
 					<td>${requirements.proposer}</td>
