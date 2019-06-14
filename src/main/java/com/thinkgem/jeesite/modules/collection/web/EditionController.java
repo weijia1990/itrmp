@@ -54,9 +54,46 @@ public class EditionController extends BaseController {
 		return entity;
 	}
 
+	@RequestMapping(value = "editionAuditQueryMainPage")
+	public String editionAuditQueryMainPage(Edition edition,
+			HttpServletRequest request, HttpServletResponse response,
+			Model model) {
+		return "modules/collection/editionAuditQueryMainPage";
+	}
+
+	@RequestMapping(value = "editionAuditQuery")
+	public String editionAuditQuery(Edition edition,
+			HttpServletRequest request, HttpServletResponse response,
+			Model model) {
+		return "modules/collection/editionAuditQuery";
+	}
+
+	@RequestMapping(value = "editionOnlineApl")
+	public String editionOnlineApply(Edition edition,
+			HttpServletRequest request, HttpServletResponse response,
+			Model model) {
+		return "modules/collection/editionOnlineApl";
+	}
+
+	@RequestMapping(value = "editionOnlineAudit")
+	public String editionOnlineAudit(Edition edition,
+			HttpServletRequest request, HttpServletResponse response,
+			Model model) {
+		return "modules/collection/editionOnlineAudit";
+	}
+
+	@RequestMapping(value = "editionOnlineImpl")
+	public String editionOnlineImpl(Edition edition,
+			HttpServletRequest request, HttpServletResponse response,
+			Model model) {
+		return "modules/collection/editionOnlineImpl";
+	}
+
 	@RequestMapping(value = { "list", "" })
-	public String list(Edition edition, HttpServletRequest request, HttpServletResponse response, Model model) {
-		Page<Edition> page = editionService.findPage(new Page<Edition>(request, response), edition);
+	public String list(Edition edition, HttpServletRequest request,
+			HttpServletResponse response, Model model) {
+		Page<Edition> page = editionService.findPage(new Page<Edition>(request,
+				response), edition);
 		model.addAttribute("page", page);
 		return "modules/collection/editionList";
 	}
@@ -77,47 +114,55 @@ public class EditionController extends BaseController {
 	}
 
 	@RequestMapping(value = "addRequirement")
-	public String addRequirement(Edition edition, Model model, HttpServletRequest request) {
+	public String addRequirement(Edition edition, Model model,
+			HttpServletRequest request) {
 		model.addAttribute("edition", edition);
 		String reId = request.getParameter("reId");
 		try {
-			RequirementChild requirementChild = requirementChildService.get(reId);
+			RequirementChild requirementChild = requirementChildService
+					.get(reId);
 		} catch (Exception e) {
 			model.addAttribute("message", "需求编号不存在！");
-			return "redirect:" + Global.getAdminPath() + "/collection/edition/show?id=" + edition.getId();
+			return "redirect:" + Global.getAdminPath()
+					+ "/collection/edition/show?id=" + edition.getId();
 		}
 
 		Map<String, String> param = new HashMap<String, String>();
 		param.put("reId", reId);
 		param.put("editionId", edition.getId());
 		editionService.addRequirement(param);
-		return "redirect:" + Global.getAdminPath() + "/collection/edition/show?id=" + edition.getId();
+		return "redirect:" + Global.getAdminPath()
+				+ "/collection/edition/show?id=" + edition.getId();
 	}
 
 	@RequestMapping(value = "show")
 	public String show(Edition edition, Model model) {
 		edition = editionService.get(edition.getId());
-		List<Map<String, String>> editionShow = editionService.editionShow(edition);
+		List<Map<String, String>> editionShow = editionService
+				.editionShow(edition);
 		model.addAttribute("edition", edition);
 		model.addAttribute("requirementList", editionShow);
 		return "modules/collection/editionShow";
 	}
 
 	@RequestMapping(value = "save")
-	public String save(Edition edition, Model model, RedirectAttributes redirectAttributes) {
+	public String save(Edition edition, Model model,
+			RedirectAttributes redirectAttributes) {
 		if (!beanValidator(model, edition)) {
 			return form(edition, model);
 		}
 		editionService.save(edition);
 		addMessage(redirectAttributes, "保存版本归集成功");
-		return "redirect:" + Global.getAdminPath() + "/collection/edition/?repage";
+		return "redirect:" + Global.getAdminPath()
+				+ "/collection/edition/?repage";
 	}
 
 	@RequestMapping(value = "delete")
 	public String delete(Edition edition, RedirectAttributes redirectAttributes) {
 		editionService.delete(edition);
 		addMessage(redirectAttributes, "删除版本归集成功");
-		return "redirect:" + Global.getAdminPath() + "/collection/edition/?repage";
+		return "redirect:" + Global.getAdminPath()
+				+ "/collection/edition/?repage";
 	}
 
 }
