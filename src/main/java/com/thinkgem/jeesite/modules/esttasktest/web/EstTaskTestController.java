@@ -24,6 +24,7 @@ import com.thinkgem.jeesite.modules.esttasktest.service.EstTaskTestService;
 
 /**
  * 测试任务创建Controller
+ * 
  * @author ygj
  * @version 2019-06-01
  */
@@ -33,22 +34,22 @@ public class EstTaskTestController extends BaseController {
 
 	@Autowired
 	private EstTaskTestService estTaskTestService;
-	
+
 	@ModelAttribute
-	public EstTaskTest get(@RequestParam(required=false) String id) {
+	public EstTaskTest get(@RequestParam(required = false) String id) {
 		EstTaskTest entity = null;
-		if (StringUtils.isNotBlank(id)){
+		if (StringUtils.isNotBlank(id)) {
 			entity = estTaskTestService.get(id);
 		}
-		if (entity == null){
+		if (entity == null) {
 			entity = new EstTaskTest();
 		}
 		return entity;
 	}
-	
-	@RequestMapping(value = {"list", ""})
+
+	@RequestMapping(value = { "list", "" })
 	public String list(EstTaskTest estTaskTest, HttpServletRequest request, HttpServletResponse response, Model model) {
-		Page<EstTaskTest> page = estTaskTestService.findPage(new Page<EstTaskTest>(request, response), estTaskTest); 
+		Page<EstTaskTest> page = estTaskTestService.findPage(new Page<EstTaskTest>(request, response), estTaskTest);
 		model.addAttribute("page", page);
 		return "modules/esttasktest/estTaskTestList";
 	}
@@ -58,31 +59,50 @@ public class EstTaskTestController extends BaseController {
 		model.addAttribute("estTaskTest", estTaskTest);
 		return "modules/esttasktest/estTaskTestForm";
 	}
+
 	@RequestMapping(value = "forms")
-	public String forms(EstTaskTest estTaskTest, Model model,HttpServletRequest request, HttpServletResponse response) {
+	public String forms(EstTaskTest estTaskTest, Model model, HttpServletRequest request,
+			HttpServletResponse response) {
 		String requestIds = request.getParameter("requestId");
 		estTaskTest.setRequestId(requestIds);
 		model.addAttribute("estTaskTest", estTaskTest);
 		return "modules/esttasktest/estTaskTestForm";
 	}
 
+	@RequestMapping(value = "sit")
+	public String sit(EstTaskTest estTaskTest, Model model, HttpServletRequest request, HttpServletResponse response) {
+		String requestIds = request.getParameter("requestId");
+		estTaskTest.setRequestId(requestIds);
+		model.addAttribute("estTaskTest", estTaskTest);
+		return "modules/esttasktest/sitTaskTestForm";
+	}
+
+	@RequestMapping(value = "uat")
+	public String uat(EstTaskTest estTaskTest, Model model, HttpServletRequest request, HttpServletResponse response) {
+		String requestIds = request.getParameter("requestId");
+		estTaskTest.setRequestId(requestIds);
+		model.addAttribute("estTaskTest", estTaskTest);
+		return "modules/esttasktest/uatTaskTestForm";
+	}
+
 	@RequestMapping(value = "save")
-	public String save(EstTaskTest estTaskTest, Model model,HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes) {
-		if (!beanValidator(model, estTaskTest)){
+	public String save(EstTaskTest estTaskTest, Model model, HttpServletRequest request, HttpServletResponse response,
+			RedirectAttributes redirectAttributes) {
+		if (!beanValidator(model, estTaskTest)) {
 			return form(estTaskTest, model);
 		}
 		String requestIds = request.getParameter("requestId");
 		estTaskTest.setRequestId(requestIds);
 		estTaskTestService.save(estTaskTest);
 		addMessage(redirectAttributes, "保存测试任务创建成功");
-		return "redirect:"+Global.getAdminPath()+"/esttasktest/estTaskTest/?repage";
+		return "redirect:" + Global.getAdminPath() + "/esttasktest/estTaskTest/?repage";
 	}
-	
+
 	@RequestMapping(value = "delete")
 	public String delete(EstTaskTest estTaskTest, RedirectAttributes redirectAttributes) {
 		estTaskTestService.delete(estTaskTest);
 		addMessage(redirectAttributes, "删除测试任务创建成功");
-		return "redirect:"+Global.getAdminPath()+"/esttasktest/estTaskTest/?repage";
+		return "redirect:" + Global.getAdminPath() + "/esttasktest/estTaskTest/?repage";
 	}
 
 }

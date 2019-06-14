@@ -52,6 +52,15 @@
 		<include refid="requirementChildJoins" />
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="businessSystem != null and businessSystem != ''">
+				AND a.business_system = #{businessSystem}
+			</if>
+			<if test="requirementEmergency != null and requirementEmergency != ''">
+				AND a.requirement_emergency = #{requirementEmergency}
+			</if>
+			<if test="responsibleTaxPerson != null and responsibleTaxPerson != ''">
+				AND a.responsible_tax_person = #{responsibleTaxPerson}
+			</if>
 		</where>
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">

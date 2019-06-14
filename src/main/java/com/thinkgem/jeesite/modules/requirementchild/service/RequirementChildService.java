@@ -26,6 +26,8 @@ import com.thinkgem.jeesite.modules.requirementchild.entity.ProblemChild;
 import com.thinkgem.jeesite.modules.requirementchild.entity.RequirementChild;
 import com.thinkgem.jeesite.modules.requirementchildpro.dao.RequirementproChildDao;
 import com.thinkgem.jeesite.modules.requirementchildpro.entity.RequirementproChild;
+import com.thinkgem.jeesite.modules.testmanager.dao.TaskTestDao;
+import com.thinkgem.jeesite.modules.testmanager.entity.TaskTest;
 
 /**
  * 子需求管理Service
@@ -49,6 +51,8 @@ public class RequirementChildService extends CrudService<RequirementChildDao, Re
 	private RequirementFileDao requirementFileDao;
 	@Autowired
 	private ActTaskService actTaskService;
+	@Autowired
+	private TaskTestDao taskTestDao;
 
 	public RequirementChild get(String id) {
 		RequirementChild requirementChild = super.get(id);
@@ -135,6 +139,28 @@ public class RequirementChildService extends CrudService<RequirementChildDao, Re
 				requirementproChildDao.delete(requirementproChild);
 			}
 		}
+		for (TaskTest taskTest : requirementChild.getTaskTestList()) {
+			if (taskTest.getId() == null) {
+				continue;
+			}
+			if (TaskTest.DEL_FLAG_NORMAL.equals(taskTest.getDelFlag())) {
+				if (StringUtils.isBlank(taskTest.getId())) {
+					taskTest.setRequirementChild(requirementChild);
+					taskTest.preInsert();
+					taskTestDao.insert(taskTest);
+				} else {
+					taskTest.preUpdate();
+					taskTestDao.update(taskTest);
+				}
+			} else {
+				taskTestDao.delete(taskTest);
+			}
+		}
+
+		List<TaskTest> taskTestList = requirementChild.getTaskTestList();
+		if (taskTestList != null && taskTestList.size() > 0) {
+			return;
+		}
 
 		// 设置意见
 		requirementChild.getAct().setComment(("yes".equals(requirementChild.getAct().getFlag()) ? "[同意] " : "[驳回] ")
@@ -160,6 +186,7 @@ public class RequirementChildService extends CrudService<RequirementChildDao, Re
 		requirementChildExamineDao.delete(new RequirementChildExamine(requirementChild));
 		requirementFileDao.delete(new RequirementFile(requirementChild));
 		requirementproChildDao.delete(new RequirementproChild(requirementChild));
+		taskTestDao.delete(new TaskTest(requirementChild));
 	}
 
 	public List<RequirementChild> getAllByRequirementId(String requirementId) {

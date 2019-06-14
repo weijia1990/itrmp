@@ -14,6 +14,7 @@ import com.thinkgem.jeesite.common.persistence.ActEntity;
 import com.thinkgem.jeesite.modules.childexamine.entity.RequirementChildExamine;
 import com.thinkgem.jeesite.modules.childexamine.entity.RequirementFile;
 import com.thinkgem.jeesite.modules.requirementchildpro.entity.RequirementproChild;
+import com.thinkgem.jeesite.modules.testmanager.entity.TaskTest;
 
 /**
  * 子需求管理Entity
@@ -44,6 +45,7 @@ public class RequirementChild extends ActEntity<RequirementChild> {
 	private List<RequirementChildExamine> requirementChildExamineList = Lists.newArrayList(); // 子表列表
 	private List<RequirementFile> requirementFileList = Lists.newArrayList(); // 子表列表
 	private List<RequirementproChild> requirementproChildList = Lists.newArrayList(); // 子表列表
+	private List<TaskTest> taskTestList = Lists.newArrayList(); // 子表列表
 
 	public RequirementChild() {
 		super();
@@ -218,5 +220,13 @@ public class RequirementChild extends ActEntity<RequirementChild> {
 
 	public void setRequirementproChildList(List<RequirementproChild> requirementproChildList) {
 		this.requirementproChildList = requirementproChildList;
+	}
+
+	public List<TaskTest> getTaskTestList() {
+		return taskTestList;
+	}
+
+	public void setTaskTestList(List<TaskTest> taskTestList) {
+		this.taskTestList = taskTestList;
 	}
 }

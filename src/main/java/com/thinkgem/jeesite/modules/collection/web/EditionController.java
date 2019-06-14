@@ -56,8 +56,6 @@ public class EditionController extends BaseController {
 
 	@RequestMapping(value = { "list", "" })
 	public String list(Edition edition, HttpServletRequest request, HttpServletResponse response, Model model) {
-		Page<Edition> page = editionService.findPage(new Page<Edition>(request, response), edition);
-		model.addAttribute("page", page);
 		return "modules/collection/editionList";
 	}
 

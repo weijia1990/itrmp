@@ -17,9 +17,7 @@
 <body>
 	<ul class="nav nav-tabs">
 		<li class="active"><a href="${ctx}/collection/edition/">版本归集列表</a></li>
-		<shiro:hasPermission name="collection:edition:edit">
 			<li><a href="${ctx}/collection/edition/form">版本归集添加</a></li>
-		</shiro:hasPermission>
 	</ul>
 	<form:form id="searchForm" modelAttribute="edition"
 		action="${ctx}/collection/edition/query" method="post"
@@ -56,8 +54,8 @@
 			<c:forEach items="${page.list}" var="edition">
 				<tr>
 					<td>${edition.id}</td>
-					<td>${edition.editionCollectionList[0].editionFiles}</td>
-					<td>${edition.editionCollectionList[0].timeOnline}</td>
+					<td>${edition.editionFiles}</td>
+					<td>${edition.timeOnline}</td>
 					<td>${edition.createDate}</td>
 					<td>${edition.createBy}</td>
 					<td><a href="${ctx}/collection/edition/show?id=${edition.id}">查看</a>

@@ -87,6 +87,18 @@ public class RequirementChildProController extends BaseController {
 		return "modules/devtask/requestToTaskList";
 	}
 
+	@RequestMapping(value = "queryTaskQ")
+	public String queryTaskQ(Requirements requirements, Model model, HttpServletRequest request) {
+		List<Map<String, String>> query = requirementChildService.queryExamined(requirements);
+		String tete = request.getParameter("tete");
+		Page<Map<String, String>> page = new Page<Map<String, String>>();
+		page.setList(query);
+		model.addAttribute("page", page);
+		model.addAttribute("tete", tete);
+		model.addAttribute("cdt", "dev");
+		return "modules/devtask/requestToTaskQeury";
+	}
+
 	@RequestMapping(value = "examine")
 	public String examine(RequirementChild requirementChild, Model model) {
 		model.addAttribute("requirementChild", requirementChild);

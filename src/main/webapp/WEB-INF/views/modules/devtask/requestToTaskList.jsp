@@ -19,7 +19,6 @@
 <body>
 	<ul class="nav nav-tabs">
 		<li class="active"><a href="${ctx}/requirement/requirements/">需求列表</a></li>
-
 	</ul>
 	<form:form id="searchForm" modelAttribute="requirements"
 		action="${ctx}/requirementchildpro/requirementChild/queryTask?tete=${cdt}"
@@ -83,6 +82,7 @@
 				<th>期望上线时间</th>
 				<th>预计完成时间</th>
 				<th>创建时间</th>
+				<th>申请人</th>
 				<th>操作</th>
 			</tr>
 		</thead>
